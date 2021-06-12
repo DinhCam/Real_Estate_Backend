@@ -111,8 +111,8 @@ public class RealEstateDetail {
         this.imageResourcesById = imageResourcesById;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "real_estate_id", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "real_estate_id")
     public RealEstate getRealEstateByRealEstateId() {
         return realEstateByRealEstateId;
     }
