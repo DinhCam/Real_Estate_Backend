@@ -16,7 +16,7 @@ public class RealEstate {
     private Collection<Deal> dealsById;
     private User userBySellerId;
     private User userByStaffId;
-    private Collection<RealEstateDetail> realEstateDetailsById;
+    private RealEstateDetail realEstateDetailsById;
     private Collection<Transaction> transactionsById;
 
     @Id
@@ -106,12 +106,12 @@ public class RealEstate {
         this.userByStaffId = userByStaffId;
     }
 
-    @OneToMany(mappedBy = "realEstateByRealEstateId")
-    public Collection<RealEstateDetail> getRealEstateDetailsById() {
+    @OneToOne(mappedBy = "realEstateByRealEstateId",cascade = CascadeType.ALL)
+    public RealEstateDetail getRealEstateDetailsById() {
         return realEstateDetailsById;
     }
 
-    public void setRealEstateDetailsById(Collection<RealEstateDetail> realEstateDetailsById) {
+    public void setRealEstateDetailsById(RealEstateDetail realEstateDetailsById) {
         this.realEstateDetailsById = realEstateDetailsById;
     }
 
