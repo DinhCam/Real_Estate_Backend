@@ -8,10 +8,6 @@ import java.util.Objects;
 @Table(name = "real_estate_detail", schema = "real_estate", catalog = "")
 public class RealEstateDetail {
     private int id;
-    private Integer realEstateId;
-    private Integer facilityId;
-    private Integer streetWardId;
-    private Integer typeId;
     private String description;
     private Double area;
     private Double price;
@@ -33,46 +29,6 @@ public class RealEstateDetail {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "real_estate_id", nullable = true)
-    public Integer getRealEstateId() {
-        return realEstateId;
-    }
-
-    public void setRealEstateId(Integer realEstateId) {
-        this.realEstateId = realEstateId;
-    }
-
-    @Basic
-    @Column(name = "facility_id", nullable = true)
-    public Integer getFacilityId() {
-        return facilityId;
-    }
-
-    public void setFacilityId(Integer facilityId) {
-        this.facilityId = facilityId;
-    }
-
-    @Basic
-    @Column(name = "street_ward_id", nullable = true)
-    public Integer getStreetWardId() {
-        return streetWardId;
-    }
-
-    public void setStreetWardId(Integer streetWardId) {
-        this.streetWardId = streetWardId;
-    }
-
-    @Basic
-    @Column(name = "type_id", nullable = true)
-    public Integer getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
     }
 
     @Basic
@@ -145,18 +101,6 @@ public class RealEstateDetail {
         this.lot = lot;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RealEstateDetail that = (RealEstateDetail) o;
-        return id == that.id && Objects.equals(realEstateId, that.realEstateId) && Objects.equals(facilityId, that.facilityId) && Objects.equals(streetWardId, that.streetWardId) && Objects.equals(typeId, that.typeId) && Objects.equals(description, that.description) && Objects.equals(area, that.area) && Objects.equals(price, that.price) && Objects.equals(direction, that.direction) && Objects.equals(numberOfBedroom, that.numberOfBedroom) && Objects.equals(numberOfBathroom, that.numberOfBathroom) && Objects.equals(lot, that.lot);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, realEstateId, facilityId, streetWardId, typeId, description, area, price, direction, numberOfBedroom, numberOfBathroom, lot);
-    }
 
     @OneToMany(mappedBy = "realEstateDetailByRealEstateDetailId")
     public Collection<ImageResource> getImageResourcesById() {

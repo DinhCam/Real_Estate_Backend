@@ -7,9 +7,6 @@ import java.util.Objects;
 @Entity
 public class Deal {
     private int id;
-    private Integer buyerId;
-    private Integer sellerId;
-    private Integer realEstateId;
     private Timestamp createAt;
     private Double offeredPrice;
     private Byte status;
@@ -25,36 +22,6 @@ public class Deal {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "buyer_id", nullable = true)
-    public Integer getBuyerId() {
-        return buyerId;
-    }
-
-    public void setBuyerId(Integer buyerId) {
-        this.buyerId = buyerId;
-    }
-
-    @Basic
-    @Column(name = "seller_id", nullable = true)
-    public Integer getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(Integer sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    @Basic
-    @Column(name = "real_estate_id", nullable = true)
-    public Integer getRealEstateId() {
-        return realEstateId;
-    }
-
-    public void setRealEstateId(Integer realEstateId) {
-        this.realEstateId = realEstateId;
     }
 
     @Basic
@@ -85,19 +52,6 @@ public class Deal {
 
     public void setStatus(Byte status) {
         this.status = status;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Deal deal = (Deal) o;
-        return id == deal.id && Objects.equals(buyerId, deal.buyerId) && Objects.equals(sellerId, deal.sellerId) && Objects.equals(realEstateId, deal.realEstateId) && Objects.equals(createAt, deal.createAt) && Objects.equals(offeredPrice, deal.offeredPrice) && Objects.equals(status, deal.status);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, buyerId, sellerId, realEstateId, createAt, offeredPrice, status);
     }
 
     @ManyToOne

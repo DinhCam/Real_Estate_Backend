@@ -7,8 +7,6 @@ import java.util.Objects;
 @Entity
 public class Message {
     private int id;
-    private Integer conversationId;
-    private Integer senderId;
     private String text;
     private String file;
     private Timestamp time;
@@ -22,26 +20,6 @@ public class Message {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "conversation_id", nullable = true)
-    public Integer getConversationId() {
-        return conversationId;
-    }
-
-    public void setConversationId(Integer conversationId) {
-        this.conversationId = conversationId;
-    }
-
-    @Basic
-    @Column(name = "sender_id", nullable = true)
-    public Integer getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(Integer senderId) {
-        this.senderId = senderId;
     }
 
     @Basic
@@ -72,19 +50,6 @@ public class Message {
 
     public void setTime(Timestamp time) {
         this.time = time;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Message message = (Message) o;
-        return id == message.id && Objects.equals(conversationId, message.conversationId) && Objects.equals(senderId, message.senderId) && Objects.equals(text, message.text) && Objects.equals(file, message.file) && Objects.equals(time, message.time);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, conversationId, senderId, text, file, time);
     }
 
     @ManyToOne

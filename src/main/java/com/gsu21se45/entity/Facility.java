@@ -7,7 +7,6 @@ import java.util.Objects;
 @Entity
 public class Facility {
     private int id;
-    private Integer typeId;
     private String name;
     private FacilityType facilityTypeByTypeId;
     private Collection<RealEstateFacility> realEstateFacilitiesById;
@@ -22,15 +21,6 @@ public class Facility {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "type_id", nullable = true)
-    public Integer getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
-    }
 
     @Basic
     @Column(name = "name", nullable = true, length = 255)
@@ -40,19 +30,6 @@ public class Facility {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Facility facility = (Facility) o;
-        return id == facility.id && Objects.equals(typeId, facility.typeId) && Objects.equals(name, facility.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, typeId, name);
     }
 
     @ManyToOne

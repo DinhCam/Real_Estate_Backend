@@ -7,10 +7,6 @@ import java.util.Objects;
 @Entity
 public class Appointment {
     private int id;
-    private Integer buyerId;
-    private Integer sellerId;
-    private Integer staffId;
-    private Integer realEstateId;
     private Date scheduleDate;
     private Byte status;
     private User userByBuyerId;
@@ -28,45 +24,6 @@ public class Appointment {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "buyer_id", nullable = true)
-    public Integer getBuyerId() {
-        return buyerId;
-    }
-
-    public void setBuyerId(Integer buyerId) {
-        this.buyerId = buyerId;
-    }
-
-    @Basic
-    @Column(name = "seller_id", nullable = true)
-    public Integer getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(Integer sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    @Basic
-    @Column(name = "staff_id", nullable = true)
-    public Integer getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(Integer staffId) {
-        this.staffId = staffId;
-    }
-
-    @Basic
-    @Column(name = "real_estate_id", nullable = true)
-    public Integer getRealEstateId() {
-        return realEstateId;
-    }
-
-    public void setRealEstateId(Integer realEstateId) {
-        this.realEstateId = realEstateId;
-    }
 
     @Basic
     @Column(name = "schedule_date", nullable = true)
@@ -86,19 +43,6 @@ public class Appointment {
 
     public void setStatus(Byte status) {
         this.status = status;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Appointment that = (Appointment) o;
-        return id == that.id && Objects.equals(buyerId, that.buyerId) && Objects.equals(sellerId, that.sellerId) && Objects.equals(staffId, that.staffId) && Objects.equals(realEstateId, that.realEstateId) && Objects.equals(scheduleDate, that.scheduleDate) && Objects.equals(status, that.status);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, buyerId, sellerId, staffId, realEstateId, scheduleDate, status);
     }
 
     @ManyToOne

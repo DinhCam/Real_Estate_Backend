@@ -7,7 +7,6 @@ import java.util.Objects;
 @Entity
 public class Ward {
     private int id;
-    private Integer districtId;
     private String name;
     private Collection<StreetWard> streetWardsById;
     private District districtByDistrictId;
@@ -23,16 +22,6 @@ public class Ward {
     }
 
     @Basic
-    @Column(name = "district_id", nullable = true)
-    public Integer getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(Integer districtId) {
-        this.districtId = districtId;
-    }
-
-    @Basic
     @Column(name = "name", nullable = true, length = 255)
     public String getName() {
         return name;
@@ -42,18 +31,6 @@ public class Ward {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ward ward = (Ward) o;
-        return id == ward.id && Objects.equals(districtId, ward.districtId) && Objects.equals(name, ward.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, districtId, name);
-    }
 
     @OneToMany(mappedBy = "wardByWardId")
     public Collection<StreetWard> getStreetWardsById() {

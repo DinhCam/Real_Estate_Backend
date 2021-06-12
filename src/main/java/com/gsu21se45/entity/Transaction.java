@@ -6,10 +6,6 @@ import java.util.Objects;
 @Entity
 public class Transaction {
     private int id;
-    private Integer buyerId;
-    private Integer sellerId;
-    private Integer staffId;
-    private Integer realEstateId;
     private Double price;
     private Double downPrice;
     private Byte status;
@@ -26,46 +22,6 @@ public class Transaction {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "buyer_id", nullable = true)
-    public Integer getBuyerId() {
-        return buyerId;
-    }
-
-    public void setBuyerId(Integer buyerId) {
-        this.buyerId = buyerId;
-    }
-
-    @Basic
-    @Column(name = "seller_id", nullable = true)
-    public Integer getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(Integer sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    @Basic
-    @Column(name = "staff_id", nullable = true)
-    public Integer getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(Integer staffId) {
-        this.staffId = staffId;
-    }
-
-    @Basic
-    @Column(name = "real_estate_id", nullable = true)
-    public Integer getRealEstateId() {
-        return realEstateId;
-    }
-
-    public void setRealEstateId(Integer realEstateId) {
-        this.realEstateId = realEstateId;
     }
 
     @Basic
@@ -96,19 +52,6 @@ public class Transaction {
 
     public void setStatus(Byte status) {
         this.status = status;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Transaction that = (Transaction) o;
-        return id == that.id && Objects.equals(buyerId, that.buyerId) && Objects.equals(sellerId, that.sellerId) && Objects.equals(staffId, that.staffId) && Objects.equals(realEstateId, that.realEstateId) && Objects.equals(price, that.price) && Objects.equals(downPrice, that.downPrice) && Objects.equals(status, that.status);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, buyerId, sellerId, staffId, realEstateId, price, downPrice, status);
     }
 
     @ManyToOne

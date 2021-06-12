@@ -8,8 +8,6 @@ import java.util.Objects;
 @Table(name = "real_estate", schema = "real_estate", catalog = "")
 public class RealEstate {
     private int id;
-    private Integer sellerId;
-    private Integer staffId;
     private String title;
     private String view;
     private Byte isActive;
@@ -29,26 +27,6 @@ public class RealEstate {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "seller_id", nullable = true)
-    public Integer getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(Integer sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    @Basic
-    @Column(name = "staff_id", nullable = true)
-    public Integer getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(Integer staffId) {
-        this.staffId = staffId;
     }
 
     @Basic
@@ -79,19 +57,6 @@ public class RealEstate {
 
     public void setIsActive(Byte isActive) {
         this.isActive = isActive;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RealEstate that = (RealEstate) o;
-        return id == that.id && Objects.equals(sellerId, that.sellerId) && Objects.equals(staffId, that.staffId) && Objects.equals(title, that.title) && Objects.equals(view, that.view) && Objects.equals(isActive, that.isActive);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, sellerId, staffId, title, view, isActive);
     }
 
     @OneToMany(mappedBy = "realEstateByRealEstateId")

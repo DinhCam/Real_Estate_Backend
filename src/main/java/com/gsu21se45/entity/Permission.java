@@ -6,8 +6,6 @@ import java.util.Objects;
 @Entity
 public class Permission {
     private int id;
-    private Integer userId;
-    private Integer featureId;
     private User userByUserId;
     private Feature featureByFeatureId;
 
@@ -19,39 +17,6 @@ public class Permission {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "user_id", nullable = true)
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    @Basic
-    @Column(name = "feature_id", nullable = true)
-    public Integer getFeatureId() {
-        return featureId;
-    }
-
-    public void setFeatureId(Integer featureId) {
-        this.featureId = featureId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Permission that = (Permission) o;
-        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(featureId, that.featureId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userId, featureId);
     }
 
     @ManyToOne
