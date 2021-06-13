@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "real_estate_detail", schema = "real_estate", catalog = "")
+@Table(name = "real_estate_detail", schema = "real_estate")
 public class RealEstateDetail {
     private int id;
     private String description;
@@ -101,7 +101,6 @@ public class RealEstateDetail {
         this.lot = lot;
     }
 
-
     @OneToMany(mappedBy = "realEstateDetailByRealEstateDetailId")
     public Collection<ImageResource> getImageResourcesById() {
         return imageResourcesById;
@@ -112,7 +111,7 @@ public class RealEstateDetail {
     }
 
     @OneToOne
-    @JoinColumn(name = "real_estate_id")
+    @JoinColumn(name = "real_estate_id", referencedColumnName = "id")
     public RealEstate getRealEstateByRealEstateId() {
         return realEstateByRealEstateId;
     }

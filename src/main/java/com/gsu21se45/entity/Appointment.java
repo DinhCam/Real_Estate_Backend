@@ -24,7 +24,6 @@ public class Appointment {
         this.id = id;
     }
 
-
     @Basic
     @Column(name = "schedule_date", nullable = true)
     public Date getScheduleDate() {

@@ -21,7 +21,6 @@ public class Facility {
         this.id = id;
     }
 
-
     @Basic
     @Column(name = "name", nullable = true, length = 255)
     public String getName() {

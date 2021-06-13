@@ -33,7 +33,6 @@ public class Conversation {
         this.name = name;
     }
 
-
     @ManyToOne
     @JoinColumn(name = "buyer_id", referencedColumnName = "id")
     public User getUserByBuyerId() {

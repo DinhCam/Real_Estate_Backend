@@ -1,4 +1,3 @@
-
 USE real_estate;
 
 CREATE TABLE `role` (
@@ -9,10 +8,11 @@ CREATE TABLE `role` (
 
 CREATE TABLE `user_profile` (
                                 `id` int NOT NULL AUTO_INCREMENT,
-                                `avatar` varchar(255) DEFAULT NULL,
+                                `avatar` varchar(2000) DEFAULT NULL,
                                 `phone` varchar(255) DEFAULT NULL,
-                                `fulname` varchar(255) DEFAULT NULL,
+                                `fullname` varchar(255) DEFAULT NULL,
                                 `email` varchar(255) DEFAULT NULL,
+                                `status` boolean DEFAULT TRUE,
                                 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -22,6 +22,7 @@ CREATE TABLE `user` (
                         `profile_id` int DEFAULT NULL,
                         `username` varchar(255) DEFAULT NULL,
                         `password` varchar(255) DEFAULT NULL,
+                        `status` boolean DEFAULT TRUE,
                         PRIMARY KEY (`id`),
                         KEY `profile_id` (`profile_id`),
                         KEY `role_id` (`role_id`),
@@ -35,68 +36,13 @@ CREATE TABLE `real_estate` (
                                `staff_id` int DEFAULT NULL,
                                `title` varchar(255) DEFAULT NULL,
                                `view` varchar(255) DEFAULT NULL,
+                               `create_at` datetime DEFAULT NULL,
                                `is_active` boolean DEFAULT TRUE,
                                PRIMARY KEY (`id`),
                                KEY `seller_id` (`seller_id`),
                                KEY `staff_id` (`staff_id`),
                                CONSTRAINT `real_estate_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
                                CONSTRAINT `real_estate_ibfk_2` FOREIGN KEY (`staff_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `deal` (
-                        `id` int NOT NULL AUTO_INCREMENT,
-                        `buyer_id` int DEFAULT NULL,
-                        `seller_id` int DEFAULT NULL,
-                        `real_estate_id` int DEFAULT NULL,
-                        `create_at` datetime DEFAULT NULL,
-                        `offered_price` double DEFAULT NULL,
-                        `status` boolean DEFAULT TRUE,
-                        PRIMARY KEY (`id`),
-                        KEY `buyer_id` (`buyer_id`),
-                        KEY `seller_id` (`seller_id`),
-                        KEY `real_estate_id` (`real_estate_id`),
-                        CONSTRAINT `deal_ibfk_1` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`),
-                        CONSTRAINT `deal_ibfk_2` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
-                        CONSTRAINT `deal_ibfk_3` FOREIGN KEY (`real_estate_id`) REFERENCES `real_estate` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `appointment` (
-                               `id` int NOT NULL AUTO_INCREMENT,
-                               `buyer_id` int DEFAULT NULL,
-                               `seller_id` int DEFAULT NULL,
-                               `staff_id` int DEFAULT NULL,
-                               `real_estate_id` int DEFAULT NULL,
-                               `schedule_date` date DEFAULT NULL,
-                               `status` boolean DEFAULT TRUE,
-                               PRIMARY KEY (`id`),
-                               KEY `buyer_id` (`buyer_id`),
-                               KEY `staff_id` (`staff_id`),
-                               KEY `seller_id` (`seller_id`),
-                               KEY `real_estate_id` (`real_estate_id`),
-                               CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`),
-                               CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`staff_id`) REFERENCES `user` (`id`),
-                               CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
-                               CONSTRAINT `appointment_ibfk_4` FOREIGN KEY (`real_estate_id`) REFERENCES `real_estate` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `transaction` (
-                               `id` int NOT NULL AUTO_INCREMENT,
-                               `buyer_id` int DEFAULT NULL,
-                               `seller_id` int DEFAULT NULL,
-                               `staff_id` int DEFAULT NULL,
-                               `real_estate_id` int DEFAULT NULL,
-                               `price` double DEFAULT NULL,
-                               `down_price` double DEFAULT NULL,
-                               `status` boolean DEFAULT TRUE,
-                               PRIMARY KEY (`id`),
-                               KEY `buyer_id` (`buyer_id`),
-                               KEY `seller_id` (`seller_id`),
-                               KEY `staff_id` (`staff_id`),
-                               KEY `real_estate_id` (`real_estate_id`),
-                               CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`),
-                               CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
-                               CONSTRAINT `transaction_ibfk_3` FOREIGN KEY (`staff_id`) REFERENCES `user` (`id`),
-                               CONSTRAINT `transaction_ibfk_4` FOREIGN KEY (`real_estate_id`) REFERENCES `real_estate` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `conversation` (
@@ -119,11 +65,57 @@ CREATE TABLE `message` (
                            `conversation_id` int DEFAULT NULL,
                            `sender_id` int DEFAULT NULL,
                            `text` varchar(255) DEFAULT NULL,
-                           `file` varchar(255) DEFAULT NULL,
-                           `time` timestamp NULL DEFAULT NULL,
+                           `file` varchar(2000) DEFAULT NULL,
+                           `create_at` datetime DEFAULT NULL,
                            PRIMARY KEY (`id`),
                            KEY `conversation_id` (`conversation_id`),
                            CONSTRAINT `message_ibfk_1` FOREIGN KEY (`conversation_id`) REFERENCES `conversation` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `deal` (
+                        `id` int NOT NULL AUTO_INCREMENT,
+                        `conversation_id` int DEFAULT NULL,
+                        `create_at` datetime DEFAULT NULL,
+                        `offered_price` double DEFAULT NULL,
+                        `status` boolean DEFAULT TRUE,
+                        PRIMARY KEY (`id`),
+                        KEY `conversation_id` (`conversation_id`),
+                        CONSTRAINT `deal_ibfk_1` FOREIGN KEY (`conversation_id`) REFERENCES `conversation` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `appointment` (
+                               `id` int NOT NULL AUTO_INCREMENT,
+                               `conversation_id` int DEFAULT NULL,
+                               `staff_id` int DEFAULT NULL,
+                               `schedule_date` datetime DEFAULT NULL,
+                               `create_at` datetime DEFAULT NULL,
+                               `status` boolean DEFAULT TRUE,
+                               PRIMARY KEY (`id`),
+                               KEY `staff_id` (`staff_id`),
+                               KEY `conversation_id` (`conversation_id`),
+                               CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `user` (`id`),
+                               CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`conversation_id`) REFERENCES `conversation` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `transaction` (
+                               `id` int NOT NULL AUTO_INCREMENT,
+                               `buyer_id` int DEFAULT NULL,
+                               `seller_id` int DEFAULT NULL,
+                               `staff_id` int DEFAULT NULL,
+                               `real_estate_id` int DEFAULT NULL,
+                               `price` double DEFAULT NULL,
+                               `down_price` double DEFAULT NULL,
+                               `create_at` datetime DEFAULT NULL,
+                               `status` boolean DEFAULT TRUE,
+                               PRIMARY KEY (`id`),
+                               KEY `buyer_id` (`buyer_id`),
+                               KEY `seller_id` (`seller_id`),
+                               KEY `staff_id` (`staff_id`),
+                               KEY `real_estate_id` (`real_estate_id`),
+                               CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`),
+                               CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
+                               CONSTRAINT `transaction_ibfk_3` FOREIGN KEY (`staff_id`) REFERENCES `user` (`id`),
+                               CONSTRAINT `transaction_ibfk_4` FOREIGN KEY (`real_estate_id`) REFERENCES `real_estate` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `district` (
@@ -190,11 +182,11 @@ CREATE TABLE `real_estate_detail` (
 
 CREATE TABLE `image_resource` (
                                   `id` int NOT NULL AUTO_INCREMENT,
-                                  `real_estate_detail_id` int DEFAULT NULL,
-                                  `img_url` varchar(255) DEFAULT NULL,
+                                  `real_estate_id` int DEFAULT NULL,
+                                  `img_url` varchar(2000) DEFAULT NULL,
                                   PRIMARY KEY (`id`),
-                                  KEY `real_estate_detail_id` (`real_estate_detail_id`),
-                                  CONSTRAINT `image_resource_ibfk_1` FOREIGN KEY (`real_estate_detail_id`) REFERENCES `real_estate_detail` (`id`)
+                                  KEY `real_estate_id` (`real_estate_id`),
+                                  CONSTRAINT `image_resource_ibfk_1` FOREIGN KEY (`real_estate_id`) REFERENCES `real_estate` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `facility_type` (
@@ -244,8 +236,8 @@ CREATE TABLE `permission` (
 
 CREATE TABLE `time_frame` (
                               `id` int NOT NULL AUTO_INCREMENT,
-                              `start_time` timestamp NULL DEFAULT NULL,
-                              `end_time` timestamp NULL DEFAULT NULL,
+                              `start_time` time NULL DEFAULT NULL,
+                              `end_time` time NULL DEFAULT NULL,
                               PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

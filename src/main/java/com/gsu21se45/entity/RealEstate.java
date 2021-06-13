@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "real_estate", schema = "real_estate", catalog = "")
+@Table(name = "real_estate", schema = "real_estate")
 public class RealEstate {
     private int id;
     private String title;
@@ -106,7 +106,7 @@ public class RealEstate {
         this.userByStaffId = userByStaffId;
     }
 
-    @OneToOne(mappedBy = "realEstateByRealEstateId",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "realEstateByRealEstateId")
     public RealEstateDetail getRealEstateDetailsById() {
         return realEstateDetailsById;
     }

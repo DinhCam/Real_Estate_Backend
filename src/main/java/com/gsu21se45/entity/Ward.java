@@ -31,7 +31,6 @@ public class Ward {
         this.name = name;
     }
 
-
     @OneToMany(mappedBy = "wardByWardId")
     public Collection<StreetWard> getStreetWardsById() {
         return streetWardsById;
