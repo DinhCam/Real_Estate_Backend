@@ -14,7 +14,7 @@ public class RequestPrams {
     private Integer streetId;
 
     public RequestPrams(){
-        page = 1;
+        page = 0;
         size = 20;
     }
 }
