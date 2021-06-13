@@ -106,6 +106,7 @@ public class RealEstate {
         this.userByStaffId = userByStaffId;
     }
 
+
     @OneToOne(mappedBy = "realEstateByRealEstateId")
     public RealEstateDetail getRealEstateDetailsById() {
         return realEstateDetailsById;
