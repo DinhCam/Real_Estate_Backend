@@ -34,7 +34,18 @@ public interface RealEstateSearch {
     }
 
     class Query{
-        public static String findAllRealEstate = "SELECT " ;
+        public static String findAllRealEstate = "with \n" +
+                "seller as(select r.id, up.fullname from real_estate r join user u on r.seller_id = u.id\n" +
+                "join user_profile up on u.profile_id = up.id\n" +
+                "order by r.id\n" +
+                "),\n" +
+                "staff as (select r.id, up.fullname from real_estate r join user u on r.staff_id = u.id\n" +
+                "join user_profile up on u.profile_id = up.id\n" +
+                "order by r.id\n" +
+                ")\n" +
+                "select r.title as title, r.view as view, s.fullname as sellerName, st.fullname as staffName from real_estate r\n" +
+                "join seller s on r.id = s.id\n" +
+                "join staff st on r.id = st.id" ;
     }
 }
 
