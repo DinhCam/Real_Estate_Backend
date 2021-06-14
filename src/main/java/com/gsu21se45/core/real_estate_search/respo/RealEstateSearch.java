@@ -72,7 +72,6 @@ public interface RealEstateSearch {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id";
-
     }
 }
 

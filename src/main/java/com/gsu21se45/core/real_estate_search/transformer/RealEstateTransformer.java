@@ -10,6 +10,7 @@ import org.hibernate.transform.ResultTransformer;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.List;
+import java.util.Map;
 
 public class RealEstateTransformer implements ResultTransformer {
     Map<Integer, RealEstateDto> result = new HashMap<>();
@@ -28,7 +29,7 @@ public class RealEstateTransformer implements ResultTransformer {
             result.put((Integer) tuples[aliasList.get("id")],realEstateDto);
         }
         return null;
-    }
+}
 
     @Override
     public List transformList(List list) {
