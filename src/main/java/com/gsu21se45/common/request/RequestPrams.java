@@ -7,11 +7,8 @@ import lombok.Setter;
 @Setter
 public class RequestPrams {
 
-    private int page;
-    private int size;
-    private Integer districtId;
-    private Integer wardId;
-    private Integer streetId;
+    private Integer page;
+    private Integer size;
 
     public RequestPrams(){
         page = 0;

@@ -1,6 +1,7 @@
 package com.gsu21se45.entity;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ public class RealEstate {
     private User userByStaffId;
     private RealEstateDetail realEstateDetailsById;
     private Collection<Transaction> transactionsById;
-
+    private Collection<ImageResource> images;
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {
@@ -123,5 +124,14 @@ public class RealEstate {
 
     public void setTransactionsById(Collection<Transaction> transactionsById) {
         this.transactionsById = transactionsById;
+    }
+
+    @OneToMany(mappedBy = "realEstateByRealEstateId")
+    public Collection<ImageResource> getImages() {
+        return images;
+    }
+
+    public void setImages(Collection<ImageResource> images) {
+        this.images = images;
     }
 }

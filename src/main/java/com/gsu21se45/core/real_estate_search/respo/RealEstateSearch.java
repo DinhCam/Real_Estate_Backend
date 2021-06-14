@@ -43,9 +43,36 @@ public interface RealEstateSearch {
                 "join user_profile up on u.profile_id = up.id\n" +
                 "order by r.id\n" +
                 ")\n" +
-                "select r.title as title, r.view as view, s.fullname as sellerName, st.fullname as staffName from real_estate r\n" +
-                "join seller s on r.id = s.id\n" +
-                "join staff st on r.id = st.id" ;
+               "select r.id as id, \n" +
+                "r.title as title, \n" +
+                "rd.description as description,\n" +
+                "r.view as view, \n" +
+                "s.fullname as sellerName, \n" +
+                "st.fullname as staffName ,\n" +
+                "rd.area as area,\n" +
+                "rd.price as price,\n" +
+                "i.id as imgId,\n" +
+                "i.img_url as imageUrl,\n" +
+                "r.create_at as createAt,\n" +
+                "ft.name as facilityType,\n" +
+                "f.id as facilityId,\n" +
+                "f.name as facilityName,\n" +
+                "street.name as streetName,\n" +
+                "w.name as wardName,\n" +
+                "d.name as disName\n" +
+                "from real_estate r\n" +
+                "left join real_estate_detail rd on r.id = rd.real_estate_id\n" +
+                "left join image_resource i on rd.id = i.real_estate_id\n" +
+                "left join seller s on r.id = s.id\n" +
+                "left join staff st on r.id = st.id\n" +
+                "left join real_estate_facility rf on rd.id = rf.real_estate_detail_id\n" +
+                "left join facility f on rf.facility_id = f.id\n" +
+                "left join facility_type ft on f.type_id = ft.id\n" +
+                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
+                "left join street street on sw.street_id = street.id\n" +
+                "left join ward w on sw.ward_id = w.id\n" +
+                "left join district d on w.district_id = d.id";
+
     }
 }
 
