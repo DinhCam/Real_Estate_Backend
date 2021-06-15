@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class RealEstateTransformer implements ResultTransformer {
     Map<Integer, RealEstateDto> result = new HashMap<>();
+
     @Override
     public Object transformTuple(Object[] tuples, String[] alias) {
         Map<String, Integer> aliasList = AliasHelper.toMap(alias);
