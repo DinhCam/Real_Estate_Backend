@@ -10,7 +10,7 @@ public class RealEstate {
     private int id;
     private String title;
     private String view;
-    private Byte isActive;
+    private Byte status;
     private Collection<Appointment> appointmentsById;
     private Collection<Conversation> conversationsById;
     private Collection<Deal> dealsById;
@@ -50,13 +50,13 @@ public class RealEstate {
     }
 
     @Basic
-    @Column(name = "is_active", nullable = true)
-    public Byte getIsActive() {
-        return isActive;
+    @Column(name = "status", nullable = true)
+    public Byte getStatus() {
+        return status;
     }
 
-    public void setIsActive(Byte isActive) {
-        this.isActive = isActive;
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     @OneToMany(mappedBy = "realEstateByRealEstateId")

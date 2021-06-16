@@ -3,20 +3,21 @@ package com.gsu21se45.core.real_estate_search.respo;
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
 import com.gsu21se45.core.real_estate_search.transformer.RealEstateTransformer;
+import com.gsu21se45.core.transaction.dto.CTransactionDto;
+import com.gsu21se45.entity.RealEstate;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface RealEstateSearch {
     Page<RealEstateDto> getRealEstates(RequestPrams rq, Pageable p);
-
+    boolean updateRealEstate(CTransactionDto transactionDto);
     @Repository
     class  RealEstateImpl implements RealEstateSearch {
         @Autowired
@@ -29,12 +30,25 @@ public interface RealEstateSearch {
                     .setParameter("fromArea", rq.getFromArea())
                     .setParameter("toArea", rq.getToArea())
                     .setParameter("type", rq.getType())
+                    .setParameter("search",'%'+ rq.getSearch()+ '%')
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
             return new PageImpl<>(rs,p,rs.size());
+        }
+
+        @Override
+        public boolean updateRealEstate(CTransactionDto transactionDto) {
+            try{
+                RealEstate  realEstate =  em.find(RealEstate.class,transactionDto.getRealEstateId());
+                realEstate.setStatus((byte) 0);
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
         }
     }
 
@@ -57,7 +71,8 @@ public interface RealEstateSearch {
                 "f.name as facilityName,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
-                "d.name as disName\n" +
+                "d.name as disName,\n" +
+                "concat(street.name, ' ', w.name, ' ', d.name) as address\n" +
                 "from real_estate r\n" +
                 "left join real_estate_detail rd on r.id = rd.real_estate_id\n" +
                 "left join real_estate_type rt on rd.type_id = rt.id \n" +
@@ -72,9 +87,10 @@ public interface RealEstateSearch {
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
                 "having r.status = 1 and " +
-                "(rd.price <= :price) " +
-                "and (rd.area between :fromArea and :toArea) " +
-                "and (typeId = :type)\n" +
+                "(:price is null or rd.price <= :price) " +
+                "and (:fromArea is null or rd.area between :fromArea and :toArea) " +
+                "and (:type is null or typeId = :type)\n" +
+                "and(:search is null or  address like :search)\n" +
                 "order by rd.id";
     }
 }

@@ -6,9 +6,7 @@ import java.util.Objects;
 @Entity
 public class Transaction {
     private int id;
-    private Double price;
     private Double downPrice;
-    private Byte status;
     private User userByBuyerId;
     private User userBySellerId;
     private User userByStaffId;
@@ -25,16 +23,6 @@ public class Transaction {
     }
 
     @Basic
-    @Column(name = "price", nullable = true, precision = 0)
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    @Basic
     @Column(name = "down_price", nullable = true, precision = 0)
     public Double getDownPrice() {
         return downPrice;
@@ -42,16 +30,6 @@ public class Transaction {
 
     public void setDownPrice(Double downPrice) {
         this.downPrice = downPrice;
-    }
-
-    @Basic
-    @Column(name = "status", nullable = true)
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
     }
 
     @ManyToOne
