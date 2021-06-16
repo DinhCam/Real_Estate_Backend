@@ -8,7 +8,7 @@ import java.util.Objects;
 public class ImageResource {
     private int id;
     private String imgUrl;
-    private RealEstate realEstateByRealEstateId;
+    private RealEstateDetail realEstateDetailByRealEstateDetailId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -31,12 +31,12 @@ public class ImageResource {
     }
 
     @ManyToOne
-    @JoinColumn(name = "real_estate_id", referencedColumnName = "id")
-    public RealEstate getRealEstateByRealEstateId() {
-        return realEstateByRealEstateId;
+    @JoinColumn(name = "real_estate_detail_id", referencedColumnName = "id")
+    public RealEstateDetail getRealEstateDetailByRealEstateDetailId() {
+        return realEstateDetailByRealEstateDetailId;
     }
 
-    public void setRealEstateByRealEstateId(RealEstate realEstate) {
-        this.realEstateByRealEstateId = realEstate;
+    public void setRealEstateDetailByRealEstateDetailId(RealEstateDetail realEstateDetailByRealEstateDetailId) {
+        this.realEstateDetailByRealEstateDetailId = realEstateDetailByRealEstateDetailId;
     }
 }

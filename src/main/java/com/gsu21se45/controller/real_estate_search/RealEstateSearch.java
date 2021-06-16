@@ -7,6 +7,7 @@ import com.gsu21se45.core.real_estate_search.service.RealEstateSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,7 @@ public class RealEstateSearch {
     private RealEstateSearchService rs;
 
     @GetMapping
-    public PaginationResponse<RealEstateDto> getRealEstates(RequestPrams r){
+    public PaginationResponse<RealEstateDto> getRealEstates(@RequestBody RequestPrams r){
         Page<RealEstateDto> data = rs.getRealEstates(r);
         return new PaginationResponse<>(data);
     }

@@ -9,9 +9,10 @@ public class RequestPrams {
 
     private Integer page;
     private Integer size;
+    private String search;
+    private Double price;
+    private Double fromArea;
+    private Double toArea;
+    private Integer type;
 
-    public RequestPrams(){
-        page = 0;
-        size = 20;
-    }
 }

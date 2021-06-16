@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -24,6 +25,10 @@ public interface RealEstateSearch {
         public Page<RealEstateDto> getRealEstates(RequestPrams rq, Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
                     .createNativeQuery(Query.findAllRealEstate)
+                    .setParameter("price",rq.getPrice())
+                    .setParameter("fromArea", rq.getFromArea())
+                    .setParameter("toArea", rq.getToArea())
+                    .setParameter("type", rq.getType())
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
@@ -34,21 +39,14 @@ public interface RealEstateSearch {
     }
 
     class Query{
-        public static String findAllRealEstate = "with \n" +
-                "seller as(select r.id, up.fullname from real_estate r join user u on r.seller_id = u.id\n" +
-                "join user_profile up on u.profile_id = up.id\n" +
-                "order by r.id\n" +
-                "),\n" +
-                "staff as (select r.id, up.fullname from real_estate r join user u on r.staff_id = u.id\n" +
-                "join user_profile up on u.profile_id = up.id\n" +
-                "order by r.id\n" +
-                ")\n" +
-               "select r.id as id, \n" +
+        public static String findAllRealEstate = "select r.id as id, \n" +
+                "rt.id as typeId, \n"+
                 "r.title as title, \n" +
+                "r.status, \n" +
                 "rd.description as description,\n" +
                 "r.view as view, \n" +
-                "s.fullname as sellerName, \n" +
-                "st.fullname as staffName ,\n" +
+                "s.username as sellerName, \n" +
+                "st.username as staffName ,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "i.id as imgId,\n" +
@@ -62,16 +60,22 @@ public interface RealEstateSearch {
                 "d.name as disName\n" +
                 "from real_estate r\n" +
                 "left join real_estate_detail rd on r.id = rd.real_estate_id\n" +
-                "left join image_resource i on rd.id = i.real_estate_id\n" +
-                "left join seller s on r.id = s.id\n" +
-                "left join staff st on r.id = st.id\n" +
+                "left join real_estate_type rt on rd.type_id = rt.id \n" +
+                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
+                "left join user s on r.seller_id = s.id\n" +
+                "left join user st on r.staff_id = st.id\n" +
                 "left join real_estate_facility rf on rd.id = rf.real_estate_detail_id\n" +
                 "left join facility f on rf.facility_id = f.id\n" +
                 "left join facility_type ft on f.type_id = ft.id\n" +
                 "left join street_ward sw on rd.street_ward_id = sw.id\n" +
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
-                "left join district d on w.district_id = d.id";
+                "left join district d on w.district_id = d.id\n" +
+                "having r.status = 1 and " +
+                "(rd.price <= :price) " +
+                "and (rd.area between :fromArea and :toArea) " +
+                "and (typeId = :type)\n" +
+                "order by rd.id";
     }
 }
 

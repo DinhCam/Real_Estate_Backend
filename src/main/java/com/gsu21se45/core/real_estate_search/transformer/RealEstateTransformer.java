@@ -46,7 +46,7 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("id")]));
         rs.setTitle(TypeTransformImpl.castObjectToString(tuples[aliasList.get("title")]));
         rs.setDescription(TypeTransformImpl.castObjectToString(tuples[aliasList.get("description")]));
-        rs.setView(TypeTransformImpl.castObjectToString(tuples[aliasList.get("view")]));
+        rs.setView(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("view")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
         rs.setStaffName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffName")]));
         rs.setImages(imgs);
@@ -72,5 +72,4 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setFacilityType(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityType")]));
         return rs;
     }
-
 }

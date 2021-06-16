@@ -15,6 +15,7 @@ public class RealEstateDetail {
     private Integer numberOfBedroom;
     private Integer numberOfBathroom;
     private Integer lot;
+    private Collection<ImageResource> imageResourcesById;
     private RealEstate realEstateByRealEstateId;
     private StreetWard streetWardByStreetWardId;
     private RealEstateType realEstateTypeByTypeId;
@@ -98,6 +99,15 @@ public class RealEstateDetail {
 
     public void setLot(Integer lot) {
         this.lot = lot;
+    }
+
+    @OneToMany(mappedBy = "realEstateDetailByRealEstateDetailId")
+    public Collection<ImageResource> getImageResourcesById() {
+        return imageResourcesById;
+    }
+
+    public void setImageResourcesById(Collection<ImageResource> imageResourcesById) {
+        this.imageResourcesById = imageResourcesById;
     }
 
     @OneToOne
