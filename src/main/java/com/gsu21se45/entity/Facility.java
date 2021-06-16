@@ -1,52 +1,32 @@
 package com.gsu21se45.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Objects;
+import java.io.Serializable;
 
 @Entity
-public class Facility {
-    private int id;
-    private String name;
-    private FacilityType facilityTypeByTypeId;
-    private Collection<RealEstateFacility> realEstateFacilitiesById;
+@Table(name = "facility")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Facility implements Serializable {
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id")
+    private FacilityType type;
 
-    @Basic
-    @Column(name = "name", nullable = true, length = 255)
-    public String getName() {
-        return name;
-    }
+    @Column(name = "name", length = 255)
+    private String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    @ManyToOne
-    @JoinColumn(name = "type_id", referencedColumnName = "id")
-    public FacilityType getFacilityTypeByTypeId() {
-        return facilityTypeByTypeId;
-    }
-
-    public void setFacilityTypeByTypeId(FacilityType facilityTypeByTypeId) {
-        this.facilityTypeByTypeId = facilityTypeByTypeId;
-    }
-
-    @OneToMany(mappedBy = "facilityByFacilityId")
-    public Collection<RealEstateFacility> getRealEstateFacilitiesById() {
-        return realEstateFacilitiesById;
-    }
-
-    public void setRealEstateFacilitiesById(Collection<RealEstateFacility> realEstateFacilitiesById) {
-        this.realEstateFacilitiesById = realEstateFacilitiesById;
-    }
 }

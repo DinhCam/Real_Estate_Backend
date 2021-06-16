@@ -1,41 +1,32 @@
 package com.gsu21se45.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.Objects;
+import java.io.Serializable;
 
 @Entity
-public class Permission {
-    private int id;
-    private User userByUserId;
-    private Feature featureByFeatureId;
+@Table(name = "permission")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Permission implements Serializable {
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    public User getUserByUserId() {
-        return userByUserId;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "feature_id")
+    private Feature feature;
 
-    public void setUserByUserId(User userByUserId) {
-        this.userByUserId = userByUserId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "feature_id", referencedColumnName = "id")
-    public Feature getFeatureByFeatureId() {
-        return featureByFeatureId;
-    }
-
-    public void setFeatureByFeatureId(Feature featureByFeatureId) {
-        this.featureByFeatureId = featureByFeatureId;
-    }
 }

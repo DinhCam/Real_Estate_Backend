@@ -1,52 +1,31 @@
 package com.gsu21se45.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Objects;
+import java.io.Serializable;
 
 @Entity
-public class Ward {
-    private int id;
-    private String name;
-    private Collection<StreetWard> streetWardsById;
-    private District districtByDistrictId;
+@Table(name = "ward")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Ward implements Serializable {
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "district_id")
+    private District district;
 
-    @Basic
-    @Column(name = "name", nullable = true, length = 255)
-    public String getName() {
-        return name;
-    }
+    @Column(name = "name", length = 255)
+    private String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @OneToMany(mappedBy = "wardByWardId")
-    public Collection<StreetWard> getStreetWardsById() {
-        return streetWardsById;
-    }
-
-    public void setStreetWardsById(Collection<StreetWard> streetWardsById) {
-        this.streetWardsById = streetWardsById;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "district_id", referencedColumnName = "id")
-    public District getDistrictByDistrictId() {
-        return districtByDistrictId;
-    }
-
-    public void setDistrictByDistrictId(District districtByDistrictId) {
-        this.districtByDistrictId = districtByDistrictId;
-    }
 }

@@ -1,64 +1,43 @@
 package com.gsu21se45.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
-public class Message {
-    private int id;
-    private String text;
-    private String file;
-    private Timestamp time;
-    private Conversation conversationByConversationId;
+@Table(name = "message")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Message implements Serializable {
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "conversation_id")
+    private Conversation conversation;
 
-    @Basic
-    @Column(name = "text", nullable = true, length = 255)
-    public String getText() {
-        return text;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
+    private User sender;
 
-    public void setText(String text) {
-        this.text = text;
-    }
+    @Column(name = "text", length = 255)
+    private String text;
 
-    @Basic
-    @Column(name = "file", nullable = true, length = 255)
-    public String getFile() {
-        return file;
-    }
+    @Column(name = "file", length = 2000)
+    private String file;
 
-    public void setFile(String file) {
-        this.file = file;
-    }
+    @Column(name = "create_at")
+    private Date createAt;
 
-    @Basic
-    @Column(name = "time", nullable = true)
-    public Timestamp getTime() {
-        return time;
-    }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "conversation_id", referencedColumnName = "id")
-    public Conversation getConversationByConversationId() {
-        return conversationByConversationId;
-    }
-
-    public void setConversationByConversationId(Conversation conversationByConversationId) {
-        this.conversationByConversationId = conversationByConversationId;
-    }
 }

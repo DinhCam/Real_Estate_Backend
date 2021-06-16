@@ -1,63 +1,39 @@
 package com.gsu21se45.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.Objects;
+import java.io.Serializable;
 
 @Entity
-public class Schedule {
-    private int id;
-    private Byte status;
-    private User userBySellerId;
-    private WeekDay weekDayByWeekDayId;
-    private TimeFrame timeFrameByTimeFrameId;
+@Table(name = "schedule")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Schedule implements Serializable {
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private User seller;
 
-    @Basic
-    @Column(name = "status", nullable = true)
-    public Byte getStatus() {
-        return status;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "week_day_id")
+    private WeekDay weekDay;
 
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "time_frame_id")
+    private TimeFrame timeFrame;
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id", referencedColumnName = "id")
-    public User getUserBySellerId() {
-        return userBySellerId;
-    }
+    @Column(name = "status")
+    private boolean status;
 
-    public void setUserBySellerId(User userBySellerId) {
-        this.userBySellerId = userBySellerId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "week_day_id", referencedColumnName = "id")
-    public WeekDay getWeekDayByWeekDayId() {
-        return weekDayByWeekDayId;
-    }
-
-    public void setWeekDayByWeekDayId(WeekDay weekDayByWeekDayId) {
-        this.weekDayByWeekDayId = weekDayByWeekDayId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "time_frame_id", referencedColumnName = "id")
-    public TimeFrame getTimeFrameByTimeFrameId() {
-        return timeFrameByTimeFrameId;
-    }
-
-    public void setTimeFrameByTimeFrameId(TimeFrame timeFrameByTimeFrameId) {
-        this.timeFrameByTimeFrameId = timeFrameByTimeFrameId;
-    }
 }

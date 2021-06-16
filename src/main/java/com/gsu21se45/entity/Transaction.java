@@ -1,96 +1,53 @@
 package com.gsu21se45.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
-public class Transaction {
-    private int id;
-    private Double price;
-    private Double downPrice;
-    private Byte status;
-    private User userByBuyerId;
-    private User userBySellerId;
-    private User userByStaffId;
-    private RealEstate realEstateByRealEstateId;
+@Table(name = "transaction")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Transaction implements Serializable {
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
-    @Basic
-    @Column(name = "price", nullable = true, precision = 0)
-    public Double getPrice() {
-        return price;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private User seller;
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "staff_id")
+    private User staff;
 
-    @Basic
-    @Column(name = "down_price", nullable = true, precision = 0)
-    public Double getDownPrice() {
-        return downPrice;
-    }
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "real_estate_id")
+    private RealEstate realEstate;
 
-    public void setDownPrice(Double downPrice) {
-        this.downPrice = downPrice;
-    }
+    @Column(name = "price")
+    private double price;
 
-    @Basic
-    @Column(name = "status", nullable = true)
-    public Byte getStatus() {
-        return status;
-    }
+    @Column(name = "down_price")
+    private double downPrice;
 
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
+    @Column(name = "create_at")
+    private Date createAt;
 
-    @ManyToOne
-    @JoinColumn(name = "buyer_id", referencedColumnName = "id")
-    public User getUserByBuyerId() {
-        return userByBuyerId;
-    }
+    @Column(name = "status")
+    private boolean status;
 
-    public void setUserByBuyerId(User userByBuyerId) {
-        this.userByBuyerId = userByBuyerId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "seller_id", referencedColumnName = "id")
-    public User getUserBySellerId() {
-        return userBySellerId;
-    }
-
-    public void setUserBySellerId(User userBySellerId) {
-        this.userBySellerId = userBySellerId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "staff_id", referencedColumnName = "id")
-    public User getUserByStaffId() {
-        return userByStaffId;
-    }
-
-    public void setUserByStaffId(User userByStaffId) {
-        this.userByStaffId = userByStaffId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "real_estate_id", referencedColumnName = "id")
-    public RealEstate getRealEstateByRealEstateId() {
-        return realEstateByRealEstateId;
-    }
-
-    public void setRealEstateByRealEstateId(RealEstate realEstateByRealEstateId) {
-        this.realEstateByRealEstateId = realEstateByRealEstateId;
-    }
 }
