@@ -4,7 +4,7 @@ import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
 import com.gsu21se45.core.real_estate_search.transformer.RealEstateTransformer;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
-import com.gsu21se45.entity.RealEstate;
+import com.gsu21se45.entity_tmp.RealEstate;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

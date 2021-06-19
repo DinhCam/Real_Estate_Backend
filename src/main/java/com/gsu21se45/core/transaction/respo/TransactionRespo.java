@@ -1,12 +1,10 @@
 package com.gsu21se45.core.transaction.respo;
 
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
-import com.gsu21se45.entity.RealEstate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.swing.text.html.parser.Entity;
 
 public interface TransactionRespo {
     boolean createTransaction(CTransactionDto transactionDto);
