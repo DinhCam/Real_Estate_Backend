@@ -1,15 +1,22 @@
 package com.gsu21se45.core.transaction.service;
 
+import com.gsu21se45.common.request.RequestPrams;
+import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
 import com.gsu21se45.core.real_estate_search.respo.RealEstateSearch;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
+import com.gsu21se45.core.transaction.dto.GRealstateAssignedStaffDto;
 import com.gsu21se45.core.transaction.respo.TransactionRespo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 public interface TransactionService {
     boolean createTransaction(CTransactionDto transactionDto);
+    Page<GRealstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams r);
 
     @Service
     @Transactional
@@ -32,6 +39,12 @@ public interface TransactionService {
             }
 
             return true;
+        }
+
+        @Override
+        public Page<GRealstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams r) {
+            Pageable pageable = PageRequest.of(r.getPage(), r.getSize());
+            return transactionRespo.getRealEstateAssignStaff(r, pageable);
         }
     }
 }

@@ -1,18 +1,31 @@
 package com.gsu21se45.core.transaction.respo;
 
+import com.gsu21se45.common.request.RequestPrams;
+import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
+import com.gsu21se45.core.real_estate_search.respo.RealEstateSearch;
+import com.gsu21se45.core.real_estate_search.transformer.RealEstateTransformer;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
+import com.gsu21se45.core.transaction.dto.GRealstateAssignedStaffDto;
+import com.gsu21se45.core.transaction.transformer.RealEstateAssignedStaffTransformer;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public interface TransactionRespo {
     boolean createTransaction(CTransactionDto transactionDto);
+    Page<GRealstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams rq, Pageable p);
 
     @Repository
     class TransactionRespoImple implements  TransactionRespo{
         @Autowired
         private EntityManager em;
+
         @Override
         public boolean createTransaction(CTransactionDto transactionDto) {
             try{
@@ -30,10 +43,38 @@ public interface TransactionRespo {
             }
             return true;
         }
+
+        @Override
+        public Page<GRealstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams rq, Pageable p) {
+            List<GRealstateAssignedStaffDto> rs = (List<GRealstateAssignedStaffDto>) em
+                    .createNativeQuery(Query.getRealEstateAssignStaff)
+                    .setParameter("staffId",rq.getStaffId())
+                    .setFirstResult((int) p.getOffset())
+                    .setMaxResults(p.getPageSize())
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new RealEstateAssignedStaffTransformer())
+                    .getResultList();
+            return new PageImpl<>(rs,p,rs.size());
+        }
     }
     class Query{
-        static final String CREATE_TRANSACTION = "insert into transaction (buyer_id, seller_id, staff_id, real_estate_id, down_price, create_at)\n" +
+        public static final String CREATE_TRANSACTION = "insert into transaction (buyer_id, seller_id, staff_id, real_estate_id, down_price, create_at)\n" +
                 "values (?, ?, ?, ?, ?, ?)";
+
+        public static String getRealEstateAssignStaff = "select r.id as realEstateId,\n" +
+                "c.buyer_id as buyerId,\n" +
+                "r.title as title,\n" +
+                "street.name as streetName,\n" +
+                "w.name as wardName,\n" +
+                "d.name as disName\n" +
+                "from real_estate r \n" +
+                "left join conversation c on r.id = c.real_estate_id\n" +
+                "left join real_estate_detail rd on r.id = rd.real_estate_id\n" +
+                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
+                "left join street street on sw.street_id = street.id\n" +
+                "left join ward w on sw.ward_id = w.id\n" +
+                "left join district d on w.district_id = d.id\n" +
+                "where r.staff_id = :staffId";
     }
 }
 
