@@ -1,10 +1,7 @@
 package com.gsu21se45.core.transaction.transformer;
 
-import com.gsu21se45.core.real_estate_search.dto.FacilityDto;
-import com.gsu21se45.core.real_estate_search.dto.ImageDto;
-import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
 import com.gsu21se45.core.transaction.dto.BuyerDto;
-import com.gsu21se45.core.transaction.dto.GRealstateAssignedStaffDto;
+import com.gsu21se45.core.transaction.dto.GRealEstateAssignedStaffDto;
 import com.gsu21se45.util.AliasHelper;
 import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.transform.ResultTransformer;
@@ -12,7 +9,7 @@ import org.hibernate.transform.ResultTransformer;
 import java.util.*;
 
 public class RealEstateAssignedStaffTransformer implements ResultTransformer {
-    Map<Integer, GRealstateAssignedStaffDto> result = new HashMap<>();
+    Map<Integer, GRealEstateAssignedStaffDto> result = new HashMap<>();
 
     @Override
     public Object transformTuple(Object[] tuples, String[] alias) {
@@ -23,7 +20,7 @@ public class RealEstateAssignedStaffTransformer implements ResultTransformer {
             result.get(tuples[aliasList.get("realEstateId")]).getBuyers().add(buyer);
         }
         else{
-            GRealstateAssignedStaffDto gRealEstateAssignedStaffDto= getRealEstateAssignedStaffDto(tuples, aliasList);
+            GRealEstateAssignedStaffDto gRealEstateAssignedStaffDto= getRealEstateAssignedStaffDto(tuples, aliasList);
             result.put((Integer) tuples[aliasList.get("realEstateId")],gRealEstateAssignedStaffDto);
         }
         return null;
@@ -34,14 +31,18 @@ public class RealEstateAssignedStaffTransformer implements ResultTransformer {
         return new ArrayList(result.values());
     }
 
-    private GRealstateAssignedStaffDto getRealEstateAssignedStaffDto(Object[] tuples, Map<String, Integer> aliasList){
-        GRealstateAssignedStaffDto rs = new GRealstateAssignedStaffDto();
+    private GRealEstateAssignedStaffDto getRealEstateAssignedStaffDto(Object[] tuples, Map<String, Integer> aliasList){
+        GRealEstateAssignedStaffDto rs = new GRealEstateAssignedStaffDto();
         rs.getBuyers().add(getBuyerDto(tuples, aliasList));
         rs.setRealEstateId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("realEstateId")]));
+        rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
+        rs.setStaffName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffName")]));
         rs.setTitle(TypeTransformImpl.castObjectToString(tuples[aliasList.get("title")]));
         rs.setStreetName((String) tuples[aliasList.get("streetName")]);
         rs.setWardName((String) tuples[aliasList.get("wardName")]);
         rs.setDisName((String)tuples[aliasList.get("disName")]);
+        rs.setArea((Double) tuples[aliasList.get("area")]);
+        rs.setPrice((Double) tuples[aliasList.get("price")]);
         return rs;
     }
 

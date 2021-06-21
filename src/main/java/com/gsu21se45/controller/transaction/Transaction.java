@@ -2,9 +2,8 @@ package com.gsu21se45.controller.transaction;
 
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.common.response.PaginationResponse;
-import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
-import com.gsu21se45.core.transaction.dto.GRealstateAssignedStaffDto;
+import com.gsu21se45.core.transaction.dto.GRealEstateAssignedStaffDto;
 import com.gsu21se45.core.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +26,8 @@ public class Transaction {
     }
 
     @PostMapping(value = "/getRealEstateAssignStaff")
-    public PaginationResponse<GRealstateAssignedStaffDto> getRealEstateAssignStaff(@RequestBody RequestPrams r){
-        Page<GRealstateAssignedStaffDto> data = transactionService.getRealEstateAssignStaff(r);
+    public PaginationResponse<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(@RequestBody RequestPrams r){
+        Page<GRealEstateAssignedStaffDto> data = transactionService.getRealEstateAssignStaff(r);
         return new PaginationResponse<>(data);
     }
 }

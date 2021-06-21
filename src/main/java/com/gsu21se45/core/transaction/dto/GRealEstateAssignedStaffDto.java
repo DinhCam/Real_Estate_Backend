@@ -12,11 +12,15 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GRealstateAssignedStaffDto {
+public class GRealEstateAssignedStaffDto {
     private int realEstateId;
+    private String sellerName;
+    private String staffName;
     private String title;
     private String streetName;
     private String wardName;
     private String disName;
+    private Double area;
+    private Double price;
     private List<BuyerDto> buyers = new ArrayList<>();
 }
