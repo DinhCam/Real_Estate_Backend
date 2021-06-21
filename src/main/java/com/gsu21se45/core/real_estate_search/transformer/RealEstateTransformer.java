@@ -49,22 +49,28 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setView(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("view")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
         rs.setStaffName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffName")]));
-        rs.setImages(imgs);
-        rs.setFacilities(facility);
         rs.setArea((double)tuples[aliasList.get("area")]);
         rs.setPrice((double)tuples[aliasList.get("price")]);
+        rs.setAveragePrice((Double) tuples[aliasList.get("averagePrice")]);
+        rs.setDirection(TypeTransformImpl.castObjectToString(tuples[aliasList.get("direction")]));
+        rs.setNumberOfBedroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBedroom")]));
+        rs.setNumberOfBathroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBathroom")]));
+        rs.setImages(imgs);
+        rs.setFacilities(facility);
         rs.setStreetName((String) tuples[aliasList.get("streetName")]);
         rs.setWardName((String) tuples[aliasList.get("wardName")]);
         rs.setDisName((String)tuples[aliasList.get("disName")]);
         rs.setCreateAt((Timestamp) tuples[aliasList.get("createAt")]);
         return rs;
     }
+
     private ImageDto getImageDto(Object[] tuples, Map<String, Integer> aliasList){
         ImageDto  rs = new ImageDto();
         rs.setImgId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("imgId")]));
         rs.setImgUrl(TypeTransformImpl.castObjectToString(tuples[aliasList.get("imageUrl")]));
         return rs;
     }
+
     private FacilityDto getFacilityDto(Object[] tuples, Map<String, Integer> aliasList){
         FacilityDto  rs = new FacilityDto();
         rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("facilityId")]));

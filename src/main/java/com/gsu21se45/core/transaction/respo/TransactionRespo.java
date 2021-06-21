@@ -68,6 +68,8 @@ public interface TransactionRespo {
                 "w.name as wardName,\n" +
                 "d.name as disName,\n" +
                 "rd.area as area,\n" +
+                "r.create_at as createAt,\n" +
+                "rd.description as description,\n" +
                 "rd.price as price\n" +
                 "from real_estate r \n" +
                 "left join conversation c on r.id = c.real_estate_id\n" +

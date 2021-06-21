@@ -21,11 +21,14 @@ public class RealEstateDto {
     private String staffName;
     private double area;
     private double price;
+    private double averagePrice;
+    private String direction;
+    private int numberOfBedroom;
+    private int numberOfBathroom;
     private Set<ImageDto> images;
     private Set<FacilityDto> facilities;
     private String streetName;
     private String wardName;
     private String disName;
     private Timestamp createAt;
-
 }

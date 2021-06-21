@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +18,12 @@ public class GRealEstateAssignedStaffDto {
     private String sellerName;
     private String staffName;
     private String title;
+    private String description;
     private String streetName;
     private String wardName;
     private String disName;
     private Double area;
     private Double price;
+    private Timestamp createAt;
     private List<BuyerDto> buyers = new ArrayList<>();
 }

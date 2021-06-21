@@ -6,6 +6,8 @@ import com.gsu21se45.util.AliasHelper;
 import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.transform.ResultTransformer;
 
+import javax.persistence.Tuple;
+import java.sql.Timestamp;
 import java.util.*;
 
 public class RealEstateAssignedStaffTransformer implements ResultTransformer {
@@ -43,12 +45,15 @@ public class RealEstateAssignedStaffTransformer implements ResultTransformer {
         rs.setDisName((String)tuples[aliasList.get("disName")]);
         rs.setArea((Double) tuples[aliasList.get("area")]);
         rs.setPrice((Double) tuples[aliasList.get("price")]);
+        rs.setDescription(TypeTransformImpl.castObjectToString(tuples[aliasList.get("description")]));
+        rs.setCreateAt((Timestamp) tuples[aliasList.get("createAt")]);
         return rs;
     }
 
     private BuyerDto getBuyerDto(Object[] tuples, Map<String, Integer> aliasList){
         BuyerDto  rs = new BuyerDto();
         rs.setBuyerId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("buyerId")]));
+        rs.setBuyerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("buyerName")]));
         return rs;
     }
 }

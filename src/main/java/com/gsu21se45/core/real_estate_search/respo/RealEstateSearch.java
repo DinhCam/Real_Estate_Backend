@@ -63,6 +63,10 @@ public interface RealEstateSearch {
                 "st.username as staffName ,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
+                "rd.direction as direction,\n" +
+                "sw.average_price as averagePrice,\n" +
+                "rd.number_of_bedroom as numberOfBedroom,\n" +
+                "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "i.id as imgId,\n" +
                 "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
@@ -86,9 +90,9 @@ public interface RealEstateSearch {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "having r.status = 1 and " +
-                "(:price is null or rd.price <= :price) " +
-                "and (:fromArea is null or rd.area between :fromArea and :toArea) " +
+                "having r.status = 1 and" +
+                "(:price is null or rd.price <= :price)" +
+                "and (:fromArea is null or rd.area between :fromArea and :toArea)" +
                 "and (:type is null or typeId = :type)\n" +
                 "and(:search is null or  address like :search)\n" +
                 "order by rd.id";
