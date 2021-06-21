@@ -47,7 +47,9 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setTitle(TypeTransformImpl.castObjectToString(tuples[aliasList.get("title")]));
         rs.setDescription(TypeTransformImpl.castObjectToString(tuples[aliasList.get("description")]));
         rs.setView(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("view")]));
+        rs.setSellerId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("sellerId")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
+        rs.setStaffId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("staffId")]));
         rs.setStaffName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffName")]));
         rs.setArea((double)tuples[aliasList.get("area")]);
         rs.setPrice((double)tuples[aliasList.get("price")]);
@@ -55,6 +57,8 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setDirection(TypeTransformImpl.castObjectToString(tuples[aliasList.get("direction")]));
         rs.setNumberOfBedroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBedroom")]));
         rs.setNumberOfBathroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBathroom")]));
+        rs.setProject(TypeTransformImpl.castObjectToString(tuples[aliasList.get("project")]));
+        rs.setInvestor(TypeTransformImpl.castObjectToString(tuples[aliasList.get("investor")]));
         rs.setImages(imgs);
         rs.setFacilities(facility);
         rs.setStreetName((String) tuples[aliasList.get("streetName")]);
@@ -76,6 +80,7 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("facilityId")]));
         rs.setFacilityName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityName")]));
         rs.setFacilityType(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityType")]));
+        rs.setDistance((Double) tuples[aliasList.get("distance")]);
         return rs;
     }
 }

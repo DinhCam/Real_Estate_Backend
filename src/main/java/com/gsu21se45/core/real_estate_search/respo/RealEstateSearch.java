@@ -59,7 +59,9 @@ public interface RealEstateSearch {
                 "r.status, \n" +
                 "rd.description as description,\n" +
                 "r.view as view, \n" +
+                "s.id as sellerId, \n" +
                 "s.username as sellerName, \n" +
+                "st.id as staffId, \n" +
                 "st.username as staffName ,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
@@ -67,12 +69,15 @@ public interface RealEstateSearch {
                 "sw.average_price as averagePrice,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
+                "rd.project as project,\n" +
+                "rd.investor as investor,\n" +
                 "i.id as imgId,\n" +
                 "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
                 "ft.name as facilityType,\n" +
                 "f.id as facilityId,\n" +
                 "f.name as facilityName,\n" +
+                "rf.distance as distance,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName,\n" +

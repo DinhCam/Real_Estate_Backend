@@ -17,6 +17,7 @@ public class FacilityDto {
     private int id;
     private String facilityType;
     private String facilityName;
+    private double distance;
 
     @Override
     public boolean equals(Object o) {
