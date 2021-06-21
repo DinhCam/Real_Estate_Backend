@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 public interface RealEstateSearchService {
-   Page<RealEstateDto> getRealEstates(RequestPrams r);
+    Page<RealEstateDto> getRealEstates(RequestPrams r);
 
     @Service
     @Transactional

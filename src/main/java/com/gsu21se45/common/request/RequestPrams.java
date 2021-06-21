@@ -6,15 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RequestPrams {
-
-    private int page;
-    private int size;
-    private Integer districtId;
-    private Integer wardId;
-    private Integer streetId;
-
-    public RequestPrams(){
-        page = 0;
-        size = 20;
-    }
+    private Integer page;
+    private Integer size;
+    private String search;
+    private Double price;
+    private Double fromArea;
+    private Double toArea;
+    private Integer type;
+    private Integer staffId;
 }
