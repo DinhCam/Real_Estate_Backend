@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CTransactionDto {
+    private String title;
     private String buyerId;
     private String sellerId;
     private String staffId;
