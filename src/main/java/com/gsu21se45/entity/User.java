@@ -18,16 +18,12 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", length = 255)
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id")
-    private UserProfile userProfile;
 
     @Column(name = "username", length = 255)
     private String username;
@@ -35,10 +31,22 @@ public class User implements Serializable {
     @Column(name = "password", length = 255)
     private String password;
 
-    @Column(name = "status")
-    private boolean status;
+    @Column(name = "avatar", length = 3000)
+    private String avatar;
 
-    public User(int id) {
+    @Column(name = "phone", length = 255)
+    private String phone;
+
+    @Column(name = "fullname", length = 255)
+    private String fullname;
+
+    @Column(name = "email", length = 255)
+    private String email;
+
+    @Column(name = "status", length = 255)
+    private String status;
+
+    public User(String id) {
         this.id = id;
     }
 }

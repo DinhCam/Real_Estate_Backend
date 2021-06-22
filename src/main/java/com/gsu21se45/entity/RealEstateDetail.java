@@ -21,13 +21,8 @@ public class RealEstateDetail implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "real_estate_id")
-    private RealEstate realEstate;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "facility_id")
-    private Facility facility;
+    @Column(name = "real_estate_no", length = 255)
+    private String realEstateNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "street_ward_id")
@@ -37,7 +32,7 @@ public class RealEstateDetail implements Serializable {
     @JoinColumn(name = "type_id")
     private RealEstateType realEstateType;
 
-    @Column(name = "description", length = 255)
+    @Column(name = "description", length = 5000)
     private String description;
 
     @Column(name = "area")
@@ -49,10 +44,19 @@ public class RealEstateDetail implements Serializable {
     @Column(name = "direction", length = 255)
     private String direction;
 
-    @Column(name = "numOfBedroom")
+    @Column(name = "balcony_direction", length = 255)
+    private String balconyDirection;
+
+    @Column(name = "project", length = 255)
+    private String project;
+
+    @Column(name = "investor", length = 255)
+    private String investor;
+
+    @Column(name = "number_of_bedroom")
     private int numOfBedroom;
 
-    @Column(name = "numOfBathroom")
+    @Column(name = "number_of_bathroom")
     private int numOfBathroom;
 
     @Column(name = "lot")

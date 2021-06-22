@@ -37,6 +37,6 @@ public class Appointment implements Serializable {
     private Date createAt;
 
     @Column(name = "status")
-    private boolean status;
+    private String status;
 
 }

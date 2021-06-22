@@ -29,4 +29,7 @@ public class StreetWard implements Serializable {
     @JoinColumn(name = "street_id")
     private Street street;
 
+    @Column(name = "average_price")
+    private double averagePrice;
+
 }

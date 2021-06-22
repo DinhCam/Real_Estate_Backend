@@ -40,7 +40,7 @@ public class RealEstate implements Serializable {
     private Date createAt;
 
     @Column(name = "status")
-    private boolean status;
+    private String status;
 
     public RealEstate(int id) {
         this.id = id;

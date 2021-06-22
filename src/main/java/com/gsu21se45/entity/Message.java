@@ -30,10 +30,10 @@ public class Message implements Serializable {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @Column(name = "text", length = 255)
+    @Column(name = "text", length = 3000)
     private String text;
 
-    @Column(name = "file", length = 2000)
+    @Column(name = "file", length = 3000)
     private String file;
 
     @Column(name = "create_at")

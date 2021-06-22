@@ -9,12 +9,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "schedule")
+@Table(name = "average_price")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Schedule implements Serializable {
+public class AveragePrice implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,18 +22,27 @@ public class Schedule implements Serializable {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
-    private User seller;
+    @JoinColumn(name = "street_id")
+    private Street street;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "week_day_id")
-    private WeekDay weekDay;
+    @JoinColumn(name = "ward_id")
+    private Ward ward;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "time_frame_id")
-    private TimeFrame timeFrame;
+    @JoinColumn(name = "district_id")
+    private District district;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "price")
+    private double price;
+
+    @Column(name = "month")
+    private double month;
+
+    @Column(name = "year")
+    private double year;
+
+    @Column(name = "type")
+    private String type;
 
 }

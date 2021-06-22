@@ -25,7 +25,7 @@ public class ImageResource implements Serializable {
     @JoinColumn(name = "real_estate_detail_id")
     private RealEstateDetail realEstateDetail;
 
-    @Column(name = "img_url", length = 2000)
+    @Column(name = "img_url", length = 3000)
     private String imgUrl;
 
 
