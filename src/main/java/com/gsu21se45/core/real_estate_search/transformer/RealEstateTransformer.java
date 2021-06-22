@@ -65,6 +65,8 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setWardName((String) tuples[aliasList.get("wardName")]);
         rs.setDisName((String)tuples[aliasList.get("disName")]);
         rs.setCreateAt((Timestamp) tuples[aliasList.get("createAt")]);
+//        rs.setTypeName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("typeName")]));
+        rs.setBalconyDirection(TypeTransformImpl.castObjectToString(tuples[aliasList.get("balconyDirection")]));
         return rs;
     }
 

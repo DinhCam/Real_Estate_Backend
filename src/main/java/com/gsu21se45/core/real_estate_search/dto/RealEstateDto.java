@@ -16,6 +16,7 @@ public class RealEstateDto {
     private int id;
     private String title;
     private String description;
+//    private String typeName;
     private int view;
     private int sellerId;
     private String sellerName;
@@ -25,6 +26,7 @@ public class RealEstateDto {
     private double price;
     private double averagePrice;
     private String direction;
+    private String balconyDirection;
     private int numberOfBedroom;
     private int numberOfBathroom;
     private String project;

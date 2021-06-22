@@ -54,10 +54,11 @@ public interface RealEstateSearch {
 
     class Query{
         public static String findAllRealEstate = "select r.id as id, \n" +
-                "rt.id as typeId, \n"+
                 "r.title as title, \n" +
-                "r.status, \n" +
+                "rd.type_id as typeId, \n" +
+                "r.status as status, \n" +
                 "rd.description as description,\n" +
+//                "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
                 "s.username as sellerName, \n" +
@@ -66,6 +67,7 @@ public interface RealEstateSearch {
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.direction as direction,\n" +
+                "rd.balcony_direction as balconyDirection,\n" +
                 "sw.average_price as averagePrice,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
@@ -89,6 +91,7 @@ public interface RealEstateSearch {
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
                 "left join real_estate_facility rf on rd.id = rf.real_estate_detail_id\n" +
+//                "left join real_estate_type rt on rt.id = rd.type_id\n" +
                 "left join facility f on rf.facility_id = f.id\n" +
                 "left join facility_type ft on f.type_id = ft.id\n" +
                 "left join street_ward sw on rd.street_ward_id = sw.id\n" +
