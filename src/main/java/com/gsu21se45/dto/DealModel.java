@@ -18,5 +18,5 @@ public class DealModel implements Serializable {
     private int conversationId;
     private Date createAt;
     private double offeredPrice;
-    private boolean status;
+    private String status;
 }

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ScheduleService {
 
-    List<Schedule> findBySellerId(int sellerId);
+    List<Schedule> findBySellerId(String sellerId);
 }

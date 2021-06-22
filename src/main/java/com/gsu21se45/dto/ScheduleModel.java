@@ -14,7 +14,8 @@ import java.io.Serializable;
 public class ScheduleModel implements Serializable {
 
     private int id;
-    private int sellerId;
+    private String sellerId;
     private WeekDayModel weekDay;
     private TimeFrameModel timeFrame;
+    private String status;
 }

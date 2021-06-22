@@ -16,7 +16,7 @@ public class MessageModel implements Serializable {
 
     private int id;
     private int conversationId;
-    private int senderId;
+    private String senderId;
     private String text;
     private String file;
     private Date createAt;

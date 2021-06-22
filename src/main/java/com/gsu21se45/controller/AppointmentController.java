@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping(RestEntityConstant.URI_ROOT + RestEntityConstant.URI_VERSION + RestEntityConstant.URI_APPOINTMENT)
 public class AppointmentController {
 
-    private static final Logger LOGGER = LogManager.getLogger(AppointmentController.class);
+    private static final Logger LOGGER = LogManager.getLogger(AppointmentController.class);//???
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -28,9 +28,10 @@ public class AppointmentController {
     @GetMapping(value = RestEntityConstant.URI_ALL)
     @ApiOperation("Get all appointments without cancel")
     public @ResponseBody
-    List<AppointmentModel> getAllBySellerId(@RequestParam(name = RestEntityConstant.SELLER_ID, required = true) int sellerId) {
+    List<AppointmentModel> getAllBySellerId(@RequestParam(name = RestEntityConstant.SELLER_ID, required = true) String sellerId,
+                                            @RequestParam(name = RestEntityConstant.STATUS, required = true) String status ) {
         LOGGER.debug("Begin inside AppointmentController.getAllBySellerId()");
-        List<Appointment> appointments = appointmentService.findBySellerIdAndStatus(sellerId, !RestEntityConstant.CANCEL_STATUS);
+        List<Appointment> appointments = appointmentService.findBySellerIdAndStatus(sellerId, status ); //!RestEntityConstant.CANCEL_STATUS
         LOGGER.debug("End inside AppointmentController.getAllBySellerId()");
         return appointments != null ? objectMapper.convertToListDTO(appointments, AppointmentModel.class) : null;
     }
@@ -52,7 +53,7 @@ public class AppointmentController {
     @PutMapping(value = RestEntityConstant.URI_UPDATE)
     @ApiOperation("Update status")
     public void update(@RequestParam(name = RestEntityConstant.APPOINTMENT_ID, required = true) int appointmentId,
-                       @RequestParam(name = RestEntityConstant.STATUS, defaultValue = RestEntityConstant.CANCEL_STATUS + "") boolean status) {
+                       @RequestParam(name = RestEntityConstant.STATUS, required = true) String status) { //defaultValue = RestEntityConstant.CANCEL_STATUS + ""
         LOGGER.debug("Begin inside AppointmentController.update()");
         appointmentService.update(appointmentId, status);
         LOGGER.debug("End inside AppointmentController.update()");

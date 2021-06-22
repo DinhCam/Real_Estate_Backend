@@ -28,7 +28,7 @@ public class ScheduleController {
     @GetMapping(value = RestEntityConstant.URI_ALL)
     @ApiOperation("Get all schedules by seller")
     public @ResponseBody
-    List<ScheduleModel> getAllBySellerId(@RequestParam(name = RestEntityConstant.SELLER_ID, required = true) int sellerId) {
+    List<ScheduleModel> getAllBySellerId(@RequestParam(name = RestEntityConstant.SELLER_ID, required = true) String sellerId) {
         LOGGER.debug("Begin inside ScheduleController.getAllBySellerId()");
         List<Schedule> schedules = scheduleService.findBySellerId(sellerId);
         LOGGER.debug("End inside ScheduleController.getAllBySellerId()");

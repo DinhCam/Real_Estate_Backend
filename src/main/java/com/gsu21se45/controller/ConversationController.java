@@ -41,8 +41,8 @@ public class ConversationController {
     @ApiOperation(value = "Get all message of specify conversation")
     public @ResponseBody
     ConversationModel getAllMessageByConversation(
-            @RequestParam(name = RestEntityConstant.BUYER_ID, required = true) int buyerId
-            , @RequestParam(name = RestEntityConstant.SELLER_ID, required = true) int sellerId
+            @RequestParam(name = RestEntityConstant.BUYER_ID, required = true) String buyerId
+            , @RequestParam(name = RestEntityConstant.SELLER_ID, required = true) String sellerId
             , @RequestParam(name = RestEntityConstant.REAL_ESTATE_ID, required = true) int realEstateId) {
         LOGGER.debug("Begin inside ConversationController.getAllMessageByConversation()");
         ConversationModel model = new ConversationModel();

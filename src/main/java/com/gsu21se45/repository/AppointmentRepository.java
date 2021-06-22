@@ -19,13 +19,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     @Query(value = "select a.id, a.conversation_id, a.staff_id, a.schedule_date, a.create_at, a.status " +
             "from appointment a join conversation c " +
             "on a.conversation_id = c.id and c.seller_id = :sellerId and a.status = :status", nativeQuery = true)
-    List<Appointment> findBySellerIdAndStatus(@Param(value = "sellerId") int sellerId,
-                                              @Param(value = "status") boolean status);
+    List<Appointment> findBySellerIdAndStatus(@Param(value = "sellerId") String sellerId,
+                                              @Param(value = "status") String status);
 
     @Modifying
     @Transactional
     @Query(value = "update appointment set status = :status where id = :appointmentId", nativeQuery = true)
     void update(@Param(value = "appointmentId") int appointmentId,
-                @Param(value = "status") boolean status);
+                @Param(value = "status") String status);
 
 }

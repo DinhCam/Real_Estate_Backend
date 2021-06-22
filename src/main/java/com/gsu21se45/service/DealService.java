@@ -12,5 +12,5 @@ public interface DealService {
 
     Deal save(Deal deal);
 
-    void update(int dealId, boolean status);
+    void update(int dealId, String status);
 }

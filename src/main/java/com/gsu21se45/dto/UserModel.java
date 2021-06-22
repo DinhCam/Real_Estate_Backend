@@ -13,11 +13,15 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UserModel implements Serializable {
 
-    private int id;
+    private String id;
     private int roleId;
-    private UserProfileModel userProfile;
+//    private UserProfileModel userProfile;
     private String username;
     private String password;
-    private boolean status;
+    private String avatar;
+    private String phone;
+    private String fullname;
+    private String email;
+    private String status;
 
 }

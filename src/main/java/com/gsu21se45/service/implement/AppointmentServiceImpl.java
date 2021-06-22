@@ -21,7 +21,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> findBySellerIdAndStatus(int sellerId, boolean status) {
+    public List<Appointment> findBySellerIdAndStatus(String sellerId, String status) {
         return appointmentRepository.findBySellerIdAndStatus(sellerId, status);
     }
 
@@ -31,7 +31,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void update(int appointmentId, boolean status) {
+    public void update(int appointmentId, String status) {
         appointmentRepository.update(appointmentId, status);
     }
 }

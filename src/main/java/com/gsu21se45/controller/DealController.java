@@ -50,7 +50,7 @@ public class DealController {
     @PutMapping(value = RestEntityConstant.URI_UPDATE)
     @ApiOperation("Update status")
     public void update(@RequestParam(name = RestEntityConstant.DEAL_ID, required = true) int dealId,
-                       @RequestParam(name = RestEntityConstant.STATUS, defaultValue = RestEntityConstant.CANCEL_STATUS + "") boolean status) {
+                       @RequestParam(name = RestEntityConstant.STATUS, required = true) String status) { //defaultValue = RestEntityConstant.CANCEL_STATUS + ""
         LOGGER.debug("Begin inside DealController.update()");
         dealService.update(dealId, status);
         LOGGER.debug("End inside DealController.update()");

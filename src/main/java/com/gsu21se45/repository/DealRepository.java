@@ -22,5 +22,5 @@ public interface DealRepository extends JpaRepository<Deal, Integer> {
     @Transactional
     @Query(value = "update deal set status = :status where id = :dealId", nativeQuery = true)
     void update(@Param(value = "dealId") int dealId,
-                @Param(value = "status") boolean status);
+                @Param(value = "status") String status);
 }

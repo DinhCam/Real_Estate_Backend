@@ -8,9 +8,9 @@ public interface AppointmentService {
 
     List<Appointment> findByConversationId(int conversationId);
 
-    List<Appointment> findBySellerIdAndStatus(int sellerId, boolean status);
+    List<Appointment> findBySellerIdAndStatus(String sellerId, String status);
 
     Appointment save(Appointment appointment);
 
-    void update(int appointmentId, boolean status);
+    void update(int appointmentId, String status);
 }

@@ -16,7 +16,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private ScheduleRepository scheduleRepository;
 
     @Override
-    public List<Schedule> findBySellerId(int sellerId) {
+    public List<Schedule> findBySellerId(String sellerId) {
         return scheduleRepository.findSchedulesBySeller(new User(sellerId));
     }
 }
