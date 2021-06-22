@@ -4,8 +4,6 @@ import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
 import com.gsu21se45.core.real_estate_search.transformer.RealEstateTransformer;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
-import com.gsu21se45.entity_tmp.RealEstate;
-import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,6 +62,7 @@ public interface RealEstateSearch {
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
                 "s.username as sellerName, \n" +
+                "s.avatar as avatar, \n" +
                 "st.id as staffId, \n" +
                 "st.username as staffName ,\n" +
                 "rd.area as area,\n" +
@@ -87,7 +86,7 @@ public interface RealEstateSearch {
                 "d.name as disName,\n" +
                 "concat(street.name, ' ', w.name, ' ', d.name) as address\n" +
                 "from real_estate r\n" +
-                "left join real_estate_detail rd on r.id = rd.real_estate_id\n" +
+                "left join real_estate_detail rd on r.id = rd.id\n" +
                 "left join real_estate_type rt on rd.type_id = rt.id \n" +
                 "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user s on r.seller_id = s.id\n" +
@@ -99,13 +98,13 @@ public interface RealEstateSearch {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "having r.status = '1' and" +
+                "having r.status = 'active' and" +
                 "(:price is null or rd.price <= :price)" +
                 "and (:fromArea is null or rd.area between :fromArea and :toArea)" +
                 "and (:type is null or typeId = :type)\n" +
                 "and(:search is null or  address like :search)\n" +
                 "order by rd.id";
 
-        public static String updateRealEstateStatus = "update real_estate set status = '0' where id = :id";
+        public static String updateRealEstateStatus = "update real_estate set status = 'inactive' where id = :id";
     }
 }

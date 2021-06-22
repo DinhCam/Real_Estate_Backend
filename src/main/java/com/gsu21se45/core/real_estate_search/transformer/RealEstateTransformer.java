@@ -47,9 +47,9 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setTitle(TypeTransformImpl.castObjectToString(tuples[aliasList.get("title")]));
         rs.setDescription(TypeTransformImpl.castObjectToString(tuples[aliasList.get("description")]));
         rs.setView(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("view")]));
-        rs.setSellerId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("sellerId")]));
+        rs.setSellerId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerId")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
-        rs.setStaffId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("staffId")]));
+        rs.setStaffId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffId")]));
         rs.setStaffName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffName")]));
         rs.setArea((double)tuples[aliasList.get("area")]);
         rs.setPrice((double)tuples[aliasList.get("price")]);
@@ -67,6 +67,7 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setCreateAt((Timestamp) tuples[aliasList.get("createAt")]);
         rs.setTypeName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("typeName")]));
         rs.setBalconyDirection(TypeTransformImpl.castObjectToString(tuples[aliasList.get("balconyDirection")]));
+        rs.setAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("avatar")]));
         return rs;
     }
 

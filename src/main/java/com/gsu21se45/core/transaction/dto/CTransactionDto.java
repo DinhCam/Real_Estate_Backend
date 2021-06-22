@@ -12,9 +12,9 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CTransactionDto {
-    private int buyerId;
-    private int sellerId;
-    private int staffId;
+    private String buyerId;
+    private String sellerId;
+    private String staffId;
     private int realEstateId;
     private double downPrice;
     private Timestamp createAt;

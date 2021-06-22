@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BuyerDto {
-    private int buyerId;
+    private String buyerId;
     private String buyerName;
+    private String avatar;
 }

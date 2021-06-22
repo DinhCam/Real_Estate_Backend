@@ -31,7 +31,7 @@ public interface TransactionRespo {
                         .setParameter(2,transactionDto.getSellerId())
                         .setParameter(3,transactionDto.getStaffId())
                         .setParameter(4,transactionDto.getRealEstateId())
-                        .setParameter(5,transactionDto.getRealEstateId())
+                        .setParameter(5,transactionDto.getDownPrice())
                         .setParameter(6,transactionDto.getCreateAt())
                         .executeUpdate();
             }catch(Exception e){
@@ -61,7 +61,8 @@ public interface TransactionRespo {
         public static String getRealEstateAssignStaff = "select r.id as realEstateId, \n" +
                 "c.buyer_id as buyerId,\n" +
                 "b.username as buyerName,\n" +
-                "s.username as sellerName, \n" +
+                "b.avatar as avatar,\n" +
+                "s.username as sellerName,\n" +
                 "st.username as staffName,\n" +
                 "r.title as title,\n" +
                 "street.name as streetName,\n" +
@@ -73,7 +74,7 @@ public interface TransactionRespo {
                 "rd.price as price\n" +
                 "from real_estate r \n" +
                 "left join conversation c on r.id = c.real_estate_id\n" +
-                "left join real_estate_detail rd on r.id = rd.real_estate_id\n" +
+                "left join real_estate_detail rd on r.id = rd.id\n" +
                 "left join user b on c.buyer_id = b.id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +

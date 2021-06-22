@@ -13,5 +13,5 @@ public class RequestPrams {
     private Double fromArea;
     private Double toArea;
     private Integer type;
-    private Integer staffId;
+    private String staffId;
 }
