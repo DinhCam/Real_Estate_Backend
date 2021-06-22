@@ -7,7 +7,7 @@ import com.gsu21se45.core.real_estate_search.service.RealEstateSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/rs")
 public class RealEstateSearch {
