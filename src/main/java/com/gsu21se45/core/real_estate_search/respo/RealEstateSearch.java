@@ -58,7 +58,7 @@ public interface RealEstateSearch {
                 "rd.type_id as typeId, \n" +
                 "r.status as status, \n" +
                 "rd.description as description,\n" +
-//                "rt.name as typeName,\n" +
+                "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
                 "s.username as sellerName, \n" +
@@ -91,7 +91,6 @@ public interface RealEstateSearch {
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
                 "left join real_estate_facility rf on rd.id = rf.real_estate_detail_id\n" +
-//                "left join real_estate_type rt on rt.id = rd.type_id\n" +
                 "left join facility f on rf.facility_id = f.id\n" +
                 "left join facility_type ft on f.type_id = ft.id\n" +
                 "left join street_ward sw on rd.street_ward_id = sw.id\n" +
