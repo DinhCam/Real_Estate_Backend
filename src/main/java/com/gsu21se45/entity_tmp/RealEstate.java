@@ -9,7 +9,7 @@ public class RealEstate {
     private int id;
     private String title;
     private String view;
-    private Byte status;
+    private String status;
     private Collection<Appointment> appointmentsById;
     private Collection<Conversation> conversationsById;
     private Collection<Deal> dealsById;
@@ -50,11 +50,11 @@ public class RealEstate {
 
     @Basic
     @Column(name = "status", nullable = true)
-    public Byte getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

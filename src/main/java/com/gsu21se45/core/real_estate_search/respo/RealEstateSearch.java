@@ -5,6 +5,7 @@ import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
 import com.gsu21se45.core.real_estate_search.transformer.RealEstateTransformer;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.entity_tmp.RealEstate;
+import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,8 +43,9 @@ public interface RealEstateSearch {
         @Override
         public boolean updateRealEstate(CTransactionDto transactionDto) {
             try{
-                RealEstate realEstate =  em.find(RealEstate.class,transactionDto.getRealEstateId());
-                realEstate.setStatus((byte) 0);
+                em.createNativeQuery(Query.updateRealEstateStatus)
+                        .setParameter("id",transactionDto.getRealEstateId())
+                        .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();
                 return false;
@@ -97,11 +99,13 @@ public interface RealEstateSearch {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "having r.status = 1 and" +
+                "having r.status = '1' and" +
                 "(:price is null or rd.price <= :price)" +
                 "and (:fromArea is null or rd.area between :fromArea and :toArea)" +
                 "and (:type is null or typeId = :type)\n" +
                 "and(:search is null or  address like :search)\n" +
                 "order by rd.id";
+
+        public static String updateRealEstateStatus = "update real_estate set status = '0' where id = :id";
     }
 }
