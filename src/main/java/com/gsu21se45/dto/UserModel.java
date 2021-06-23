@@ -1,5 +1,6 @@
 package com.gsu21se45.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,11 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserModel implements Serializable {
 
     private String id;
     private int roleId;
-//    private UserProfileModel userProfile;
     private String username;
     private String password;
     private String avatar;

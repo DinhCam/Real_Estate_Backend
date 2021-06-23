@@ -37,10 +37,10 @@ public class AveragePrice implements Serializable {
     private double price;
 
     @Column(name = "month")
-    private double month;
+    private int month;
 
     @Column(name = "year")
-    private double year;
+    private int year;
 
     @Column(name = "type")
     private String type;

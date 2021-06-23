@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 @CrossOrigin
 @RestController
@@ -54,7 +55,7 @@ public class ConversationController {
             model = conversationMapper.convertToDTO(conversation, deals, appointments, messages);
         } else {
             conversation = conversationService.save(new Conversation(-1, new User(buyerId), new User(sellerId), new RealEstate(realEstateId)));
-            model = conversationMapper.convertToDTO(conversation, null, null, null);
+            model = conversationMapper.convertToDTO(conversation, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         }
         LOGGER.debug("End inside ConversationController.getAllMessageByConversation()");
         return model;
