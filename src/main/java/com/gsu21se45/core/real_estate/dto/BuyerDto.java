@@ -1,4 +1,4 @@
-package com.gsu21se45.core.transaction.dto;
+package com.gsu21se45.core.real_estate.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
