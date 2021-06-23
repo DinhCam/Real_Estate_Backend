@@ -1,12 +1,11 @@
-package com.gsu21se45.core.transaction.transformer;
+package com.gsu21se45.core.real_estate.transformer;
 
-import com.gsu21se45.core.transaction.dto.BuyerDto;
-import com.gsu21se45.core.transaction.dto.GRealEstateAssignedStaffDto;
+import com.gsu21se45.core.real_estate.dto.BuyerDto;
+import com.gsu21se45.core.real_estate.dto.GRealEstateAssignedStaffDto;
 import com.gsu21se45.util.AliasHelper;
 import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.transform.ResultTransformer;
 
-import javax.persistence.Tuple;
 import java.sql.Timestamp;
 import java.util.*;
 

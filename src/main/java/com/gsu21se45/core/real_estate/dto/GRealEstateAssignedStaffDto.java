@@ -1,5 +1,6 @@
-package com.gsu21se45.core.transaction.dto;
+package com.gsu21se45.core.real_estate.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,8 @@ public class GRealEstateAssignedStaffDto {
     private String disName;
     private Double area;
     private Double price;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createAt;
     private List<BuyerDto> buyers = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package com.gsu21se45.core.real_estate.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +38,7 @@ public class RealEstateDto {
     private String streetName;
     private String wardName;
     private String disName;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createAt;
 }

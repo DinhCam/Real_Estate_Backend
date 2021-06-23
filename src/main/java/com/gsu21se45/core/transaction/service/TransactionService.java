@@ -3,7 +3,7 @@ package com.gsu21se45.core.transaction.service;
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate.respo.RealEstateRespo;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
-import com.gsu21se45.core.transaction.dto.GRealEstateAssignedStaffDto;
+import com.gsu21se45.core.transaction.dto.GTransactionDto;
 import com.gsu21se45.core.transaction.respo.TransactionRespo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,21 +15,22 @@ import javax.transaction.Transactional;
 
 public interface TransactionService {
     boolean createTransaction(CTransactionDto transactionDto);
-    Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams r);
+    Page<GTransactionDto> getTransactionByUserId(RequestPrams r);
 
     @Service
     @Transactional
     class TransactionServiceImpl implements  TransactionService{
         @Autowired
-        private RealEstateRespo realEstateSearch;
-        @Autowired
         private TransactionRespo transactionRespo;
+
+        @Autowired
+        private RealEstateRespo realEstateRespo;
 
         @Override
         public boolean createTransaction(CTransactionDto transactionDto) {
             try{
                 if (transactionRespo.createTransaction(transactionDto)){
-                    realEstateSearch.updateRealEstate(transactionDto);
+                    realEstateRespo.updateRealEstateByCTransaction(transactionDto);
                 }
             }
             catch(Exception e){
@@ -40,9 +41,9 @@ public interface TransactionService {
         }
 
         @Override
-        public Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams r) {
+        public Page<GTransactionDto> getTransactionByUserId(RequestPrams r) {
             Pageable pageable = PageRequest.of(r.getPage(), r.getSize());
-            return transactionRespo.getRealEstateAssignStaff(r, pageable);
+            return transactionRespo.getTransactionByUserId(r, pageable);
         }
     }
 }
