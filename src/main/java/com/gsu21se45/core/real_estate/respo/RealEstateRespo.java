@@ -1,8 +1,8 @@
-package com.gsu21se45.core.real_estate_search.respo;
+package com.gsu21se45.core.real_estate.respo;
 
 import com.gsu21se45.common.request.RequestPrams;
-import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
-import com.gsu21se45.core.real_estate_search.transformer.RealEstateTransformer;
+import com.gsu21se45.core.real_estate.dto.RealEstateDto;
+import com.gsu21se45.core.real_estate.transformer.RealEstateTransformer;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public interface RealEstateSearch {
+public interface RealEstateRespo {
     Page<RealEstateDto> getRealEstates(RequestPrams rq, Pageable p);
     boolean updateRealEstate(CTransactionDto transactionDto);
     @Repository
-    class  RealEstateImpl implements RealEstateSearch {
+    class  RealEstateImpl implements RealEstateRespo {
         @Autowired
         private EntityManager em;
         @Override
@@ -105,6 +105,6 @@ public interface RealEstateSearch {
                 "and(:search is null or  address like :search)\n" +
                 "order by rd.id";
 
-        public static String updateRealEstateStatus = "update real_estate set status = 'inactive' where id = :id";
+        public static String updateRealEstateStatus = "update real_estate set status = 'sold' where id = :id";
     }
 }

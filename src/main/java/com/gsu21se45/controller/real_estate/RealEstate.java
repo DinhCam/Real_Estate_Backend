@@ -1,19 +1,19 @@
-package com.gsu21se45.controller.real_estate_search;
+package com.gsu21se45.controller.real_estate;
 
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.common.response.PaginationResponse;
-import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
-import com.gsu21se45.core.real_estate_search.service.RealEstateSearchService;
+import com.gsu21se45.core.real_estate.dto.RealEstateDto;
+import com.gsu21se45.core.real_estate.service.RealEstateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/rs")
-public class RealEstateSearch {
+public class RealEstate {
 
     @Autowired
-    private RealEstateSearchService rs;
+    private RealEstateService rs;
 
     @PostMapping
     public PaginationResponse<RealEstateDto> getRealEstates(@RequestBody RequestPrams r){

@@ -1,7 +1,7 @@
 package com.gsu21se45.core.transaction.service;
 
 import com.gsu21se45.common.request.RequestPrams;
-import com.gsu21se45.core.real_estate_search.respo.RealEstateSearch;
+import com.gsu21se45.core.real_estate.respo.RealEstateRespo;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.core.transaction.dto.GRealEstateAssignedStaffDto;
 import com.gsu21se45.core.transaction.respo.TransactionRespo;
@@ -21,7 +21,7 @@ public interface TransactionService {
     @Transactional
     class TransactionServiceImpl implements  TransactionService{
         @Autowired
-        private RealEstateSearch realEstateSearch;
+        private RealEstateRespo realEstateSearch;
         @Autowired
         private TransactionRespo transactionRespo;
 

@@ -26,14 +26,15 @@ public interface TransactionRespo {
         @Override
         public boolean createTransaction(CTransactionDto transactionDto) {
             try{
+                java.sql.Timestamp  sqlDate = new java.sql.Timestamp (new java.util.Date().getTime());
                 em.createNativeQuery(Query.CREATE_TRANSACTION)
-                        .setParameter(1,transactionDto.getTitle())
-                        .setParameter(2,transactionDto.getBuyerId())
-                        .setParameter(3,transactionDto.getSellerId())
-                        .setParameter(4,transactionDto.getStaffId())
-                        .setParameter(5,transactionDto.getRealEstateId())
-                        .setParameter(6,transactionDto.getDownPrice())
-                        .setParameter(7,transactionDto.getCreateAt())
+                        .setParameter(1, transactionDto.getTitle())
+                        .setParameter(2, transactionDto.getBuyerId())
+                        .setParameter(3, transactionDto.getSellerId())
+                        .setParameter(4, transactionDto.getStaffId())
+                        .setParameter(5, transactionDto.getRealEstateId())
+                        .setParameter(6, transactionDto.getDownPrice())
+                        .setParameter(7, sqlDate)
                         .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();

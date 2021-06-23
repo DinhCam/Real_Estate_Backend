@@ -1,34 +1,30 @@
-package com.gsu21se45.core.real_estate_search.dto;
+package com.gsu21se45.core.real_estate.dto;
 
-import com.gsu21se45.util.TypeTransformImpl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Map;
 import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class FacilityDto {
-    private int id;
-    private String facilityType;
-    private String facilityName;
-    private double distance;
+public class ImageDto {
+    private int imgId;
+    private String imgUrl;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FacilityDto that = (FacilityDto) o;
-        return id == that.id;
+        ImageDto imageDto = (ImageDto) o;
+        return imgId == imageDto.imgId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(imgId);
     }
 }
