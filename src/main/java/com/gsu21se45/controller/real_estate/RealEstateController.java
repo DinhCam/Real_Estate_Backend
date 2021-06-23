@@ -23,6 +23,12 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
+    @PostMapping(value = "/getRealEstateBySellerId")
+    public PaginationResponse<RealEstateDto> getRealEstateBySellerId(@RequestBody RequestPrams r){
+        Page<RealEstateDto> data = rs.getRealEstatesBySellerId(r);
+        return new PaginationResponse<>(data);
+    }
+
     @PostMapping(value = "/getRealEstateAssignStaff")
     public PaginationResponse<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(@RequestBody RequestPrams r){
         Page<GRealEstateAssignedStaffDto> data = rs.getRealEstateAssignStaff(r);

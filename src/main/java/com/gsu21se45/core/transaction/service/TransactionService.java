@@ -1,15 +1,21 @@
 package com.gsu21se45.core.transaction.service;
 
+import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate.respo.RealEstateRespo;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
+import com.gsu21se45.core.transaction.dto.GTransactionDto;
 import com.gsu21se45.core.transaction.respo.TransactionRespo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 public interface TransactionService {
     boolean createTransaction(CTransactionDto transactionDto);
+    Page<GTransactionDto> getTransactionByUserId(RequestPrams r);
 
     @Service
     @Transactional
@@ -32,6 +38,12 @@ public interface TransactionService {
                 return false;
             }
             return true;
+        }
+
+        @Override
+        public Page<GTransactionDto> getTransactionByUserId(RequestPrams r) {
+            Pageable pageable = PageRequest.of(r.getPage(), r.getSize());
+            return transactionRespo.getTransactionByUserId(r, pageable);
         }
     }
 }

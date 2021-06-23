@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 
 public interface RealEstateService {
     Page<RealEstateDto> getRealEstates(RequestPrams r);
+    Page<RealEstateDto> getRealEstatesBySellerId(RequestPrams r);
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams r);
 
     @Service
@@ -27,6 +28,12 @@ public interface RealEstateService {
         public Page<RealEstateDto> getRealEstates(RequestPrams r) {
             Pageable pageable = PageRequest.of(r.getPage(), r.getSize());
             return rs.getRealEstates(r, pageable);
+        }
+
+        @Override
+        public Page<RealEstateDto> getRealEstatesBySellerId(RequestPrams r) {
+            Pageable pageable = PageRequest.of(r.getPage(), r.getSize());
+            return rs.getRealEstatesBySellerId(r, pageable);
         }
 
         @Override

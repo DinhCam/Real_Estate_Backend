@@ -14,4 +14,6 @@ public class RequestPrams {
     private Double toArea;
     private Integer type;
     private String staffId;
+    private String sellerId;
+    private String userId;
 }
