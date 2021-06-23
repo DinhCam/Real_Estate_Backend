@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -18,5 +18,5 @@ public class CTransactionDto {
     private String staffId;
     private int realEstateId;
     private double downPrice;
-    private Timestamp createAt;
+    private Date createAt;
 }

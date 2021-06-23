@@ -1,4 +1,4 @@
-package com.gsu21se45.core.real_estate_search.dto;
+package com.gsu21se45.core.real_estate.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,20 +11,22 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ImageDto {
-    private int imgId;
-    private String imgUrl;
+public class FacilityDto {
+    private int id;
+    private String facilityType;
+    private String facilityName;
+    private double distance;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ImageDto imageDto = (ImageDto) o;
-        return imgId == imageDto.imgId;
+        FacilityDto that = (FacilityDto) o;
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(imgId);
+        return Objects.hash(id);
     }
 }

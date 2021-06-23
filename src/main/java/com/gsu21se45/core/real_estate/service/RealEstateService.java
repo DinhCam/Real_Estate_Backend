@@ -1,8 +1,8 @@
-package com.gsu21se45.core.real_estate_search.service;
+package com.gsu21se45.core.real_estate.service;
 
 import com.gsu21se45.common.request.RequestPrams;
-import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
-import com.gsu21se45.core.real_estate_search.respo.RealEstateSearch;
+import com.gsu21se45.core.real_estate.dto.RealEstateDto;
+import com.gsu21se45.core.real_estate.respo.RealEstateRespo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-public interface RealEstateSearchService {
+public interface RealEstateService {
     Page<RealEstateDto> getRealEstates(RequestPrams r);
 
     @Service
     @Transactional
-    class RealEstateSearchServiceImpl implements RealEstateSearchService{
+    class RealEstateServiceImpl implements RealEstateService {
         @Autowired
-        private RealEstateSearch rs;
+        private RealEstateRespo rs;
 
         @Override
         public Page<RealEstateDto> getRealEstates(RequestPrams r) {

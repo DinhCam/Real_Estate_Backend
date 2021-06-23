@@ -1,8 +1,8 @@
-package com.gsu21se45.core.real_estate_search.transformer;
+package com.gsu21se45.core.real_estate.transformer;
 
-import com.gsu21se45.core.real_estate_search.dto.FacilityDto;
-import com.gsu21se45.core.real_estate_search.dto.ImageDto;
-import com.gsu21se45.core.real_estate_search.dto.RealEstateDto;
+import com.gsu21se45.core.real_estate.dto.FacilityDto;
+import com.gsu21se45.core.real_estate.dto.ImageDto;
+import com.gsu21se45.core.real_estate.dto.RealEstateDto;
 import com.gsu21se45.util.AliasHelper;
 import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.transform.ResultTransformer;
