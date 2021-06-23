@@ -36,7 +36,6 @@ public interface TransactionService {
                 e.printStackTrace();
                 return false;
             }
-
             return true;
         }
 
