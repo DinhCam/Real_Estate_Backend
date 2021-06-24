@@ -142,6 +142,7 @@ public interface RealEstateRespo {
                 "c.buyer_id as buyerId,\n" +
                 "b.username as buyerName,\n" +
                 "b.avatar as avatar,\n" +
+                "s.id as sellerId, \n" +
                 "s.username as sellerName,\n" +
                 "st.username as staffName,\n" +
                 "r.title as title,\n" +

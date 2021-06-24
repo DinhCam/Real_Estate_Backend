@@ -36,6 +36,7 @@ public class RealEstateAssignedStaffTransformer implements ResultTransformer {
         GRealEstateAssignedStaffDto rs = new GRealEstateAssignedStaffDto();
         rs.getBuyers().add(getBuyerDto(tuples, aliasList));
         rs.setRealEstateId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("realEstateId")]));
+        rs.setSellerId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerId")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
         rs.setStaffName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffName")]));
         rs.setTitle(TypeTransformImpl.castObjectToString(tuples[aliasList.get("title")]));
