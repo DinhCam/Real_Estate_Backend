@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class GRealEstateAssignedStaffDto {
     private int realEstateId;
+    private String sellerId;
     private String sellerName;
     private String staffName;
     private String title;
