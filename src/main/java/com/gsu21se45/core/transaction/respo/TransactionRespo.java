@@ -60,13 +60,31 @@ public interface TransactionRespo {
         public static final String CREATE_TRANSACTION = "insert into transaction (title, buyer_id, seller_id, staff_id, real_estate_id, down_price, create_at)\n" +
                 "values (?, ?, ?, ?, ?, ?, ?)";
 
-        public static String getTransactionByUserId = "select tr.id as id, tr.title as title,\n" +
-                "s.username as sellerName, b.username as buyerName,\n" +
-                "st.username as staffName, tr.down_price as downPrice, tr.create_at as createAt\n" +
+        public static String getTransactionByUserId = "select tr.id, \n" +
+                "tr.title, \n" +
+                "s.id as sellerId,\n" +
+                "s.username as sellerName, \n" +
+                "b.id as buyerId,\n" +
+                "b.username as buyerName,\n" +
+                "st.id as staffId, \n" +
+                "st.username as staffName,\n" +
+                "r.id as realEstateId, \n" +
+                "r.title as realEstateTitle,\n" +
+                "street.name as streetName, \n" +
+                "w.name as wardName, \n" +
+                "d.name as disName,\n" +
+                "tr.down_price as downPrice, \n" +
+                "tr.create_at as createAt\n" +
                 "from transaction tr\n" +
                 "left join user s on tr.seller_id = s.id\n" +
                 "left join user b on tr.buyer_id = b.id\n" +
                 "left join user st on tr.staff_id = st.id\n" +
+                "left join real_estate r on tr.real_estate_id = r.id\n" +
+                "left join real_estate_detail rd on r.id = rd.id\n" +
+                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
+                "left join street street on sw.street_id = street.id\n" +
+                "left join ward w on sw.ward_id = w.id\n" +
+                "left join district d on w.district_id = d.id\n" +
                 "where (tr.seller_id = :userId) or (tr.buyer_id = :userId) or (tr.staff_id = :userId)\n" +
                 "order by tr.create_at DESC";
     }
