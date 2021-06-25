@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GRealEstateAssignedStaffDto {
-    private int realEstateId;
+    private int id;
     private String sellerId;
     private String sellerName;
     private String staffName;
@@ -29,5 +29,5 @@ public class GRealEstateAssignedStaffDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createAt;
-    private List<BuyerDto> buyers = new ArrayList<>();
+    private List<BuyerDto> buyers = null;
 }

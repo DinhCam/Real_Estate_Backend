@@ -34,4 +34,8 @@ public class RealEstateController {
         Page<GRealEstateAssignedStaffDto> data = rs.getRealEstateAssignStaff(r);
         return new PaginationResponse<>(data);
     }
+    @GetMapping(value = "/{id}")
+    public RealEstateDto getRealEstateById(@PathVariable Integer id){
+        return rs.getRealEstateById(id);
+    }
 }

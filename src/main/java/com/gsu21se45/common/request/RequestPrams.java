@@ -9,11 +9,13 @@ public class RequestPrams {
     private Integer page;
     private Integer size;
     private String search;
-    private Double price;
+    private Double fromPrice;
+    private Double toPrice;
     private Double fromArea;
     private Double toArea;
     private Integer type;
     private String staffId;
     private String sellerId;
     private String userId;
+    private String title;
 }

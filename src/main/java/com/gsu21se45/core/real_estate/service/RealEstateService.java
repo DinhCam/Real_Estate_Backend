@@ -16,6 +16,7 @@ public interface RealEstateService {
     Page<RealEstateDto> getRealEstates(RequestPrams r);
     Page<RealEstateDto> getRealEstatesBySellerId(RequestPrams r);
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams r);
+    RealEstateDto getRealEstateById(int id);
 
     @Service
     @Transactional
@@ -40,6 +41,11 @@ public interface RealEstateService {
         public Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams r) {
             Pageable pageable = PageRequest.of(r.getPage(), r.getSize());
             return rs.getRealEstateAssignStaff(r, pageable);
+        }
+
+        @Override
+        public RealEstateDto getRealEstateById(int id) {
+            return rs.getRealEstateById(id);
         }
     }
 }
