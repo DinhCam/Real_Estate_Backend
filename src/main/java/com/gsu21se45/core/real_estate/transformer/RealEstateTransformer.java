@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RealEstateTransformer implements ResultTransformer {
-    Map<Integer, RealEstateDto> result = new HashMap<>();
+     Map<Integer, RealEstateDto> result = new HashMap<>();
 
     @Override
     public Object transformTuple(Object[] tuples, String[] alias) {

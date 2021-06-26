@@ -2,7 +2,9 @@ package com.gsu21se45.core.real_estate.respo;
 
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate.dto.RealEstateDto;
+import com.gsu21se45.core.real_estate.dto.RealEstateTypeDto;
 import com.gsu21se45.core.real_estate.transformer.RealEstateTransformer;
+import com.gsu21se45.core.real_estate.transformer.RealEstateTypeTransformer;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.core.real_estate.dto.GRealEstateAssignedStaffDto;
 import com.gsu21se45.core.real_estate.transformer.RealEstateAssignedStaffTransformer;
@@ -21,6 +23,7 @@ public interface RealEstateRespo {
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams rq, Pageable p);
     Page<RealEstateDto> getRealEstatesBySellerId(RequestPrams rq, Pageable p);
     RealEstateDto getRealEstateById(int id);
+    List<RealEstateTypeDto> getAllRealEstateType();
     boolean updateRealEstateByCTransaction(CTransactionDto transactionDto);
 
     @Repository
@@ -37,8 +40,8 @@ public interface RealEstateRespo {
                     .setParameter("fromArea", rq.getFromArea())
                     .setParameter("toArea", rq.getToArea())
                     .setParameter("type", rq.getType())
-                    .setParameter("search",'%'+ rq.getSearch()+ '%')
-                    .setParameter("title",'%'+ rq.getTitle()+ '%')
+                    .setParameter("search", rq.getSearch())
+                    .setParameter("title",rq.getTitle())
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
@@ -82,6 +85,16 @@ public interface RealEstateRespo {
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
             return rs.get(0);
+        }
+
+        @Override
+        public List<RealEstateTypeDto> getAllRealEstateType() {
+            List<RealEstateTypeDto> rs = (List<RealEstateTypeDto>) em
+                    .createNativeQuery(Query.getAllRealEstateType)
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new RealEstateTypeTransformer())
+                    .getResultList();
+            return rs;
         }
 
         @Override
@@ -144,12 +157,12 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "having r.status = 'active' and" +
-                "(:fromPrice is null or rd.price between :fromPrice and :toPrice)" +
-                "and (:fromArea is null or rd.area between :fromArea and :toArea)" +
-                "and (:type is null or typeId = :type)\n" +
-                "and(:search is null or  address like :search)\n" +
-                "and(:title is null or  title like :title)\n" +
+                "having r.status = 'active'\n" +
+                "and ((:fromPrice is null) or (rd.price between :fromPrice and :toPrice))\n" +
+                "and ((:fromArea is null) or (rd.area between :fromArea and :toArea))\n" +
+                "and ((:type is null) or (typeId = :type))\n" +
+                "and ((:search is null) or (address like concat('%', concat(:search, '%'))))\n" +
+                "and ((:title is null) or  (title like concat('%', concat(:title, '%'))))\n" +
                 "order by rd.id";
 
         public static String getRealEstateAssignStaff = "select r.id as id, \n" +
@@ -268,6 +281,9 @@ public interface RealEstateRespo {
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
                 "where rd.id = :id \n";
+
+        public static String getAllRealEstateType = "select rt.id as id, rt.name as name\n" +
+                "from real_estate_type rt";
 
         public static String updateRealEstateStatus = "update real_estate set status = 'sold' where id = :id";
     }
