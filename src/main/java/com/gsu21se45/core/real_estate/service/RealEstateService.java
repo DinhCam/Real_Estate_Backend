@@ -1,9 +1,7 @@
 package com.gsu21se45.core.real_estate.service;
 
 import com.gsu21se45.common.request.RequestPrams;
-import com.gsu21se45.core.real_estate.dto.GRealEstateAssignedStaffDto;
-import com.gsu21se45.core.real_estate.dto.RealEstateDto;
-import com.gsu21se45.core.real_estate.dto.RealEstateTypeDto;
+import com.gsu21se45.core.real_estate.dto.*;
 import com.gsu21se45.core.real_estate.respo.RealEstateRespo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +18,7 @@ public interface RealEstateService {
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams r);
     List<RealEstateTypeDto> getAllRealEstateType();
     RealEstateDto getRealEstateById(int id);
+    List<AddressDto> getAddress();
 
     @Service
     @Transactional
@@ -54,6 +53,11 @@ public interface RealEstateService {
         @Override
         public RealEstateDto getRealEstateById(int id) {
             return rs.getRealEstateById(id);
+        }
+
+        @Override
+        public List<AddressDto> getAddress() {
+            return rs.getAddress();
         }
     }
 }

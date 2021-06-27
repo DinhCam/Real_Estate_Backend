@@ -8,7 +8,7 @@ import lombok.Setter;
 public class RequestPrams {
     private Integer page;
     private Integer size;
-    private String search;
+    private String address;
     private Double fromPrice;
     private Double toPrice;
     private Double fromArea;
@@ -18,4 +18,5 @@ public class RequestPrams {
     private String sellerId;
     private String userId;
     private String title;
+    private String project;
 }

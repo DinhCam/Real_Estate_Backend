@@ -1,13 +1,9 @@
 package com.gsu21se45.core.real_estate.respo;
 
 import com.gsu21se45.common.request.RequestPrams;
-import com.gsu21se45.core.real_estate.dto.RealEstateDto;
-import com.gsu21se45.core.real_estate.dto.RealEstateTypeDto;
-import com.gsu21se45.core.real_estate.transformer.RealEstateTransformer;
-import com.gsu21se45.core.real_estate.transformer.RealEstateTypeTransformer;
+import com.gsu21se45.core.real_estate.dto.*;
+import com.gsu21se45.core.real_estate.transformer.*;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
-import com.gsu21se45.core.real_estate.dto.GRealEstateAssignedStaffDto;
-import com.gsu21se45.core.real_estate.transformer.RealEstateAssignedStaffTransformer;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +20,7 @@ public interface RealEstateRespo {
     Page<RealEstateDto> getRealEstatesBySellerId(RequestPrams rq, Pageable p);
     RealEstateDto getRealEstateById(int id);
     List<RealEstateTypeDto> getAllRealEstateType();
+    List<AddressDto> getAddress();
     boolean updateRealEstateByCTransaction(CTransactionDto transactionDto);
 
     @Repository
@@ -40,8 +37,9 @@ public interface RealEstateRespo {
                     .setParameter("fromArea", rq.getFromArea())
                     .setParameter("toArea", rq.getToArea())
                     .setParameter("type", rq.getType())
-                    .setParameter("search", rq.getSearch())
+                    .setParameter("address", rq.getAddress())
                     .setParameter("title",rq.getTitle())
+                    .setParameter("project", rq.getProject())
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
@@ -96,6 +94,17 @@ public interface RealEstateRespo {
                     .getResultList();
             return rs;
         }
+
+        @Override
+        public List<AddressDto> getAddress() {
+            List<AddressDto> rs = (List<AddressDto>) em
+                    .createNativeQuery(Query.getAddress)
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new AddressTransformer())
+                    .getResultList();
+            return rs;
+        }
+
 
         @Override
         public boolean updateRealEstateByCTransaction(CTransactionDto transactionDto) {
@@ -161,8 +170,9 @@ public interface RealEstateRespo {
                 "and ((:fromPrice is null) or (rd.price between :fromPrice and :toPrice))\n" +
                 "and ((:fromArea is null) or (rd.area between :fromArea and :toArea))\n" +
                 "and ((:type is null) or (typeId = :type))\n" +
-                "and ((:search is null) or (address like concat('%', concat(:search, '%'))))\n" +
+                "and ((:address is null) or (address like concat('%', concat(:address, '%'))))\n" +
                 "and ((:title is null) or  (title like concat('%', concat(:title, '%'))))\n" +
+                "and ((:project is null) or  (project like concat('%', concat(:project, '%'))))\n" +
                 "order by rd.id";
 
         public static String getRealEstateAssignStaff = "select r.id as id, \n" +
@@ -284,6 +294,13 @@ public interface RealEstateRespo {
 
         public static String getAllRealEstateType = "select rt.id as id, rt.name as name\n" +
                 "from real_estate_type rt";
+
+        public static String getAddress = "select dis.id as id, \n" +
+                "dis.name as disName, \n" +
+                "w.id as wardId,\n" +
+                "w.name as wardName\n" +
+                "from district dis\n" +
+                "left join ward w on dis.id = w.district_id";
 
         public static String updateRealEstateStatus = "update real_estate set status = 'sold' where id = :id";
     }
