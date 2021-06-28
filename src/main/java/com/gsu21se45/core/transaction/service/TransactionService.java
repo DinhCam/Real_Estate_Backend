@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
 
 public interface TransactionService {
     boolean createTransaction(CTransactionDto transactionDto);
-    Page<GTransactionDto> getTransactionByUserId(RequestPrams r);
+    Page<GTransactionDto> getTransactionByUserId(String userId, Integer page, Integer size);
 
     @Service
     @Transactional
@@ -41,9 +41,9 @@ public interface TransactionService {
         }
 
         @Override
-        public Page<GTransactionDto> getTransactionByUserId(RequestPrams r) {
-            Pageable pageable = PageRequest.of(r.getPage(), r.getSize());
-            return transactionRespo.getTransactionByUserId(r, pageable);
+        public Page<GTransactionDto> getTransactionByUserId(String userId, Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return transactionRespo.getTransactionByUserId(userId, pageable);
         }
     }
 }

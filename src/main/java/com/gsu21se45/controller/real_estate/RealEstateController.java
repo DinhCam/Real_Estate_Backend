@@ -3,7 +3,6 @@ package com.gsu21se45.controller.real_estate;
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.common.response.PaginationResponse;
 import com.gsu21se45.core.real_estate.dto.*;
-import com.gsu21se45.core.real_estate.respo.RealEstateRespo;
 import com.gsu21se45.core.real_estate.service.RealEstateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,24 +19,23 @@ public class RealEstateController {
     @Autowired
     private RealEstateService rs;
 
-    @Autowired
-    private RealEstateRespo realEstateRespo;
-
     @PostMapping(value = "/getRealEstateDetail")
     public PaginationResponse<RealEstateDto> getRealEstates(@RequestBody RequestPrams r){
         Page<RealEstateDto> data = rs.getRealEstates(r);
         return new PaginationResponse<>(data);
     }
 
-    @PostMapping(value = "/getRealEstateBySellerId")
-    public PaginationResponse<RealEstateDto> getRealEstateBySellerId(@RequestBody RequestPrams r){
-        Page<RealEstateDto> data = rs.getRealEstatesBySellerId(r);
+    @GetMapping(value = "/getRealEstateBySellerId/{sellerId}/{page}")
+    public PaginationResponse<RealEstateDto> getRealEstateBySellerId(@PathVariable String sellerId, @PathVariable Integer page){
+        Integer size = 30;
+        Page<RealEstateDto> data = rs.getRealEstatesBySellerId(sellerId, page, size);
         return new PaginationResponse<>(data);
     }
 
-    @PostMapping(value = "/getRealEstateAssignStaff")
-    public PaginationResponse<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(@RequestBody RequestPrams r){
-        Page<GRealEstateAssignedStaffDto> data = rs.getRealEstateAssignStaff(r);
+    @GetMapping(value = "/getRealEstateAssignStaff/{staffId}/{page}")
+    public PaginationResponse<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(@PathVariable String staffId, @PathVariable Integer page){
+        Integer size = 30;
+        Page<GRealEstateAssignedStaffDto> data = rs.getRealEstateAssignStaff(staffId, page, size);
         return new PaginationResponse<>(data);
     }
     @GetMapping(value = "/{id}")

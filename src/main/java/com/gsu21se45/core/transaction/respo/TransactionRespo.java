@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface TransactionRespo {
     boolean createTransaction(CTransactionDto transactionDto);
-    Page<GTransactionDto> getTransactionByUserId(RequestPrams rq, Pageable p);
+    Page<GTransactionDto> getTransactionByUserId(String userId, Pageable p);
 
     @Repository
     class TransactionRespoImpl implements TransactionRespo{
@@ -44,10 +44,10 @@ public interface TransactionRespo {
         }
 
         @Override
-        public Page<GTransactionDto> getTransactionByUserId(RequestPrams rq, Pageable p) {
+        public Page<GTransactionDto> getTransactionByUserId(String userId, Pageable p) {
             List<GTransactionDto> rs = (List<GTransactionDto>) em
                     .createNativeQuery(Query.getTransactionByUserId)
-                    .setParameter("userId", rq.getUserId())
+                    .setParameter("userId", userId)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)

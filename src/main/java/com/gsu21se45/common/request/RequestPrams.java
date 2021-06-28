@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class RequestPrams {
     private Integer page;
-    private Integer size;
+    private Integer size = 30;
     private String address;
     private Double fromPrice;
     private Double toPrice;

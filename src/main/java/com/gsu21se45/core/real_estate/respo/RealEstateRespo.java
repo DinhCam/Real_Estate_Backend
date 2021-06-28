@@ -18,8 +18,8 @@ import java.util.List;
 
 public interface RealEstateRespo {
     Page<RealEstateDto> getRealEstates(RequestPrams rq, Pageable p);
-    Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams rq, Pageable p);
-    Page<RealEstateDto> getRealEstatesBySellerId(RequestPrams rq, Pageable p);
+    Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Pageable p);
+    Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Pageable p);
     RealEstateDto getRealEstateById(int id);
     List<RealEstateTypeDto> getAllRealEstateType();
     List<AddressDto> getAddress();
@@ -52,10 +52,10 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(RequestPrams rq, Pageable p) {
+        public Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Pageable p) {
             List<GRealEstateAssignedStaffDto> rs = (List<GRealEstateAssignedStaffDto>) em
                     .createNativeQuery(RealEstateRespo.Query.getRealEstateAssignStaff)
-                    .setParameter("staffId",rq.getStaffId())
+                    .setParameter("staffId", staffId)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
@@ -65,10 +65,10 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public Page<RealEstateDto> getRealEstatesBySellerId(RequestPrams rq, Pageable p) {
+        public Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
                     .createNativeQuery(Query.getRealEstateBySellerId)
-                    .setParameter("sellerId",rq.getSellerId())
+                    .setParameter("sellerId", sellerId)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)

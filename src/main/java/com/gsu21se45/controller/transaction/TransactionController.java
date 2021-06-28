@@ -23,9 +23,10 @@ public class TransactionController {
         return transactionService.createTransaction(transactionDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @PostMapping(value = "/getTransactionByUserId")
-    public PaginationResponse<GTransactionDto> getTransactionByUserId(@RequestBody RequestPrams r){
-        Page<GTransactionDto> data = transactionService.getTransactionByUserId(r);
+    @GetMapping(value = "/getTransactionByUserId/{userId}/{page}")
+    public PaginationResponse<GTransactionDto> getTransactionByUserId(@PathVariable String userId, @PathVariable Integer page){
+        Integer size = 30;
+        Page<GTransactionDto> data = transactionService.getTransactionByUserId(userId, page, size);
         return new PaginationResponse<>(data);
     }
 }
