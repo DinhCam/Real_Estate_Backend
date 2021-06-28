@@ -17,7 +17,6 @@ import java.io.Serializable;
 public class RealEstateDetail implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -61,19 +60,4 @@ public class RealEstateDetail implements Serializable {
 
     @Column(name = "lot")
     private int lot;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

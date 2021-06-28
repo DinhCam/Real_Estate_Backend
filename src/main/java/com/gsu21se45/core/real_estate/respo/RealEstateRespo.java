@@ -4,6 +4,8 @@ import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate.dto.*;
 import com.gsu21se45.core.real_estate.transformer.*;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
+import com.gsu21se45.entity.*;
+import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,9 +24,10 @@ public interface RealEstateRespo {
     List<RealEstateTypeDto> getAllRealEstateType();
     List<AddressDto> getAddress();
     boolean updateRealEstateByCTransaction(CTransactionDto transactionDto);
+    boolean createRealEstate(CRealEstate cRealEstate);
 
     @Repository
-    class  RealEstateRespoImpl implements RealEstateRespo {
+     class RealEstateRespoImpl  implements RealEstateRespo {
         @Autowired
         private EntityManager em;
 
@@ -105,7 +108,6 @@ public interface RealEstateRespo {
             return rs;
         }
 
-
         @Override
         public boolean updateRealEstateByCTransaction(CTransactionDto transactionDto) {
             try{
@@ -114,6 +116,58 @@ public interface RealEstateRespo {
                         .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean createRealEstate(CRealEstate cRealEstate) {
+            Session session = em.unwrap(Session.class);
+            RealEstate realEstate = new RealEstate();
+            Integer id = 0;
+            Street street = new Street();
+            Integer streetId = 0;
+            StreetWard streetWard = new StreetWard();
+            Integer streetWardId = 0;
+            RealEstateDetail realEstateDetail = new RealEstateDetail();
+            try {
+                java.sql.Timestamp  sqlDate = new java.sql.Timestamp (new java.util.Date().getTime());
+                String status = "active";
+                realEstate.setSeller(em.find(User.class,cRealEstate.getSellerId()));
+                realEstate.setStaff(em.find(User.class,cRealEstate.getStaffId()));
+                realEstate.setTitle(cRealEstate.getTitle());
+                realEstate.setView(cRealEstate.getView());
+                realEstate.setCreateAt(sqlDate);
+                realEstate.setStatus(status);
+                id = (Integer) session.save(realEstate);
+
+                street.setName(cRealEstate.getStreetName());
+                streetId = (Integer) session.save(street);
+
+                streetWard.setStreet(em.find(Street.class, streetId));
+                streetWard.setWard(em.find(Ward.class, cRealEstate.getWardId()));
+
+                streetWardId = (Integer) session.save(streetWard);
+
+                realEstateDetail.setId(id);
+                realEstateDetail.setRealEstateNo(cRealEstate.getRealEstateNo());
+                realEstateDetail.setStreetWard(em.find(StreetWard.class, streetWardId));
+                realEstateDetail.setRealEstateType(em.find(RealEstateType.class,cRealEstate.getTypeId()));
+                realEstateDetail.setDescription(cRealEstate.getDescription());
+                realEstateDetail.setArea(cRealEstate.getArea());
+                realEstateDetail.setPrice(cRealEstate.getPrice());
+                realEstateDetail.setDirection(cRealEstate.getDirection());
+                realEstateDetail.setBalconyDirection(cRealEstate.getBalconyDirection());
+                realEstateDetail.setProject(cRealEstate.getProject());
+                realEstateDetail.setInvestor(cRealEstate.getInvestor());
+                realEstateDetail.setNumOfBedroom(cRealEstate.getNumberOfBedroom());
+                realEstateDetail.setNumOfBathroom(cRealEstate.getNumberOfBathroom());
+                realEstateDetail.setLot(cRealEstate.getLot());
+
+                session.save(realEstateDetail);
+            } catch (Exception ex){
+                ex.printStackTrace();
                 return false;
             }
             return true;

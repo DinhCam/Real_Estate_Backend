@@ -19,6 +19,7 @@ public interface RealEstateService {
     List<RealEstateTypeDto> getAllRealEstateType();
     RealEstateDto getRealEstateById(int id);
     List<AddressDto> getAddress();
+    boolean createRealEstate(CRealEstate cRealEstate);
 
     @Service
     @Transactional
@@ -58,6 +59,17 @@ public interface RealEstateService {
         @Override
         public List<AddressDto> getAddress() {
             return rs.getAddress();
+        }
+
+        @Override
+        public boolean createRealEstate(CRealEstate cRealEstate) {
+            try {
+                rs.createRealEstate(cRealEstate);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
         }
     }
 }

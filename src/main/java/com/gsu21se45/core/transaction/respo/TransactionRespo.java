@@ -19,7 +19,7 @@ public interface TransactionRespo {
     Page<GTransactionDto> getTransactionByUserId(RequestPrams rq, Pageable p);
 
     @Repository
-    class TransactionRespoImpl implements  TransactionRespo{
+    class TransactionRespoImpl implements TransactionRespo{
         @Autowired
         private EntityManager em;
 
@@ -36,8 +36,8 @@ public interface TransactionRespo {
                         .setParameter(6, transactionDto.getDownPrice())
                         .setParameter(7, sqlDate)
                         .executeUpdate();
-            }catch(Exception e){
-                e.printStackTrace();
+            } catch(Exception ex){
+                ex.printStackTrace();
                 return false;
             }
             return true;
