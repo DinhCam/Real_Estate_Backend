@@ -40,9 +40,7 @@ public interface RealEstateRespo {
                     .setParameter("fromArea", rq.getFromArea())
                     .setParameter("toArea", rq.getToArea())
                     .setParameter("type", rq.getType())
-                    .setParameter("address", rq.getAddress())
-                    .setParameter("title",rq.getTitle())
-                    .setParameter("project", rq.getProject())
+                    .setParameter("search", rq.getSearch())
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
@@ -206,7 +204,7 @@ public interface RealEstateRespo {
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName,\n" +
-                "concat(street.name, ' ', w.name, ' ', d.name) as address\n" +
+                "concat(street.name, ' ', w.name, ' ', d.name, ' ', r.title, ' ', rd.project) as search\n" +
                 "from real_estate r\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
                 "left join real_estate_type rt on rd.type_id = rt.id \n" +
@@ -224,9 +222,7 @@ public interface RealEstateRespo {
                 "and ((:fromPrice is null) or (rd.price between :fromPrice and :toPrice))\n" +
                 "and ((:fromArea is null) or (rd.area between :fromArea and :toArea))\n" +
                 "and ((:type is null) or (typeId = :type))\n" +
-                "and ((:address is null) or (address like concat('%', concat(:address, '%'))))\n" +
-                "and ((:title is null) or  (title like concat('%', concat(:title, '%'))))\n" +
-                "and ((:project is null) or  (project like concat('%', concat(:project, '%'))))\n" +
+                "and ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
                 "order by rd.id";
 
         public static String getRealEstateAssignStaff = "select r.id as id, \n" +
