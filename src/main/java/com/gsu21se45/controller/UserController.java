@@ -39,9 +39,9 @@ public class UserController {
     @ApiOperation(value = "Get user profile")
     @GetMapping(value = RestEntityConstant.URI_PROFILE)
     public @ResponseBody
-    UserModel get(@RequestParam(name = RestEntityConstant.USERNAME, required = true) String username) {
+    UserModel get(@RequestParam(name = RestEntityConstant.USER_ID, required = true) String userId) {
         LOGGER.debug("Begin inside UserController.get()");
-        User user = userService.getByUsername(username);
+        User user = userService.getByUserId(userId);
         UserModel model = user != null ? ((UserModel) objectMapper.convertToDTO(user, UserModel.class)) : null;
         if (model != null) {
             model.setPassword("*************");

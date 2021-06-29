@@ -8,5 +8,7 @@ public interface UserService {
 
     User getByUsername(String username);
 
+    User getByUserId(String userId);
+
     void update(User user);
 }

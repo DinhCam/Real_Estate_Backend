@@ -23,6 +23,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByUserId(String userId) {return repository.getUserById(userId); }
+
+    @Override
     public void update(User user) {
         repository.saveAndFlush(user);
     }
