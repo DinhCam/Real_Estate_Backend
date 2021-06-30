@@ -8,6 +8,8 @@ import com.gsu21se45.service.ConversationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ConversationServiceImpl implements ConversationService {
 
@@ -22,5 +24,10 @@ public class ConversationServiceImpl implements ConversationService {
     @Override
     public Conversation save(Conversation conversation) {
         return conversationRepository.save(conversation);
+    }
+
+    @Override
+    public List<Integer> getIdsByRecipientId(String recipientId) {
+        return conversationRepository.getIdsByRecipientId(recipientId);
     }
 }

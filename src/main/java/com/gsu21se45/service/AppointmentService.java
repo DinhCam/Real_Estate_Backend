@@ -1,6 +1,7 @@
 package com.gsu21se45.service;
 
 import com.gsu21se45.entity.Appointment;
+import com.gsu21se45.entity.Conversation;
 
 import java.util.Date;
 import java.util.List;
@@ -18,4 +19,6 @@ public interface AppointmentService {
     List<Appointment> findByBuyerIdAndStatus(String buyerId, String status, Date time);
 
     List<Appointment> findByStaffIdAndStatus(String staffId, String status, Date time);
+
+    Appointment findByConversationAndCreateAt(Conversation conversation, Date createAt);
 }

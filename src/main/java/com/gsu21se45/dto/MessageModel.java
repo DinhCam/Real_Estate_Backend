@@ -20,4 +20,5 @@ public class MessageModel implements Serializable {
     private String text;
     private String file;
     private Date createAt;
+    private String status;
 }

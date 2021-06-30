@@ -18,6 +18,7 @@ public class RestEntityConstant {
     public static final String URI_SELLER = "/seller";
     public static final String URI_BUYER = "/buyer";
     public static final String URI_STAFF = "/staff";
+    public static final String URI_IDS = "/ids";
 
     //property
     public static final String USER_ID = "userId";

@@ -39,5 +39,8 @@ public class Message implements Serializable {
     @Column(name = "create_at")
     private Date createAt;
 
+    @Column(name = "status")
+    private String status;
+
 
 }
