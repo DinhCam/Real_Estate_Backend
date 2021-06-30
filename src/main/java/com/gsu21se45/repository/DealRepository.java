@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -23,4 +24,6 @@ public interface DealRepository extends JpaRepository<Deal, Integer> {
     @Query(value = "update deal set status = :status where id = :dealId", nativeQuery = true)
     void update(@Param(value = "dealId") int dealId,
                 @Param(value = "status") String status);
+
+    Deal findDealByConversationAndCreateAt(Conversation conversation, Date date);
 }

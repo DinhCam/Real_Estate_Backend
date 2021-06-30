@@ -61,4 +61,11 @@ public class ConversationController {
         return model;
     }
 
+    @ApiOperation(value = "Get all conversation Ids of recipient")
+    @GetMapping(RestEntityConstant.URI_IDS + "/{recipientId}")
+    public @ResponseBody
+    List<Integer> getAllIdsByRecipientId(@PathVariable String recipientId){
+        return conversationService.getIdsByRecipientId(recipientId);
+    }
+
 }

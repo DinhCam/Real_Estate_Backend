@@ -45,4 +45,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
                                              @Param(value = "time") Date time);
 
     List<Appointment> findAppointmentsByStaffAndStatusAndScheduleDateIsGreaterThanEqual (User staff, String status, Date time);
+
+    Appointment findByConversationAndCreateAt(Conversation conversation, Date createAt);
 }

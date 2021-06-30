@@ -7,6 +7,7 @@ import com.gsu21se45.service.DealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,5 +34,10 @@ public class DealServiceImpl implements DealService {
     @Override
     public void update(int dealId, String status) {
         dealRepository.update(dealId, status);
+    }
+
+    @Override
+    public Deal findByConversationAndCreateAt(Conversation conversation, Date createAt) {
+        return dealRepository.findDealByConversationAndCreateAt(conversation, createAt);
     }
 }

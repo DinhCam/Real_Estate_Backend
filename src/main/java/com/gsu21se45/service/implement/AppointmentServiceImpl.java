@@ -46,4 +46,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<Appointment> findByStaffIdAndStatus(String staffId, String status, Date time) {
         return appointmentRepository.findAppointmentsByStaffAndStatusAndScheduleDateIsGreaterThanEqual(new User(staffId), status, time);
     }
+
+    @Override
+    public Appointment findByConversationAndCreateAt(Conversation conversation, Date createAt) {
+        return appointmentRepository.findByConversationAndCreateAt(conversation, createAt);
+    }
 }
