@@ -15,11 +15,13 @@ import java.util.List;
 public interface RealEstateService {
     Page<RealEstateDto> getRealEstates(RequestPrams r);
     Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size);
+    Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size);
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
     RealEstateDto getRealEstateById(int id);
     List<AddressDto> getAddress();
     boolean createRealEstate(CRealEstate cRealEstate);
+    boolean updateRealEstateStatusByStaffAssign(UpdateStatus updateStatus);
 
     @Service
     @Transactional
@@ -38,6 +40,12 @@ public interface RealEstateService {
         public Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstatesBySellerId(sellerId, pageable);
+        }
+
+        @Override
+        public Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return rs.getRealEstatesInactive(pageable);
         }
 
         @Override
@@ -65,6 +73,17 @@ public interface RealEstateService {
         public boolean createRealEstate(CRealEstate cRealEstate) {
             try {
                 rs.createRealEstate(cRealEstate);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateStatusByStaffAssign(UpdateStatus updateStatus) {
+            try {
+                rs.updateRealEstateStatusByStaffAssign(updateStatus);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;

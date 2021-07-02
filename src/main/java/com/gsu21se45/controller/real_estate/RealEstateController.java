@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/realEstate")
 public class RealEstateController {
@@ -32,12 +31,20 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
+    @GetMapping(value = "/getRealEstatesInactive/{page}")
+    public PaginationResponse<RealEstateDto> getRealEstatesInactive(@PathVariable Integer page){
+        Integer size = 30;
+        Page<RealEstateDto> data = rs.getRealEstatesInactive(page, size);
+        return new PaginationResponse<>(data);
+    }
+
     @GetMapping(value = "/getRealEstateAssignStaff/{staffId}/{page}")
     public PaginationResponse<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(@PathVariable String staffId, @PathVariable Integer page){
         Integer size = 30;
         Page<GRealEstateAssignedStaffDto> data = rs.getRealEstateAssignStaff(staffId, page, size);
         return new PaginationResponse<>(data);
     }
+
     @GetMapping(value = "/{id}")
     public RealEstateDto getRealEstateById(@PathVariable Integer id){
         return rs.getRealEstateById(id);
@@ -56,5 +63,10 @@ public class RealEstateController {
     @PostMapping(value = "/createRealEstate")
     public HttpStatus createRealEstate(@RequestBody CRealEstate cRealEstate){
         return rs.createRealEstate(cRealEstate) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
+    @PutMapping(value = "/updateRealEstateStatusByStaffAssign")
+    public HttpStatus updateRealEstateStatusByStaffAssign(@RequestBody UpdateStatus updateStatus){
+        return rs.updateRealEstateStatusByStaffAssign(updateStatus) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 }

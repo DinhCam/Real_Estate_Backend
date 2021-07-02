@@ -1,6 +1,5 @@
 package com.gsu21se45.core.transaction.respo;
 
-import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.core.transaction.dto.GTransactionDto;
 import com.gsu21se45.core.transaction.transformer.TransactionByUserIdTransformer;

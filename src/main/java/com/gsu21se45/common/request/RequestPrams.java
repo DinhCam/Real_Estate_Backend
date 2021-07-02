@@ -17,4 +17,5 @@ public class RequestPrams {
     private String staffId;
     private String sellerId;
     private String userId;
+    private String disName;
 }

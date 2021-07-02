@@ -13,7 +13,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class CRealEstate {
     private String sellerId;
-    private String staffId;
     private String title;
     private int view;
     private Timestamp createAt;

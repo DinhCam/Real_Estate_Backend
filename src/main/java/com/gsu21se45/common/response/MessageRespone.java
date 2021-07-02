@@ -12,7 +12,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageRespone implements Serializable {
-
     private String message;
     private String statusCode;
 }
