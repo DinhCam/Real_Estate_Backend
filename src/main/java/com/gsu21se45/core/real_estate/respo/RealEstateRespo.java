@@ -38,10 +38,10 @@ public interface RealEstateRespo {
         public Page<RealEstateDto> getRealEstates(RequestPrams rq, Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
                     .createNativeQuery(Query.findAllRealEstate)
-                    .setParameter("fromPrice",rq.getFromPrice())
-                    .setParameter("toPrice", rq.getToPrice())
-                    .setParameter("fromArea", rq.getFromArea())
-                    .setParameter("toArea", rq.getToArea())
+                    .setParameter("minPrice",rq.getMinPrice())
+                    .setParameter("maxPrice", rq.getMaxPrice())
+                    .setParameter("minArea", rq.getMinArea())
+                    .setParameter("maxArea", rq.getMaxArea())
                     .setParameter("type", rq.getType())
                     .setParameter("search", rq.getSearch())
                     .setParameter("disName", rq.getDisName())
@@ -261,9 +261,19 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
+
                 "having r.status = 'active'\n" +
-                "and ((:fromPrice is null) or (rd.price between :fromPrice and :toPrice))\n" +
-                "and ((:fromArea is null) or (rd.area between :fromArea and :toArea))\n" +
+
+                "and ((:minPrice is null and :maxPrice is null) or " +
+                "((:minPrice is not null and :maxPrice is not null) and (rd.price between :minPrice and :maxPrice)) or " +
+                "((:minPrice is null) and (rd.price <= :maxPrice)) or " +
+                "((:maxPrice is null) and (rd.price >= :minPrice)))\n" +
+
+                "and ((:minArea is null and :maxArea is null) or " +
+                "((:minArea is not null and :maxArea is not null) and (rd.area between :minArea and :maxArea)) or " +
+                "((:minArea is null) and (rd.area <= :maxArea)) or " +
+                "((:maxArea is null) and (rd.area >= :minArea)))\n" +
+
                 "and ((:type is null) or (typeId = :type))\n" +
                 "and ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
                 "and ((:disName is null) or (disName like concat('%', concat(:disName, '%'))))\n" +

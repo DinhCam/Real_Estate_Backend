@@ -9,10 +9,10 @@ public class RequestPrams {
     private Integer page;
     private Integer size = 30;
     private String search;
-    private Double fromPrice;
-    private Double toPrice;
-    private Double fromArea;
-    private Double toArea;
+    private Double minPrice;
+    private Double maxPrice;
+    private Double minArea;
+    private Double maxArea;
     private Integer type;
     private String staffId;
     private String sellerId;
