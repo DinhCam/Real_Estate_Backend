@@ -21,7 +21,8 @@ public interface RealEstateService {
     RealEstateDto getRealEstateById(int id);
     List<AddressDto> getAddress();
     boolean createRealEstate(CRealEstate cRealEstate);
-    boolean updateRealEstateStatusByStaffAssign(UpdateStatus updateStatus);
+    boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign);
+    boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel);
 
     @Service
     @Transactional
@@ -81,9 +82,20 @@ public interface RealEstateService {
         }
 
         @Override
-        public boolean updateRealEstateStatusByStaffAssign(UpdateStatus updateStatus) {
+        public boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign) {
             try {
-                rs.updateRealEstateStatusByStaffAssign(updateStatus);
+                rs.updateRealEstateStatusByStaffAssign(updateStatusByStaffAssign);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel) {
+            try {
+                rs.updateRealEstateStatusBySellerCancel(updateStatusBySellerCancel);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;

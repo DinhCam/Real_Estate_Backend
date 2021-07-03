@@ -66,7 +66,12 @@ public class RealEstateController {
     }
 
     @PutMapping(value = "/updateRealEstateStatusByStaffAssign")
-    public HttpStatus updateRealEstateStatusByStaffAssign(@RequestBody UpdateStatus updateStatus){
-        return rs.updateRealEstateStatusByStaffAssign(updateStatus) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    public HttpStatus updateRealEstateStatusByStaffAssign(@RequestBody UpdateStatusByStaffAssign updateStatusByStaffAssign){
+        return rs.updateRealEstateStatusByStaffAssign(updateStatusByStaffAssign) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
+    @PutMapping(value = "/updateRealEstateStatusBySellerCancel")
+    public HttpStatus updateRealEstateStatusBySellerCancel(@RequestBody UpdateStatusBySellerCancel updateStatusBySellerCancel){
+        return rs.updateRealEstateStatusBySellerCancel(updateStatusBySellerCancel) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 }

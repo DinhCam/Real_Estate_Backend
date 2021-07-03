@@ -26,7 +26,8 @@ public interface RealEstateRespo {
     List<AddressDto> getAddress();
     boolean updateRealEstateStatusByCTransaction(CTransactionDto transactionDto);
     boolean createRealEstate(CRealEstate cRealEstate);
-    boolean updateRealEstateStatusByStaffAssign(UpdateStatus updateStatus);
+    boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign);
+    boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel);
 
     @Repository
      class RealEstateRespoImpl  implements RealEstateRespo {
@@ -126,7 +127,6 @@ public interface RealEstateRespo {
             try{
                 em.createNativeQuery(Query.updateRealEstateStatusByCTransaction)
                         .setParameter("id",transactionDto.getRealEstateId())
-                        .setParameter("status", "sold")
                         .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();
@@ -187,11 +187,25 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public boolean updateRealEstateStatusByStaffAssign(UpdateStatus updateStatus) {
+        public boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign) {
             try{
                 em.createNativeQuery(Query.updateRealEstateStatusByStaffAssign)
-                        .setParameter("id", updateStatus.getId())
-                        .setParameter("staffId", updateStatus.getStaffId())
+                        .setParameter("id", updateStatusByStaffAssign.getId())
+                        .setParameter("staffId", updateStatusByStaffAssign.getStaffId())
+                        .executeUpdate();
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel) {
+            try{
+                em.createNativeQuery(Query.updateRealEstateStatusBySellerCancel)
+                        .setParameter("id", updateStatusBySellerCancel.getId())
+                        .setParameter("sellerId", updateStatusBySellerCancel.getSellerId())
                         .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();
@@ -426,8 +440,10 @@ public interface RealEstateRespo {
                 "from district dis\n" +
                 "left join ward w on dis.id = w.district_id";
 
-        public static String updateRealEstateStatusByCTransaction = "update real_estate set status = :status where id = :id";
+        public static String updateRealEstateStatusByCTransaction = "update real_estate set status = 'sold' where id = :id";
 
         public static String updateRealEstateStatusByStaffAssign = "update real_estate set status = 'active', staff_id = :staffId where id = :id";
+
+        public static String updateRealEstateStatusBySellerCancel = "update real_estate set status = 'cancel' where id = :id and seller_id = :sellerId";
     }
 }
