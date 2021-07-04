@@ -55,11 +55,6 @@ public class RealEstateController {
         return  rs.getAllRealEstateType();
     }
 
-    @GetMapping(value = "/getAddress")
-    public List<AddressDto> getAddress(){
-        return  rs.getAddress();
-    }
-
     @PostMapping(value = "/createRealEstate")
     public HttpStatus createRealEstate(@RequestBody CRealEstate cRealEstate){
         return rs.createRealEstate(cRealEstate) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;

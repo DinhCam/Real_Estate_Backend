@@ -1,4 +1,4 @@
-package com.gsu21se45.core.real_estate.dto;
+package com.gsu21se45.core.address.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WardDto {
+public class WardsDto {
     private int wardId;
     private String wardName;
 }

@@ -23,7 +23,6 @@ public interface RealEstateRespo {
     Page<RealEstateDto> getRealEstatesInactive(Pageable p);
     RealEstateDto getRealEstateById(int id);
     List<RealEstateTypeDto> getAllRealEstateType();
-    List<AddressDto> getAddress();
     boolean updateRealEstateStatusByCTransaction(CTransactionDto transactionDto);
     boolean createRealEstate(CRealEstate cRealEstate);
     boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign);
@@ -108,16 +107,6 @@ public interface RealEstateRespo {
                     .createNativeQuery(Query.getAllRealEstateType)
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTypeTransformer())
-                    .getResultList();
-            return rs;
-        }
-
-        @Override
-        public List<AddressDto> getAddress() {
-            List<AddressDto> rs = (List<AddressDto>) em
-                    .createNativeQuery(Query.getAddress)
-                    .unwrap(NativeQuery.class)
-                    .setResultTransformer(new AddressTransformer())
                     .getResultList();
             return rs;
         }
@@ -232,7 +221,6 @@ public interface RealEstateRespo {
                 "rd.price as price,\n" +
                 "rd.direction as direction,\n" +
                 "rd.balcony_direction as balconyDirection,\n" +
-                "sw.average_price as averagePrice,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
@@ -321,7 +309,6 @@ public interface RealEstateRespo {
                 "rd.balcony_direction as balconyDirection,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
-                "sw.average_price as averagePrice,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
@@ -366,7 +353,6 @@ public interface RealEstateRespo {
                 "rd.balcony_direction as balconyDirection,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
-                "sw.average_price as averagePrice,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
@@ -410,7 +396,6 @@ public interface RealEstateRespo {
                 "rd.balcony_direction as balconyDirection,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
-                "sw.average_price as averagePrice,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
@@ -442,13 +427,6 @@ public interface RealEstateRespo {
 
         public static String getAllRealEstateType = "select rt.id as id, rt.name as name\n" +
                 "from real_estate_type rt";
-
-        public static String getAddress = "select dis.id as id, \n" +
-                "dis.name as disName, \n" +
-                "w.id as wardId,\n" +
-                "w.name as wardName\n" +
-                "from district dis\n" +
-                "left join ward w on dis.id = w.district_id";
 
         public static String updateRealEstateStatusByCTransaction = "update real_estate set status = 'sold' where id = :id";
 

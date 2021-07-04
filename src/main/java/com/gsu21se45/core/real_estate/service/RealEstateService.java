@@ -19,7 +19,6 @@ public interface RealEstateService {
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
     RealEstateDto getRealEstateById(int id);
-    List<AddressDto> getAddress();
     boolean createRealEstate(CRealEstate cRealEstate);
     boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign);
     boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel);
@@ -63,11 +62,6 @@ public interface RealEstateService {
         @Override
         public RealEstateDto getRealEstateById(int id) {
             return rs.getRealEstateById(id);
-        }
-
-        @Override
-        public List<AddressDto> getAddress() {
-            return rs.getAddress();
         }
 
         @Override

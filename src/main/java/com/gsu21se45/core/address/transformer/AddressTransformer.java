@@ -1,7 +1,7 @@
-package com.gsu21se45.core.real_estate.transformer;
+package com.gsu21se45.core.address.transformer;
 
-import com.gsu21se45.core.real_estate.dto.AddressDto;
-import com.gsu21se45.core.real_estate.dto.WardDto;
+import com.gsu21se45.core.address.dto.AddressDto;
+import com.gsu21se45.core.address.dto.WardsDto;
 import com.gsu21se45.util.AliasHelper;
 import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.transform.ResultTransformer;
@@ -20,7 +20,7 @@ public class AddressTransformer implements ResultTransformer {
         Map<String, Integer> aliasList = AliasHelper.toMap(alias);
 
         if(result.containsKey(tuples[aliasList.get("id")])){
-            WardDto ward = getWard(tuples,aliasList);
+            WardsDto ward = getWard(tuples,aliasList);
             result.get(tuples[aliasList.get("id")]).getWards().add(ward);
         }
         else{
@@ -38,7 +38,7 @@ public class AddressTransformer implements ResultTransformer {
     private AddressDto getAddress(Object[] tuples, Map<String, Integer> aliasList){
         AddressDto rs = new AddressDto();
         if (getWard(tuples, aliasList) != null){
-            List<WardDto> wards = new ArrayList<>();
+            List<WardsDto> wards = new ArrayList<>();
             wards.add(getWard(tuples, aliasList));
             rs.setWards(wards);
         }
@@ -47,8 +47,8 @@ public class AddressTransformer implements ResultTransformer {
         return rs;
     }
 
-    private WardDto getWard(Object[] tuples, Map<String, Integer> aliasList){
-        WardDto  rs = new WardDto();
+    private WardsDto getWard(Object[] tuples, Map<String, Integer> aliasList){
+        WardsDto rs = new WardsDto();
         rs.setWardId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("wardId")]));
         rs.setWardName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("wardName")]));
         return StringUtils.isEmpty(rs.getWardId()) ? null : rs;

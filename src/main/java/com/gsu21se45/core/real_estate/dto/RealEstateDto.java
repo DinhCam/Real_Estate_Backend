@@ -27,7 +27,6 @@ public class RealEstateDto{
     private String staffName;
     private double area;
     private double price;
-    private double averagePrice;
     private String direction;
     private String balconyDirection;
     private int numberOfBedroom;
