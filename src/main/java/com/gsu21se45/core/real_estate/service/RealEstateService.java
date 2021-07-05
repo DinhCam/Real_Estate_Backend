@@ -15,12 +15,13 @@ import java.util.List;
 public interface RealEstateService {
     Page<RealEstateDto> getRealEstates(RequestPrams r);
     Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size);
-    Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size);
+    Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
     RealEstateDto getRealEstateById(int id);
     boolean createRealEstate(CRealEstate cRealEstate);
-    boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign);
+    boolean updateRealEstateStatusByStaffAccuracy(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
+    boolean updateRealEstateByStaffAssign(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
     boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel);
 
     @Service
@@ -43,9 +44,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size) {
+        public Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
-            return rs.getRealEstatesInactive(pageable);
+            return rs.getRealEstatesNotAssign(pageable);
         }
 
         @Override
@@ -76,9 +77,20 @@ public interface RealEstateService {
         }
 
         @Override
-        public boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign) {
+        public boolean updateRealEstateStatusByStaffAccuracy(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy) {
             try {
-                rs.updateRealEstateStatusByStaffAssign(updateStatusByStaffAssign);
+                rs.updateRealEstateStatusByStaffAccuracy(updateStatusByStaffAccuracy);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateByStaffAssign(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy) {
+            try {
+                rs.updateRealEstateByStaffAssign(updateStatusByStaffAccuracy);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;

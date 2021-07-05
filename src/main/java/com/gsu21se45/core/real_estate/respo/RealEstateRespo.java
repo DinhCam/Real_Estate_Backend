@@ -20,12 +20,13 @@ public interface RealEstateRespo {
     Page<RealEstateDto> getRealEstates(RequestPrams rq, Pageable p);
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Pageable p);
     Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Pageable p);
-    Page<RealEstateDto> getRealEstatesInactive(Pageable p);
+    Page<RealEstateDto> getRealEstatesNotAssign(Pageable p);
     RealEstateDto getRealEstateById(int id);
     List<RealEstateTypeDto> getAllRealEstateType();
     boolean updateRealEstateStatusByCTransaction(CTransactionDto transactionDto);
     boolean createRealEstate(CRealEstate cRealEstate);
-    boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign);
+    boolean updateRealEstateStatusByStaffAccuracy(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
+    boolean updateRealEstateByStaffAssign(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
     boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel);
 
     @Repository
@@ -79,9 +80,9 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public Page<RealEstateDto> getRealEstatesInactive(Pageable p) {
+        public Page<RealEstateDto> getRealEstatesNotAssign(Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
-                    .createNativeQuery(Query.getRealEstatesInactive)
+                    .createNativeQuery(Query.getRealEstatesNotAssign)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
@@ -176,11 +177,25 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public boolean updateRealEstateStatusByStaffAssign(UpdateStatusByStaffAssign updateStatusByStaffAssign) {
+        public boolean updateRealEstateStatusByStaffAccuracy(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy) {
             try{
-                em.createNativeQuery(Query.updateRealEstateStatusByStaffAssign)
-                        .setParameter("id", updateStatusByStaffAssign.getId())
-                        .setParameter("staffId", updateStatusByStaffAssign.getStaffId())
+                em.createNativeQuery(Query.updateRealEstateStatusByStaffAccuracy)
+                        .setParameter("id", updateStatusByStaffAccuracy.getId())
+                        .setParameter("staffId", updateStatusByStaffAccuracy.getStaffId())
+                        .executeUpdate();
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateByStaffAssign(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy) {
+            try{
+                em.createNativeQuery(Query.updateRealEstateByStaffAssign)
+                        .setParameter("id", updateStatusByStaffAccuracy.getId())
+                        .setParameter("staffId", updateStatusByStaffAccuracy.getStaffId())
                         .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();
@@ -382,16 +397,16 @@ public interface RealEstateRespo {
                 "left join district d on w.district_id = d.id\n" +
                 "where rd.id = :id \n";
 
-        public static String getRealEstatesInactive = "select r.id as id, \n" +
+        public static String getRealEstatesNotAssign = "select r.id as id, \n" +
                 "r.title as title, \n" +
                 "rd.description as description,\n" +
                 "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
                 "s.username as sellerName, \n" +
+                "s.avatar as avatar,\n" +
                 "st.id as staffId,\n" +
                 "st.username as staffName,\n" +
-                "st.avatar as avatar,\n" +
                 "rd.direction as direction,\n" +
                 "rd.balcony_direction as balconyDirection,\n" +
                 "rd.area as area,\n" +
@@ -423,14 +438,16 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "where r.status = 'inactive' \n";
+                "where st.id is null \n";
 
         public static String getAllRealEstateType = "select rt.id as id, rt.name as name\n" +
                 "from real_estate_type rt";
 
         public static String updateRealEstateStatusByCTransaction = "update real_estate set status = 'sold' where id = :id";
 
-        public static String updateRealEstateStatusByStaffAssign = "update real_estate set status = 'active', staff_id = :staffId where id = :id";
+        public static String updateRealEstateStatusByStaffAccuracy = "update real_estate set status = 'active' where id = :id and staff_id = :staffId";
+
+        public static String updateRealEstateByStaffAssign = "update real_estate set staff_id = :staffId where id = :id";
 
         public static String updateRealEstateStatusBySellerCancel = "update real_estate set status = 'cancel' where id = :id and seller_id = :sellerId";
     }

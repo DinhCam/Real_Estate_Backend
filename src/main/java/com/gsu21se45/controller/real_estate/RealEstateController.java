@@ -31,10 +31,10 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
-    @GetMapping(value = "/getRealEstatesInactive/{page}")
-    public PaginationResponse<RealEstateDto> getRealEstatesInactive(@PathVariable Integer page){
+    @GetMapping(value = "/getRealEstatesNotAssign/{page}")
+    public PaginationResponse<RealEstateDto> getRealEstatesNotAssign(@PathVariable Integer page){
         Integer size = 30;
-        Page<RealEstateDto> data = rs.getRealEstatesInactive(page, size);
+        Page<RealEstateDto> data = rs.getRealEstatesNotAssign(page, size);
         return new PaginationResponse<>(data);
     }
 
@@ -60,9 +60,14 @@ public class RealEstateController {
         return rs.createRealEstate(cRealEstate) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @PutMapping(value = "/updateRealEstateStatusByStaffAssign")
-    public HttpStatus updateRealEstateStatusByStaffAssign(@RequestBody UpdateStatusByStaffAssign updateStatusByStaffAssign){
-        return rs.updateRealEstateStatusByStaffAssign(updateStatusByStaffAssign) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    @PutMapping(value = "/updateRealEstateStatusByStaffAccuracy")
+    public HttpStatus updateRealEstateStatusByStaffAccuracy(@RequestBody UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy){
+        return rs.updateRealEstateStatusByStaffAccuracy(updateStatusByStaffAccuracy) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
+    @PutMapping(value = "/updateRealEstateByStaffAssign")
+    public HttpStatus updateRealEstateByStaffAssign(@RequestBody UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy){
+        return rs.updateRealEstateByStaffAssign(updateStatusByStaffAccuracy) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
     @PutMapping(value = "/updateRealEstateStatusBySellerCancel")
