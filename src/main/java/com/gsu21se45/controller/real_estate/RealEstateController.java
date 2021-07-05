@@ -33,7 +33,7 @@ public class RealEstateController {
     }
 
     @GetMapping(value = "/getRealEstateBySellerId/{sellerId}/{page}")
-    @ApiOperation("Get real estate of a seller")
+    @ApiOperation("Get all real estate of a seller")
     public PaginationResponse<RealEstateDto> getRealEstateBySellerId(@PathVariable String sellerId, @PathVariable Integer page){
         Integer size = 30;
         Page<RealEstateDto> data = rs.getRealEstatesBySellerId(sellerId, page, size);
@@ -41,7 +41,7 @@ public class RealEstateController {
     }
 
     @GetMapping(value = "/getRealEstatesNotAssign/{page}")
-    @ApiOperation("Get real estate not assigned")
+    @ApiOperation("Get all real estate not assigned")
     public PaginationResponse<RealEstateDto> getRealEstatesNotAssign(@PathVariable Integer page){
         Integer size = 30;
         Page<RealEstateDto> data = rs.getRealEstatesNotAssign(page, size);
@@ -49,7 +49,7 @@ public class RealEstateController {
     }
 
     @GetMapping(value = "/getRealEstatesInactive/{page}")
-    @ApiOperation("Get real estate have inactive status")
+    @ApiOperation("Get all real estate have inactive status")
     public PaginationResponse<RealEstateDto> getRealEstatesInactive(@PathVariable Integer page){
         Integer size = 30;
         Page<RealEstateDto> data = rs.getRealEstatesInactive(page, size);
@@ -57,7 +57,7 @@ public class RealEstateController {
     }
 
     @GetMapping(value = "/getRealEstateAssignStaff/{staffId}/{page}")
-    @ApiOperation("Get real estate assigned of a staff")
+    @ApiOperation("Get all real estate assigned of a staff")
     public PaginationResponse<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(@PathVariable String staffId, @PathVariable Integer page){
         Integer size = 30;
         Page<GRealEstateAssignedStaffDto> data = rs.getRealEstateAssignStaff(staffId, page, size);
