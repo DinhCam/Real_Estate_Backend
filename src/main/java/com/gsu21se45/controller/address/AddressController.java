@@ -3,6 +3,7 @@ package com.gsu21se45.controller.address;
 import com.gsu21se45.core.address.dto.DistrictDto;
 import com.gsu21se45.core.address.service.AddressService;
 import com.gsu21se45.core.address.dto.AddressDto;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class AddressController {
     }
 
     @GetMapping(value = "/getAddress")
+    @ApiOperation("Get real estate address")
     public List<AddressDto> getAddress(){
         return  rs.getAddress();
     }
