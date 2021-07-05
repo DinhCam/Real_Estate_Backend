@@ -13,12 +13,13 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface RealEstateService {
-    Page<RealEstateDto> getRealEstates(RequestPrams r);
+    Page<RealEstateDto> getAllRealEstates(RequestPrams r);
     Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
+    Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size);
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
-    RealEstateDto getRealEstateById(int id);
+    RealEstateDetailDto getRealEstateDetailById(int id);
     boolean createRealEstate(CRealEstate cRealEstate);
     boolean updateRealEstateStatusByStaffAccuracy(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
     boolean updateRealEstateByStaffAssign(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
@@ -32,9 +33,9 @@ public interface RealEstateService {
         private RealEstateRespo rs;
 
         @Override
-        public Page<RealEstateDto> getRealEstates(RequestPrams r) {
+        public Page<RealEstateDto> getAllRealEstates(RequestPrams r) {
             Pageable pageable = PageRequest.of(r.getPage(), r.getSize());
-            return rs.getRealEstates(r, pageable);
+            return rs.getAllRealEstates(r, pageable);
         }
 
         @Override
@@ -50,6 +51,12 @@ public interface RealEstateService {
         }
 
         @Override
+        public Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return rs.getRealEstatesInactive(pageable);
+        }
+
+        @Override
         public Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstateAssignStaff(staffId, pageable);
@@ -61,8 +68,8 @@ public interface RealEstateService {
         }
 
         @Override
-        public RealEstateDto getRealEstateById(int id) {
-            return rs.getRealEstateById(id);
+        public RealEstateDetailDto getRealEstateDetailById(int id) {
+            return rs.getRealEstateDetailById(id);
         }
 
         @Override

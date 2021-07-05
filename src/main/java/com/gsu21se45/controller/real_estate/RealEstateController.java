@@ -19,11 +19,17 @@ public class RealEstateController {
     @Autowired
     private RealEstateService rs;
 
-    @PostMapping(value = "/getRealEstateDetail")
+    @PostMapping(value = "/getAllRealEstate")
     @ApiOperation("Get all real estate")
-    public PaginationResponse<RealEstateDto> getRealEstates(@RequestBody RequestPrams r){
-        Page<RealEstateDto> data = rs.getRealEstates(r);
+    public PaginationResponse<RealEstateDto> getAllRealEstates(@RequestBody RequestPrams r){
+        Page<RealEstateDto> data = rs.getAllRealEstates(r);
         return new PaginationResponse<>(data);
+    }
+
+    @GetMapping(value = "/getRealEstateDetail/{id}")
+    @ApiOperation("Get a real estate detail by id")
+    public RealEstateDetailDto getRealEstateDetailById(@PathVariable Integer id){
+        return rs.getRealEstateDetailById(id);
     }
 
     @GetMapping(value = "/getRealEstateBySellerId/{sellerId}/{page}")
@@ -42,18 +48,20 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
+    @GetMapping(value = "/getRealEstatesInactive/{page}")
+    @ApiOperation("Get real estate have inactive status")
+    public PaginationResponse<RealEstateDto> getRealEstatesInactive(@PathVariable Integer page){
+        Integer size = 30;
+        Page<RealEstateDto> data = rs.getRealEstatesInactive(page, size);
+        return new PaginationResponse<>(data);
+    }
+
     @GetMapping(value = "/getRealEstateAssignStaff/{staffId}/{page}")
     @ApiOperation("Get real estate assigned of a staff")
     public PaginationResponse<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(@PathVariable String staffId, @PathVariable Integer page){
         Integer size = 30;
         Page<GRealEstateAssignedStaffDto> data = rs.getRealEstateAssignStaff(staffId, page, size);
         return new PaginationResponse<>(data);
-    }
-
-    @GetMapping(value = "/{id}")
-    @ApiOperation("Get a real estate detail")
-    public RealEstateDto getRealEstateById(@PathVariable Integer id){
-        return rs.getRealEstateById(id);
     }
 
     @GetMapping(value = "/getAllRealEstateType")
