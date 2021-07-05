@@ -13,7 +13,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RealEstateDto {
+public class RealEstateDetailDto {
+
     private int id;
     private String title;
     private String description;
@@ -26,9 +27,14 @@ public class RealEstateDto {
     private String staffName;
     private double area;
     private double price;
+    private String direction;
+    private String balconyDirection;
     private int numberOfBedroom;
     private int numberOfBathroom;
     private String project;
+    private String investor;
+    private Set<ImageDto> images;
+    private Set<FacilityDto> facilities;
     private String streetName;
     private String wardName;
     private String disName;

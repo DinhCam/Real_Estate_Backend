@@ -1,4 +1,4 @@
-package com.gsu21se45.core.real_estate.dto;
+package com.gsu21se45.core.address.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDto {
-    private int id;
-    private String disName;
-    private List<WardDto> wards = null;
+public class DistrictDto {
+    private Integer id;
+    private String name;
+    List<WardDto> wards;
 }

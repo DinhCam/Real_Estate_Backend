@@ -13,13 +13,17 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface RealEstateService {
-    Page<RealEstateDto> getRealEstates(RequestPrams r);
+    Page<RealEstateDto> getAllRealEstates(RequestPrams r);
     Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size);
+    Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
+    Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size);
     Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
-    RealEstateDto getRealEstateById(int id);
-    List<AddressDto> getAddress();
+    RealEstateDetailDto getRealEstateDetailById(int id);
     boolean createRealEstate(CRealEstate cRealEstate);
+    boolean updateRealEstateStatusByStaffAccuracy(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
+    boolean updateRealEstateByStaffAssign(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
+    boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel);
 
     @Service
     @Transactional
@@ -29,15 +33,27 @@ public interface RealEstateService {
         private RealEstateRespo rs;
 
         @Override
-        public Page<RealEstateDto> getRealEstates(RequestPrams r) {
+        public Page<RealEstateDto> getAllRealEstates(RequestPrams r) {
             Pageable pageable = PageRequest.of(r.getPage(), r.getSize());
-            return rs.getRealEstates(r, pageable);
+            return rs.getAllRealEstates(r, pageable);
         }
 
         @Override
         public Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstatesBySellerId(sellerId, pageable);
+        }
+
+        @Override
+        public Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return rs.getRealEstatesNotAssign(pageable);
+        }
+
+        @Override
+        public Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return rs.getRealEstatesInactive(pageable);
         }
 
         @Override
@@ -52,19 +68,47 @@ public interface RealEstateService {
         }
 
         @Override
-        public RealEstateDto getRealEstateById(int id) {
-            return rs.getRealEstateById(id);
-        }
-
-        @Override
-        public List<AddressDto> getAddress() {
-            return rs.getAddress();
+        public RealEstateDetailDto getRealEstateDetailById(int id) {
+            return rs.getRealEstateDetailById(id);
         }
 
         @Override
         public boolean createRealEstate(CRealEstate cRealEstate) {
             try {
                 rs.createRealEstate(cRealEstate);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateStatusByStaffAccuracy(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy) {
+            try {
+                rs.updateRealEstateStatusByStaffAccuracy(updateStatusByStaffAccuracy);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateByStaffAssign(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy) {
+            try {
+                rs.updateRealEstateByStaffAssign(updateStatusByStaffAccuracy);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel) {
+            try {
+                rs.updateRealEstateStatusBySellerCancel(updateStatusBySellerCancel);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;

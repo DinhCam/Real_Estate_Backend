@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WardDto {
-    private int wardId;
-    private String wardName;
+public class UpdateStatusBySellerCancel {
+    private int id;
+    private String sellerId;
 }

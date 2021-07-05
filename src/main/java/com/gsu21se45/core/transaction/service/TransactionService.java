@@ -1,6 +1,5 @@
 package com.gsu21se45.core.transaction.service;
 
-import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate.respo.RealEstateRespo;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.core.transaction.dto.GTransactionDto;
@@ -30,7 +29,7 @@ public interface TransactionService {
         public boolean createTransaction(CTransactionDto transactionDto) {
             try{
                 if (transactionRespo.createTransaction(transactionDto)){
-                    realEstateRespo.updateRealEstateByCTransaction(transactionDto);
+                    realEstateRespo.updateRealEstateStatusByCTransaction(transactionDto);
                 }
             }
             catch(Exception e){
