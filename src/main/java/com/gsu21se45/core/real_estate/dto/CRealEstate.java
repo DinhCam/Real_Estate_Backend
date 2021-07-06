@@ -1,11 +1,13 @@
 package com.gsu21se45.core.real_estate.dto;
 
+import com.gsu21se45.entity.ImageResource;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Setter
 @Getter
@@ -33,4 +35,5 @@ public class CRealEstate {
     private int numberOfBedroom;
     private int numberOfBathroom;
     private int lot;
+    private List<ImageResource> images;
 }

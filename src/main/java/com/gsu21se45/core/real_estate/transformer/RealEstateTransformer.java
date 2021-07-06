@@ -1,31 +1,42 @@
 package com.gsu21se45.core.real_estate.transformer;
 
+import com.gsu21se45.core.real_estate.dto.ImageDto;
 import com.gsu21se45.core.real_estate.dto.RealEstateDto;
 import com.gsu21se45.util.AliasHelper;
 import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.transform.ResultTransformer;
 
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RealEstateTransformer implements ResultTransformer {
-    private RealEstateDto result = new RealEstateDto();
+    Map<Integer, RealEstateDto> result = new HashMap<>();
 
     @Override
     public Object transformTuple(Object[] tuples, String[] alias) {
         Map<String, Integer> aliasList = AliasHelper.toMap(alias);
-        result = getAllRealEstates(tuples, aliasList);
-        return result;
+
+        if(result.containsKey(tuples[aliasList.get("id")])){
+            ImageDto img = getImageDto(tuples,aliasList);
+            result.get(tuples[aliasList.get("id")]).getImages().add(img);
+        }
+        else{
+            RealEstateDto realEstateDto = getAllRealEstates(tuples,aliasList);
+            result.put((Integer) tuples[aliasList.get("id")], realEstateDto);
+        }
+        return null;
     }
 
     @Override
     public List transformList(List list) {
-        return list;
+        return new ArrayList(result.values());
     }
 
     private RealEstateDto getAllRealEstates(Object[] tuples, Map<String, Integer> aliasList){
         RealEstateDto rs = new RealEstateDto();
+        Set<ImageDto> imgs = new HashSet<>();
+        imgs.add(getImageDto(tuples,aliasList));
+        rs.setImages(imgs);
         rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("id")]));
         rs.setTitle(TypeTransformImpl.castObjectToString(tuples[aliasList.get("title")]));
         rs.setDescription(TypeTransformImpl.castObjectToString(tuples[aliasList.get("description")]));
@@ -45,6 +56,13 @@ public class RealEstateTransformer implements ResultTransformer {
         rs.setCreateAt((Timestamp) tuples[aliasList.get("createAt")]);
         rs.setTypeName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("typeName")]));
         rs.setAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("avatar")]));
+        return rs;
+    }
+
+    private ImageDto getImageDto(Object[] tuples, Map<String, Integer> aliasList){
+        ImageDto  rs = new ImageDto();
+        rs.setImgId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("imgId")]));
+        rs.setImgUrl(TypeTransformImpl.castObjectToString(tuples[aliasList.get("imageUrl")]));
         return rs;
     }
 }

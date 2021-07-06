@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -34,7 +35,7 @@ public class RealEstateDetailDto {
     private String project;
     private String investor;
     private Set<ImageDto> images;
-    private Set<FacilityDto> facilities;
+    private Set<FacilityDto> facilities = new HashSet<>();
     private String streetName;
     private String wardName;
     private String disName;
