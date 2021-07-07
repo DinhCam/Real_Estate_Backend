@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -29,5 +30,6 @@ public class GRealEstateAssignedStaffDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createAt;
-    private List<BuyerDto> buyers = null;
+    private Set<BuyerDto> buyers = new HashSet<>();
+    private Set<ImageDto> images;
 }

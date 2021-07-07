@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
+import java.util.*;
 
 public interface RealEstateRespo {
     Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p);
@@ -57,7 +57,7 @@ public interface RealEstateRespo {
         @Override
         public Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Pageable p) {
             List<GRealEstateAssignedStaffDto> rs = (List<GRealEstateAssignedStaffDto>) em
-                    .createNativeQuery(RealEstateRespo.Query.getRealEstateAssignStaff)
+                    .createNativeQuery(Query.getRealEstateAssignStaff)
                     .setParameter("staffId", staffId)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
@@ -148,6 +148,7 @@ public interface RealEstateRespo {
             StreetWard streetWard = new StreetWard();
             Integer streetWardId = 0;
             RealEstateDetail realEstateDetail = new RealEstateDetail();
+            Integer realEstateDetailId = 0;
             try {
                 java.sql.Timestamp  sqlDate = new java.sql.Timestamp (new java.util.Date().getTime());
                 String status = "inactive";
@@ -179,9 +180,15 @@ public interface RealEstateRespo {
                 realEstateDetail.setInvestor(cRealEstate.getInvestor());
                 realEstateDetail.setNumOfBedroom(cRealEstate.getNumberOfBedroom());
                 realEstateDetail.setNumOfBathroom(cRealEstate.getNumberOfBathroom());
-                realEstateDetail.setLot(cRealEstate.getLot());
 
-                session.save(realEstateDetail);
+                realEstateDetailId = (Integer) session.save(realEstateDetail);
+
+                for (ImageResource i:cRealEstate.getImages()) {
+                    ImageResource imageResource = new ImageResource();
+                    imageResource.setRealEstateDetail(em.find(RealEstateDetail.class, realEstateDetailId));
+                    imageResource.setImgUrl(i.getImgUrl());
+                    session.save(imageResource);
+                }
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;
@@ -250,6 +257,8 @@ public interface RealEstateRespo {
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
+                "i.id as imgId,\n" +
+                "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
@@ -257,6 +266,7 @@ public interface RealEstateRespo {
                 "concat(street.name, ' ', w.name, ' ', d.name, ' ', r.title, ' ', rd.project) as search\n" +
                 "from real_estate r\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
+                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join real_estate_type rt on rd.type_id = rt.id \n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
@@ -290,6 +300,8 @@ public interface RealEstateRespo {
                 "s.username as sellerName,\n" +
                 "st.username as staffName,\n" +
                 "r.title as title,\n" +
+                "i.id as imgId,\n" +
+                "i.img_url as imageUrl,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName,\n" +
@@ -300,6 +312,7 @@ public interface RealEstateRespo {
                 "from real_estate r \n" +
                 "left join conversation c on r.id = c.real_estate_id\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
+                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user b on c.buyer_id = b.id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
@@ -325,12 +338,15 @@ public interface RealEstateRespo {
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
+                "i.id as imgId,\n" +
+                "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName\n" +
                 "from real_estate r\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
+                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
                 "left join real_estate_type rt on rt.id = rd.type_id\n" +
@@ -400,12 +416,15 @@ public interface RealEstateRespo {
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
+                "i.id as imgId,\n" +
+                "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName\n" +
                 "from real_estate r\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
+                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
                 "left join real_estate_type rt on rt.id = rd.type_id\n" +
@@ -431,12 +450,15 @@ public interface RealEstateRespo {
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
+                "i.id as imgId,\n" +
+                "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName\n" +
                 "from real_estate r\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
+                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
                 "left join real_estate_type rt on rt.id = rd.type_id\n" +
@@ -445,7 +467,7 @@ public interface RealEstateRespo {
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
                 "where r.status = 'inactive' \n" +
-                "order by rd.id";
+                "order by r.create_at DESC";
 
         public static String getAllRealEstateType = "select rt.id as id, rt.name as name\n" +
                 "from real_estate_type rt";

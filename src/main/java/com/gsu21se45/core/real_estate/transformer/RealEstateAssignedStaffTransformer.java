@@ -2,6 +2,7 @@ package com.gsu21se45.core.real_estate.transformer;
 
 import com.gsu21se45.core.real_estate.dto.BuyerDto;
 import com.gsu21se45.core.real_estate.dto.GRealEstateAssignedStaffDto;
+import com.gsu21se45.core.real_estate.dto.ImageDto;
 import com.gsu21se45.util.AliasHelper;
 import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.transform.ResultTransformer;
@@ -19,7 +20,12 @@ public class RealEstateAssignedStaffTransformer implements ResultTransformer {
 
         if(result.containsKey(tuples[aliasList.get("id")])){
             BuyerDto buyer = getBuyerDto(tuples,aliasList);
-            result.get(tuples[aliasList.get("id")]).getBuyers().add(buyer);
+            if (buyer != null) {
+                result.get(tuples[aliasList.get("id")]).getBuyers().add(buyer);
+            }
+
+            ImageDto img = getImageDto(tuples,aliasList);
+            result.get(tuples[aliasList.get("id")]).getImages().add(img);
         }
         else{
             GRealEstateAssignedStaffDto gRealEstateAssignedStaffDto= getRealEstateAssignedStaffDto(tuples, aliasList);
@@ -36,10 +42,11 @@ public class RealEstateAssignedStaffTransformer implements ResultTransformer {
     private GRealEstateAssignedStaffDto getRealEstateAssignedStaffDto(Object[] tuples, Map<String, Integer> aliasList){
         GRealEstateAssignedStaffDto rs = new GRealEstateAssignedStaffDto();
         if (getBuyerDto(tuples, aliasList) != null){
-            List<BuyerDto> buyers = new ArrayList<>();
-            buyers.add(getBuyerDto(tuples, aliasList));
-            rs.setBuyers(buyers);
+            rs.getBuyers().add(getBuyerDto(tuples, aliasList));
         }
+        Set<ImageDto> imgs = new HashSet<>();
+        imgs.add(getImageDto(tuples,aliasList));
+        rs.setImages(imgs);
         rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("id")]));
         rs.setSellerId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerId")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
@@ -61,5 +68,12 @@ public class RealEstateAssignedStaffTransformer implements ResultTransformer {
         rs.setBuyerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("buyerName")]));
         rs.setAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("avatar")]));
         return StringUtils.isEmpty(rs.getBuyerId()) ? null : rs;
+    }
+
+    private ImageDto getImageDto(Object[] tuples, Map<String, Integer> aliasList){
+        ImageDto  rs = new ImageDto();
+        rs.setImgId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("imgId")]));
+        rs.setImgUrl(TypeTransformImpl.castObjectToString(tuples[aliasList.get("imageUrl")]));
+        return rs;
     }
 }

@@ -29,6 +29,7 @@ public class RealEstateDto {
     private int numberOfBedroom;
     private int numberOfBathroom;
     private String project;
+    private Set<ImageDto> images;
     private String streetName;
     private String wardName;
     private String disName;

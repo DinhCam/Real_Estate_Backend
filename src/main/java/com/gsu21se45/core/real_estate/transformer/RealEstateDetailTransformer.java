@@ -6,6 +6,7 @@ import com.gsu21se45.core.real_estate.dto.RealEstateDetailDto;
 import com.gsu21se45.util.AliasHelper;
 import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.transform.ResultTransformer;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -20,10 +21,13 @@ public class RealEstateDetailTransformer implements ResultTransformer {
         Map<String, Integer> aliasList = AliasHelper.toMap(alias);
 
         if(result.containsKey(tuples[aliasList.get("id")])){
-            ImageDto img = getImageDto(tuples,aliasList);
             FacilityDto facilityDto = getFacilityDto(tuples,aliasList);
+            if (facilityDto != null){
+                result.get(tuples[aliasList.get("id")]).getFacilities().add(facilityDto);
+            }
+
+            ImageDto img = getImageDto(tuples,aliasList);
             result.get(tuples[aliasList.get("id")]).getImages().add(img);
-            result.get(tuples[aliasList.get("id")]).getFacilities().add(facilityDto);
         }
         else{
             RealEstateDetailDto realEstateDetailDto = getRealEstateDetailDto(tuples,aliasList);
@@ -39,10 +43,12 @@ public class RealEstateDetailTransformer implements ResultTransformer {
 
     private RealEstateDetailDto getRealEstateDetailDto(Object[] tuples, Map<String, Integer> aliasList){
         RealEstateDetailDto rs = new RealEstateDetailDto();
+        if (getFacilityDto(tuples, aliasList) != null){
+            rs.getFacilities().add(getFacilityDto(tuples, aliasList));
+        }
         Set<ImageDto> imgs = new HashSet<>();
-        Set<FacilityDto> facility = new HashSet<>();
-        facility.add(getFacilityDto(tuples,aliasList));
         imgs.add(getImageDto(tuples,aliasList));
+        rs.setImages(imgs);
         rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("id")]));
         rs.setTitle(TypeTransformImpl.castObjectToString(tuples[aliasList.get("title")]));
         rs.setDescription(TypeTransformImpl.castObjectToString(tuples[aliasList.get("description")]));
@@ -58,8 +64,6 @@ public class RealEstateDetailTransformer implements ResultTransformer {
         rs.setNumberOfBathroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBathroom")]));
         rs.setProject(TypeTransformImpl.castObjectToString(tuples[aliasList.get("project")]));
         rs.setInvestor(TypeTransformImpl.castObjectToString(tuples[aliasList.get("investor")]));
-        rs.setImages(imgs);
-        rs.setFacilities(facility);
         rs.setStreetName((String) tuples[aliasList.get("streetName")]);
         rs.setWardName((String) tuples[aliasList.get("wardName")]);
         rs.setDisName((String)tuples[aliasList.get("disName")]);
@@ -79,10 +83,10 @@ public class RealEstateDetailTransformer implements ResultTransformer {
 
     private FacilityDto getFacilityDto(Object[] tuples, Map<String, Integer> aliasList){
         FacilityDto  rs = new FacilityDto();
-        rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("facilityId")]));
+        rs.setFacilityId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("facilityId")]));
         rs.setFacilityName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityName")]));
         rs.setFacilityType(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityType")]));
         rs.setDistance((Double) tuples[aliasList.get("distance")]);
-        return rs;
+        return StringUtils.isEmpty(rs.getFacilityId()) ? null : rs;
     }
 }
