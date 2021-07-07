@@ -1,6 +1,6 @@
 package com.gsu21se45.service.implement;
 
-import com.gsu21se45.dto.MessageStatus;
+import com.gsu21se45.enums.MessageStatus;
 import com.gsu21se45.entity.Conversation;
 import com.gsu21se45.entity.Message;
 import com.gsu21se45.entity.User;

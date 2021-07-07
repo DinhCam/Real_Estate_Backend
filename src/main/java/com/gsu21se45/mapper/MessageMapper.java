@@ -30,6 +30,7 @@ public class MessageMapper {
         model.setId(-1);
         model.setSenderId(chatMessageModel.getSenderId());
         model.setText(chatMessageModel.getContent());
+        model.setStatus(chatMessageModel.getStatus());
         return model;
     }
 

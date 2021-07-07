@@ -10,15 +10,15 @@ public interface AppointmentService {
 
     List<Appointment> findByConversationId(int conversationId);
 
-    List<Appointment> findBySellerIdAndStatus(String sellerId, String status, Date time);
+    List<Appointment> findBySellerIdAndStatus(String sellerId, String status);
 
     Appointment save(Appointment appointment);
 
     void update(int appointmentId, String status);
 
-    List<Appointment> findByBuyerIdAndStatus(String buyerId, String status, Date time);
+    List<Appointment> findByBuyerIdAndStatus(String buyerId, String status);
 
-    List<Appointment> findByStaffIdAndStatus(String staffId, String status, Date time);
+    List<Appointment> findByStaffIdAndStatus(String staffId, String status);
 
     Appointment findByConversationAndCreateAt(Conversation conversation, Date createAt);
 }

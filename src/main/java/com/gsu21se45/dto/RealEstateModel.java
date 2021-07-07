@@ -8,17 +8,17 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class AppointmentModel implements Serializable {
+public class RealEstateModel implements Serializable {
 
     private int id;
-    private int conversationId;
+    private String sellerId;
     private String staffId;
-    private Date scheduleDate;
-    private Date createAt;
+    private String title;
+    private int view;
+    private Date create_at;
     private String status;
-    private RealEstateModel realEstateModel;
 }

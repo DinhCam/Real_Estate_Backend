@@ -23,8 +23,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> findBySellerIdAndStatus(String sellerId, String status, Date time) {
-        return appointmentRepository.findBySellerIdAndStatus(sellerId, status, time);
+    public List<Appointment> findBySellerIdAndStatus(String sellerId, String status) {
+        return appointmentRepository.findBySellerIdAndStatus(sellerId, status);
     }
 
     @Override
@@ -38,13 +38,13 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> findByBuyerIdAndStatus(String buyerId, String status, Date time) {
-        return appointmentRepository.findByBuyerIdAndStatus(buyerId, status, time);
+    public List<Appointment> findByBuyerIdAndStatus(String buyerId, String status) {
+        return appointmentRepository.findByBuyerIdAndStatus(buyerId, status);
     }
 
     @Override
-    public List<Appointment> findByStaffIdAndStatus(String staffId, String status, Date time) {
-        return appointmentRepository.findAppointmentsByStaffAndStatusAndScheduleDateIsGreaterThanEqual(new User(staffId), status, time);
+    public List<Appointment> findByStaffIdAndStatus(String staffId, String status) {
+        return appointmentRepository.findAppointmentsByStaffAndStatusOrderByScheduleDateDesc(new User(staffId), status);
     }
 
     @Override

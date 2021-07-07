@@ -23,10 +23,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "on a.conversation_id = c.id " +
             "and c.seller_id = :sellerId " +
             "and a.status = :status " +
-            "and a.schedule_date >= :time", nativeQuery = true)
+            "order by schedule_date desc", nativeQuery = true)
     List<Appointment> findBySellerIdAndStatus(@Param(value = "sellerId") String sellerId,
-                                              @Param(value = "status") String status,
-                                              @Param(value = "time") Date time);
+                                              @Param(value = "status") String status);
 
     @Modifying
     @Transactional
@@ -39,12 +38,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "on a.conversation_id = c.id " +
             "and c.buyer_id = :buyerId " +
             "and a.status = :status " +
-            "and a.schedule_date >= :time", nativeQuery = true)
+            "order by schedule_date desc", nativeQuery = true)
     List<Appointment> findByBuyerIdAndStatus(@Param(value = "buyerId") String buyerId,
-                                             @Param(value = "status") String status,
-                                             @Param(value = "time") Date time);
+                                             @Param(value = "status") String status);
 
-    List<Appointment> findAppointmentsByStaffAndStatusAndScheduleDateIsGreaterThanEqual (User staff, String status, Date time);
+    List<Appointment> findAppointmentsByStaffAndStatusOrderByScheduleDateDesc (User staff, String status);
 
     Appointment findByConversationAndCreateAt(Conversation conversation, Date createAt);
 }
