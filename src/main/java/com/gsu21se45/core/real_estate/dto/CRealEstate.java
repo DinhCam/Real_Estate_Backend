@@ -34,6 +34,5 @@ public class CRealEstate {
     private String investor;
     private int numberOfBedroom;
     private int numberOfBathroom;
-    private int lot;
     private List<ImageResource> images;
 }

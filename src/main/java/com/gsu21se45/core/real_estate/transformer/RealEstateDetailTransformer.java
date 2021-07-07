@@ -83,10 +83,10 @@ public class RealEstateDetailTransformer implements ResultTransformer {
 
     private FacilityDto getFacilityDto(Object[] tuples, Map<String, Integer> aliasList){
         FacilityDto  rs = new FacilityDto();
-        rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("facilityId")]));
+        rs.setFacilityId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("facilityId")]));
         rs.setFacilityName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityName")]));
         rs.setFacilityType(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityType")]));
         rs.setDistance((Double) tuples[aliasList.get("distance")]);
-        return StringUtils.isEmpty(rs.getId()) ? null : rs;
+        return StringUtils.isEmpty(rs.getFacilityId()) ? null : rs;
     }
 }

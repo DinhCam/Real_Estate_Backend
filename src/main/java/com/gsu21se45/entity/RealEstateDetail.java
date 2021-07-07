@@ -57,7 +57,4 @@ public class RealEstateDetail implements Serializable {
 
     @Column(name = "number_of_bathroom")
     private int numOfBathroom;
-
-    @Column(name = "lot")
-    private int lot;
 }

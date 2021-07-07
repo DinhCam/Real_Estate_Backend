@@ -12,21 +12,21 @@ import java.util.Objects;
 @Getter
 @Setter
 public class FacilityDto {
-    private int id;
+    private Integer facilityId;
     private String facilityType;
     private String facilityName;
-    private double distance;
+    private Double distance;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FacilityDto that = (FacilityDto) o;
-        return id == that.id;
+        return facilityId == that.facilityId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(facilityId);
     }
 }

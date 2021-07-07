@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
+import java.util.*;
 
 public interface RealEstateRespo {
     Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p);
@@ -149,7 +149,6 @@ public interface RealEstateRespo {
             Integer streetWardId = 0;
             RealEstateDetail realEstateDetail = new RealEstateDetail();
             Integer realEstateDetailId = 0;
-            ImageResource imageResource = new ImageResource();
             try {
                 java.sql.Timestamp  sqlDate = new java.sql.Timestamp (new java.util.Date().getTime());
                 String status = "inactive";
@@ -181,15 +180,15 @@ public interface RealEstateRespo {
                 realEstateDetail.setInvestor(cRealEstate.getInvestor());
                 realEstateDetail.setNumOfBedroom(cRealEstate.getNumberOfBedroom());
                 realEstateDetail.setNumOfBathroom(cRealEstate.getNumberOfBathroom());
-                realEstateDetail.setLot(cRealEstate.getLot());
 
                 realEstateDetailId = (Integer) session.save(realEstateDetail);
 
                 for (ImageResource i:cRealEstate.getImages()) {
+                    ImageResource imageResource = new ImageResource();
                     imageResource.setRealEstateDetail(em.find(RealEstateDetail.class, realEstateDetailId));
                     imageResource.setImgUrl(i.getImgUrl());
+                    session.save(imageResource);
                 }
-                session.save(imageResource);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;

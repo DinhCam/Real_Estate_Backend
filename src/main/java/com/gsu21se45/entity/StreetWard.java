@@ -28,8 +28,4 @@ public class StreetWard implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "street_id")
     private Street street;
-
-    @Column(name = "average_price")
-    private double averagePrice;
-
 }
