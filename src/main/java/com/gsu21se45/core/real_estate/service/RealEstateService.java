@@ -14,10 +14,10 @@ import java.util.List;
 
 public interface RealEstateService {
     Page<RealEstateDto> getAllRealEstates(RequestPrams r);
-    Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size);
-    Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
     RealEstateDetailDto getRealEstateDetailById(int id);
     boolean createRealEstate(CRealEstate cRealEstate);
@@ -39,7 +39,7 @@ public interface RealEstateService {
         }
 
         @Override
-        public Page<RealEstateDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size) {
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstatesBySellerId(sellerId, pageable);
         }
@@ -57,7 +57,7 @@ public interface RealEstateService {
         }
 
         @Override
-        public Page<GRealEstateAssignedStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size) {
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstateAssignStaff(staffId, pageable);
         }
@@ -69,7 +69,9 @@ public interface RealEstateService {
 
         @Override
         public RealEstateDetailDto getRealEstateDetailById(int id) {
-            return rs.getRealEstateDetailById(id);
+            RealEstateDetailDto result = rs.getRealEstateDetailById(id);
+            rs.updateView(id);
+            return result;
         }
 
         @Override

@@ -27,6 +27,12 @@ public class RealEstateDetail implements Serializable {
     @JoinColumn(name = "street_ward_id")
     private StreetWard streetWard;
 
+    @Column(name = "latitude")
+    private double latitude;
+
+    @Column(name = "longitude")
+    private double longitude;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
     private RealEstateType realEstateType;
@@ -51,6 +57,12 @@ public class RealEstateDetail implements Serializable {
 
     @Column(name = "investor", length = 255)
     private String investor;
+
+    @Column(name = "juridical", length = 255)
+    private String juridical;
+
+    @Column(name = "furniture", length = 255)
+    private String furniture;
 
     @Column(name = "number_of_bedroom")
     private int numOfBedroom;

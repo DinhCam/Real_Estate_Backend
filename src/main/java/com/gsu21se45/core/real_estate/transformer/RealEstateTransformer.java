@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 public class RealEstateTransformer implements ResultTransformer {
-    Map<Integer, RealEstateDto> result = new HashMap<>();
+    Map<Integer, RealEstateDto> result = new LinkedHashMap<>();
 
     @Override
     public Object transformTuple(Object[] tuples, String[] alias) {

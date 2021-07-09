@@ -8,25 +8,31 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GRealEstateAssignedStaffDto {
+public class GRealEstateBySellerOrStaffDto {
     private int id;
-    private String sellerId;
-    private String sellerName;
-    private String staffName;
     private String title;
     private String description;
+    private int view;
+    private String sellerId;
+    private String sellerName;
+    private String sellerAvatar;
+    private String staffId;
+    private String staffName;
+    private String staffAvatar;
+    private Double area;
+    private Double price;
+    private int numberOfBedroom;
+    private int numberOfBathroom;
+    private String project;
     private String streetName;
     private String wardName;
     private String disName;
-    private Double area;
-    private Double price;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createAt;

@@ -13,8 +13,11 @@ import java.util.Objects;
 @Setter
 public class FacilityDto {
     private Integer facilityId;
-    private String facilityType;
+    private Integer facilityTypeId;
+    private String facilityTypeName;
     private String facilityName;
+    private Double latitude;
+    private Double longitude;
     private Double distance;
 
     @Override
