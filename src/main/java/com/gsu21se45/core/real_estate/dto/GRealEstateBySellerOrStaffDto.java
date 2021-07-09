@@ -19,6 +19,7 @@ public class GRealEstateBySellerOrStaffDto {
     private String title;
     private String description;
     private int view;
+    private String status;
     private String sellerId;
     private String sellerName;
     private String sellerAvatar;

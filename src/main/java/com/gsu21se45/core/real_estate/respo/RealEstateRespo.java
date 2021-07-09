@@ -367,6 +367,7 @@ public interface RealEstateRespo {
                 "r.title as title, \n" +
                 "rd.description as description,\n" +
                 "r.view as view, \n" +
+                "r.status as status,\n" +
                 "s.id as sellerId,\n" +
                 "s.username as sellerName,\n" +
                 "s.avatar as sellerAvatar,\n" +
