@@ -14,7 +14,7 @@ import java.util.Objects;
 public class BuyerDto {
     private String buyerId;
     private String buyerName;
-    private String avatar;
+    private String buyerAvatar;
 
     @Override
     public boolean equals(Object o) {

@@ -19,6 +19,8 @@ public class RealEstateDetailDto {
     private int id;
     private String title;
     private String description;
+    private Double latitude;
+    private Double longitude;
     private String typeName;
     private int view;
     private String sellerId;
@@ -34,6 +36,8 @@ public class RealEstateDetailDto {
     private int numberOfBathroom;
     private String project;
     private String investor;
+    private String juridical;
+    private String furniture;
     private Set<ImageDto> images;
     private Set<FacilityDto> facilities = new HashSet<>();
     private String streetName;

@@ -23,5 +23,4 @@ public class District implements Serializable {
 
     @Column(name = "name", length = 255)
     private String name;
-
 }

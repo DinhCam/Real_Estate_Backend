@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RealEstateDetailTransformer implements ResultTransformer {
-     Map<Integer, RealEstateDetailDto> result = new HashMap<>();
+     Map<Integer, RealEstateDetailDto> result = new LinkedHashMap<>();
 
     @Override
     public Object transformTuple(Object[] tuples, String[] alias) {
@@ -71,6 +71,10 @@ public class RealEstateDetailTransformer implements ResultTransformer {
         rs.setTypeName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("typeName")]));
         rs.setBalconyDirection(TypeTransformImpl.castObjectToString(tuples[aliasList.get("balconyDirection")]));
         rs.setAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("avatar")]));
+        rs.setLatitude((Double) tuples[aliasList.get("latitude")]);
+        rs.setLongitude((Double) tuples[aliasList.get("longitude")]);
+        rs.setJuridical(TypeTransformImpl.castObjectToString(tuples[aliasList.get("juridical")]));
+        rs.setFurniture(TypeTransformImpl.castObjectToString(tuples[aliasList.get("furniture")]));
         return rs;
     }
 
@@ -85,7 +89,10 @@ public class RealEstateDetailTransformer implements ResultTransformer {
         FacilityDto  rs = new FacilityDto();
         rs.setFacilityId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("facilityId")]));
         rs.setFacilityName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityName")]));
-        rs.setFacilityType(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityType")]));
+        rs.setFacilityTypeId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("facilityTypeId")]));
+        rs.setFacilityTypeName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("facilityTypeName")]));
+        rs.setLatitude((Double) tuples[aliasList.get("latitude")]);
+        rs.setLongitude((Double) tuples[aliasList.get("longitude")]);
         rs.setDistance((Double) tuples[aliasList.get("distance")]);
         return StringUtils.isEmpty(rs.getFacilityId()) ? null : rs;
     }

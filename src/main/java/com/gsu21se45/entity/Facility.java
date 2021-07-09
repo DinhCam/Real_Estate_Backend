@@ -1,19 +1,16 @@
 package com.gsu21se45.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "facility")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Facility implements Serializable {
 
     @Id
@@ -23,10 +20,14 @@ public class Facility implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
-    private FacilityType type;
+    private FacilityType facilityTypeId;
 
     @Column(name = "name", length = 255)
-    private String name;
+    private String facilityName;
 
+    @Column(name = "latitude")
+    private double latitude;
 
+    @Column(name = "longitude")
+    private double longitude;
 }
