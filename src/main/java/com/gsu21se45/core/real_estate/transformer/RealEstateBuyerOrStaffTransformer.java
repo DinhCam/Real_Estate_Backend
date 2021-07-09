@@ -51,6 +51,7 @@ public class RealEstateBuyerOrStaffTransformer implements ResultTransformer {
         rs.setTitle(TypeTransformImpl.castObjectToString(tuples[aliasList.get("title")]));
         rs.setDescription(TypeTransformImpl.castObjectToString(tuples[aliasList.get("description")]));
         rs.setView(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("view")]));
+        rs.setStatus(TypeTransformImpl.castObjectToString(tuples[aliasList.get("status")]));
         rs.setSellerId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerId")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
         rs.setSellerAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerAvatar")]));
