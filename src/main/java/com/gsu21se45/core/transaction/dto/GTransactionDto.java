@@ -27,6 +27,7 @@ public class GTransactionDto {
     private String wardName;
     private String disName;
     private double downPrice;
+    private String note;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createAt;
