@@ -18,5 +18,6 @@ public class CTransactionDto {
     private String staffId;
     private int realEstateId;
     private double downPrice;
+    private String note;
     private Date createAt;
 }

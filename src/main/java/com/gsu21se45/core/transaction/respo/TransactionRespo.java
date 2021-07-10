@@ -33,7 +33,8 @@ public interface TransactionRespo {
                         .setParameter(4, transactionDto.getStaffId())
                         .setParameter(5, transactionDto.getRealEstateId())
                         .setParameter(6, transactionDto.getDownPrice())
-                        .setParameter(7, sqlDate)
+                        .setParameter(7, transactionDto.getNote())
+                        .setParameter(8, sqlDate)
                         .executeUpdate();
             } catch(Exception ex){
                 ex.printStackTrace();
@@ -56,8 +57,8 @@ public interface TransactionRespo {
         }
     }
     class Query{
-        public static final String CREATE_TRANSACTION = "insert into transaction (title, buyer_id, seller_id, staff_id, real_estate_id, down_price, create_at)\n" +
-                "values (?, ?, ?, ?, ?, ?, ?)";
+        public static final String CREATE_TRANSACTION = "insert into transaction (title, buyer_id, seller_id, staff_id, real_estate_id, down_price, note, create_at)\n" +
+                "values (?, ?, ?, ?, ?, ?, ?, ?)";
 
         public static String getTransactionByUserId = "select tr.id, \n" +
                 "tr.title, \n" +
@@ -73,6 +74,7 @@ public interface TransactionRespo {
                 "w.name as wardName, \n" +
                 "d.name as disName,\n" +
                 "tr.down_price as downPrice, \n" +
+                "tr.note as note, \n" +
                 "tr.create_at as createAt\n" +
                 "from transaction tr\n" +
                 "left join user s on tr.seller_id = s.id\n" +
