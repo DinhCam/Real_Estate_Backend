@@ -27,4 +27,5 @@ public class ConversationMapper {
         model.setMessages(messages != null ? objectMapper.convertToListDTO(messages, MessageModel.class) : null);
         return model;
     }
+
 }

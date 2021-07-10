@@ -35,4 +35,5 @@ public class RestEntityConstant {
     //value
     public static final String CANCEL_STATUS = "canceled";
     public static final String PASS_STATUS = "passed";
+    public static final String CLOSE_SALE_STATUS = "close sale";
 }

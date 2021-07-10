@@ -11,4 +11,6 @@ public interface ConversationService {
     Conversation save(Conversation conversation);
 
     List<Integer> getIdsByRecipientId(String recipientId);
+
+    Conversation getConversationByRealEstateIdAndStatusOfAppointment(int realEstateId, String status);
 }

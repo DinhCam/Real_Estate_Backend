@@ -1,7 +1,9 @@
 package com.gsu21se45.controller;
 
 import com.gsu21se45.common.constant.RestEntityConstant;
+import com.gsu21se45.dto.AppointmentModel;
 import com.gsu21se45.dto.ConversationModel;
+import com.gsu21se45.dto.UserModel;
 import com.gsu21se45.entity.*;
 import com.gsu21se45.mapper.ConversationMapper;
 import com.gsu21se45.service.AppointmentService;
@@ -56,6 +58,7 @@ public class ConversationController {
         } else {
             conversation = conversationService.save(new Conversation(-1, new User(buyerId), new User(sellerId), new RealEstate(realEstateId)));
             model = conversationMapper.convertToDTO(conversation, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
         }
         LOGGER.debug("End inside ConversationController.getAllMessageByConversation()");
         return model;
@@ -66,6 +69,27 @@ public class ConversationController {
     public @ResponseBody
     List<Integer> getAllIdsByRecipientId(@PathVariable String recipientId){
         return conversationService.getIdsByRecipientId(recipientId);
+    }
+
+    @ApiOperation(value = "Get buyerId of conversation following appointment status is close sale ")
+    @GetMapping(RestEntityConstant.URI_CONVERSATION)
+    public @ResponseBody
+    ConversationModel getBuyerIdByCloseSaleAppointment(
+            @RequestParam(name = RestEntityConstant.REAL_ESTATE_ID, required = true) int realEstateId
+            , @RequestParam(name = RestEntityConstant.CLOSE_SALE_STATUS, required = true) String status){
+        LOGGER.debug("Begin inside ConversationController.getBuyerIdByCloseSaleAppointment()");
+        ConversationModel model = new ConversationModel();
+
+        Conversation conversation = conversationService.getConversationByRealEstateIdAndStatusOfAppointment(realEstateId, status);
+        model = conversationMapper.convertToDTO(conversation, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+
+//        UserModel model = user != null ? ((UserModel) objectMapper.convertToDTO(user, UserModel.class)) : null;
+//        List<Appointment> appointments = appointmentService.findBySellerIdAndStatus(realEstateId, status);
+//        List<AppointmentModel> appointmentModels = appointmentHelper.getRealEstates(appointments);
+
+        LOGGER.debug("End inside ConversationController.getBuyerIdByCloseSaleAppointment()");
+        return model;
     }
 
 }

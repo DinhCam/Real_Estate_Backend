@@ -30,4 +30,9 @@ public class ConversationServiceImpl implements ConversationService {
     public List<Integer> getIdsByRecipientId(String recipientId) {
         return conversationRepository.getIdsByRecipientId(recipientId);
     }
+
+    @Override
+    public Conversation getConversationByRealEstateIdAndStatusOfAppointment(int realEstateId, String status) {
+        return conversationRepository.findByRealEstateIdAndStatus(realEstateId, status);
+    }
 }
