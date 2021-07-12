@@ -63,11 +63,11 @@ public interface TransactionRespo {
         public static String getTransactionByUserId = "select tr.id, \n" +
                 "tr.title, \n" +
                 "s.id as sellerId,\n" +
-                "s.username as sellerName, \n" +
+                "s.fullname as sellerName, \n" +
                 "b.id as buyerId,\n" +
-                "b.username as buyerName,\n" +
+                "b.fullname as buyerName,\n" +
                 "st.id as staffId, \n" +
-                "st.username as staffName,\n" +
+                "st.fullname as staffName,\n" +
                 "r.id as realEstateId, \n" +
                 "r.title as realEstateTitle,\n" +
                 "street.name as streetName, \n" +

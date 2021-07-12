@@ -282,10 +282,10 @@ public interface RealEstateRespo {
                 "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
-                "s.username as sellerName, \n" +
+                "s.fullname as sellerName, \n" +
                 "s.avatar as avatar, \n" +
                 "st.id as staffId, \n" +
-                "st.username as staffName ,\n" +
+                "st.fullname as staffName ,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
@@ -329,14 +329,15 @@ public interface RealEstateRespo {
                 "r.title as title, \n" +
                 "rd.description as description,\n" +
                 "r.view as view, \n" +
+                "r.status as status,\n" +
                 "s.id as sellerId,\n" +
-                "s.username as sellerName,\n" +
+                "s.fullname as sellerName,\n" +
                 "s.avatar as sellerAvatar,\n" +
                 "c.buyer_id as buyerId,\n" +
-                "b.username as buyerName,\n" +
+                "b.fullname as buyerName,\n" +
                 "b.avatar as buyerAvatar,\n" +
                 "st.id as staffId,\n" +
-                "st.username as staffName,\n" +
+                "st.fullname as staffName,\n" +
                 "st.avatar as staffAvatar,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
@@ -369,13 +370,13 @@ public interface RealEstateRespo {
                 "r.view as view, \n" +
                 "r.status as status,\n" +
                 "s.id as sellerId,\n" +
-                "s.username as sellerName,\n" +
+                "s.fullname as sellerName,\n" +
                 "s.avatar as sellerAvatar,\n" +
                 "c.buyer_id as buyerId,\n" +
-                "b.username as buyerName,\n" +
+                "b.fullname as buyerName,\n" +
                 "b.avatar as buyerAvatar,\n" +
                 "st.id as staffId,\n" +
-                "st.username as staffName,\n" +
+                "st.fullname as staffName,\n" +
                 "st.avatar as staffAvatar,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
@@ -408,9 +409,9 @@ public interface RealEstateRespo {
                 "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
-                "s.username as sellerName, \n" +
+                "s.fullname as sellerName, \n" +
                 "st.id as staffId,\n" +
-                "st.username as staffName,\n" +
+                "st.fullname as staffName,\n" +
                 "st.avatar as avatar,\n" +
                 "rd.direction as direction,\n" +
                 "rd.balcony_direction as balconyDirection,\n" +
@@ -456,10 +457,10 @@ public interface RealEstateRespo {
                 "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
-                "s.username as sellerName, \n" +
+                "s.fullname as sellerName, \n" +
                 "s.avatar as avatar,\n" +
                 "st.id as staffId,\n" +
-                "st.username as staffName,\n" +
+                "st.fullname as staffName,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
@@ -490,10 +491,10 @@ public interface RealEstateRespo {
                 "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
-                "s.username as sellerName, \n" +
+                "s.fullname as sellerName, \n" +
                 "s.avatar as avatar,\n" +
                 "st.id as staffId,\n" +
-                "st.username as staffName,\n" +
+                "st.fullname as staffName,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
