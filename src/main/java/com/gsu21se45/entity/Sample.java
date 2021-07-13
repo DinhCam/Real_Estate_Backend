@@ -22,14 +22,14 @@ public class Sample implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "street", length = 255)
-    private String street;
+    @Column(name = "street_id")
+    private int streetId;
 
-    @Column(name = "ward", length = 255)
-    private String ward;
+    @Column(name = "ward_id")
+    private int wardId;
 
-    @Column(name = "district", length = 255)
-    private String district;
+    @Column(name = "district_id")
+    private String districtId;
 
     @Column(name = "price")
     private double price;
@@ -37,10 +37,10 @@ public class Sample implements Serializable {
     @Column(name = "area")
     private double area;
 
-    @Column(name = "post_time", length = 255)
+    @Column(name = "post_time")
     private Date postTime;
 
-    @Column(name = "type", length = 255)
-    private String type;
+    @Column(name = "type")
+    private int type;
 
 }

@@ -1,5 +1,6 @@
 package com.gsu21se45.controller;
 
+import com.gsu21se45.common.constant.AppConstant;
 import com.gsu21se45.common.constant.RestEntityConstant;
 import com.gsu21se45.dto.UserModel;
 import com.gsu21se45.entity.User;
@@ -9,7 +10,13 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(RestEntityConstant.URI_ROOT + RestEntityConstant.URI_VERSION + RestEntityConstant.URI_ACCOUNT)
@@ -58,5 +65,18 @@ public class UserController {
         User user = (User) objectMapper.convertToEntity(model, User.class);
         userService.update(user);
         LOGGER.debug("Begin inside UserController.update()");
+    }
+
+    @GetMapping(value = RestEntityConstant.URI_GET + RestEntityConstant.URI_ALL)
+    @ApiOperation(value = "Get list account by role with pagination")
+    public @ResponseBody
+    Page<UserModel> getByRole(@RequestParam(name = "page", defaultValue = AppConstant.DEFAULT_PAGE + "", required = false) int page,
+                              @RequestParam(name = "pageSize", defaultValue = AppConstant.DEFAULT_PAGE_SIZE + "", required = false) int pageSize,
+                              @RequestParam(name = "role", defaultValue = AppConstant.DEFAULT_ROLE, required = false) String role) {
+        LOGGER.debug("Begin inside UserController.getByRole()");
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("fullname"));
+        Page<UserModel> users = userService.getByRole(role, pageable).map(entity ->(UserModel) objectMapper.convertToDTO(entity, UserModel.class));
+        LOGGER.debug("Begin inside UserController.getByRole()");
+        return users;
     }
 }

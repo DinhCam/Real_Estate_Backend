@@ -1,0 +1,295 @@
+import requests
+import itertools
+import math
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+from db_util import get_re_type_id, get_address, insert_sample, insert_avg_street, insert_avg_ward, insert_avg_district
+
+
+list_samples = []
+current_month = datetime.now().month
+current_year = datetime.now().year
+current_date = datetime(year=int(current_year),
+                        month=int(current_month), day=1)
+last_date = datetime(year=int(current_year),
+                     month=(int(current_month) - 1), day=1)
+apartment_id = get_re_type_id(['Chung cư'])
+house_id = get_re_type_id(['Nhà'])
+unexpected_prices = ['Giá thỏa thuận']
+expected_prices = ['triệu/m²', 'triệu', 'tỷ/m²', 'tỷ']
+expected_dates = ['giây trước', 'phút trước', 'giờ trước', 'hôm qua', 'ngày trước', 'tuần trước', 'tháng trước']
+
+
+def convert_date(up_date):
+    current_day = datetime.now().day
+    new_date = datetime(year=int(current_year), month=int(current_month), day=int(current_day))
+    date_plit = up_date.split(' ')
+    date_size = len(date_plit)
+    number = date_plit[date_size - 3]
+    if expected_dates[3] in up_date:
+        new_date = new_date - timedelta(days=1)
+    elif expected_dates[4] in up_date:
+        new_date = new_date - timedelta(days=int(number))
+    elif expected_dates[5] in up_date:
+        days = int(number) * 7
+        new_date = new_date - timedelta(days=days)
+    elif expected_dates[6] in up_date:
+        new_date = new_date - relativedelta(months=int(number))
+    return new_date
+
+
+def download_source(url):
+    html = ''
+    try:
+        driver = webdriver.Chrome('chromedriver.exe')
+        driver.get(url)
+        html = driver.page_source
+    except:
+        return html
+        pass
+    return html
+
+
+def convert_price(price, type, area):
+    new_price = 0
+    if type == -1:
+        return new_price
+    price = float(price.split(' ')[0])
+    # 0 is triệu/m2
+    if type == 0:
+        new_price = price * area * 1000000
+    # 1 is triệu
+    elif type == 1:
+        new_price = price * 1000000
+    # 2 is tỷ
+    elif type == 2:
+        new_price = price * 1000000000
+    # 3 is tỷ/m²
+    else:
+        new_price = price * area * 1000000000
+    return math.floor(new_price)
+
+
+def check_price_type(price):
+    type = -1
+    if unexpected_prices[0] in price:
+        return type
+    elif expected_prices[0] in price:
+        type = 0
+    elif expected_prices[1] in price:
+        type = 1
+    elif expected_prices[2] in price:
+        type = 3
+    elif expected_prices[3] in price:
+        type = 2
+    return type
+
+
+def filter_data_for_bds(type_id, soup, html, tag, attrs):
+    for a_control in soup.find_all(tag, attrs=attrs):
+        try:
+            product = a_control.find('div', 'product-main')
+            up_time = product.find('span', attrs='tooltip-time').text
+            time_split = up_time.split("/")
+            up_date = datetime(year=int(time_split[2]), month=int(
+                time_split[1]), day=int(time_split[0]))
+            print(up_date)
+            if current_date > up_date and last_date <= up_date:
+                price = product.find('span', attrs='price').text
+                type = check_price_type(price)
+                area = product.find('span', attrs='area').text
+                area = float(area.split(' ')[0])
+                new_price = convert_price(price, type, area)
+                if new_price > 0:
+                    sub_link = 'https://batdongsan.com.vn' + a_control.get('href')
+                    sub_html = download_source(sub_link)
+                    sub_soup = BeautifulSoup(sub_html, 'html.parser')
+                    address = ''
+                    for title in sub_soup.find_all('div', attrs='detail-2 pad-16'):
+                        for r in title.find_all('div', attrs='row-1'):
+                            if r.find('span', attrs='r1').text == 'Địa chỉ:':
+                                address = r.find('span', attrs='r2').text
+                                break
+                        if address != '':
+                            break
+                    address_plit = address.split(', ')
+                    address_size = len(address_plit)
+                    if address_size > 3:
+                        address = get_address([address_plit[address_size-4], address_plit[address_size-3], address_plit[address_size-2]])
+                        if address != None:
+                            # street_id, ward_id, district_id, price, area, post_time, type
+                            list_samples.append([address[2], address[1], address[3], new_price, area, up_date, type_id])
+        except:
+            pass
+
+
+def filter_data_for_ct(type_id, soup, html, tag, attrs):    
+    for li_control in soup.find_all(tag, attrs=attrs):
+        try:
+            price = li_control.find('span', attrs='adPriceNormal___puYxd').text
+            sub_link = 'https://nha.chotot.com/' + li_control.find('a', attrs='adItem___2GCVQ').get('href')
+            sub_html = download_source(sub_link)
+            sub_soup = BeautifulSoup(sub_html, 'html.parser')
+            up_date = sub_soup.find('span', attrs='imageCaptionText___oZJUB').text
+            new_date = convert_date(up_date)
+            print(up_date)
+            if current_date > new_date and last_date <= new_date:
+                address = sub_soup.find('span', attrs='fz13').text
+                type = check_price_type(price)
+                area = sub_soup.find('span', attrs='squareMetre___5_gjS').text
+                area = float(area.split(' ')[1])
+                price = price.replace(',', '.')
+                new_price = convert_price(price, type, area)
+                address_plit = address.split(', ')
+                address_size = len(address_plit)
+                print(address_plit[address_size-4], address_plit[address_size-3], address_plit[address_size-2])
+                if address_size > 3:
+                    address = get_address([address_plit[address_size-4], address_plit[address_size-3], address_plit[address_size-2]])
+                    print(address)
+                    if address != None:
+                        # street_id, ward_id, district_id, price, area, post_time, type
+                        list_samples.append([address[2], address[1], address[3], new_price, area, new_date, type_id])
+        except:
+            pass
+
+
+def is_end_of_page(soup, tag, attrs):
+    div_control = soup.find(tag, attrs=attrs)
+    if div_control == None:
+        return False
+    return True
+
+
+def bds_handler(uri, type_id):
+    for i in itertools.count(start=1):
+        try:
+            url = uri + str(i)
+            html = download_source(url)
+            soup = BeautifulSoup(html, 'html.parser')
+            is_ended = is_end_of_page(
+                soup, tag='div', attrs={'listing-empty'})
+            # if i == 703:
+            #     is_ended = True
+            if is_ended:
+                break
+            filter_data_for_bds(type_id, soup, html, tag='a', attrs={'class': 'wrap-plink'})
+        except:
+            pass
+
+
+def ct_handler(uri, type_id):
+    for i in itertools.count(start=1):
+        try:
+            url = uri + str(i)
+            html = download_source(url)
+            soup = BeautifulSoup(html, 'html.parser')
+            is_ended = is_end_of_page(
+                soup, tag='div', attrs={'warning___3ul9q'})
+            # if i == 501:
+            #     is_ended = True
+            if is_ended:
+                break
+            filter_data_for_ct(type_id, soup, html, tag='li', attrs={'class': 'wrapperAdItem___2woJ1 big___19xoK'})
+        except:
+            pass
+
+
+def filter_sample(position):
+    samples = list_samples.copy()
+    result = []
+    while len(samples) > 0:
+        first = samples[0]
+        id = []
+        for sample in list_samples:
+            if first[position] == sample[position] and first[6] == sample[6]:
+                id.append(sample)
+                samples.remove(sample)
+        if len(id) > 0:
+            result.append(id)
+    return result
+
+
+def calculator():
+    streets = filter_sample(0)
+    # print(streets)
+    wards = filter_sample(1)
+    # print(wards)
+    districts = filter_sample(2)
+    # print(districts)
+    month = current_month - 1
+    year = current_year
+    if month == 0:
+        month = 12
+        year = int(current_year) - 1
+    
+    # insert for street
+    for street in streets:
+        try:
+            total_price = 0
+            street_id = street[0][0]
+            type_id = street[0][6]
+            for item in street:
+                price = item[3]/item[4]
+                total_price += price
+            avg_price = math.floor(total_price/len(street))
+            insert_avg_street([street_id, avg_price, month, year, type_id])
+            # print('street: ', street)
+        except:
+            pass
+    # insert for ward
+    for ward in wards:
+        try:
+            total_price = 0
+            ward_id = ward[0][1]
+            type_id = ward[0][6]
+            for item in ward:
+                price = item[3]/item[4]
+                total_price += price
+            avg_price = math.floor(total_price/len(ward))
+            insert_avg_ward([ward_id, avg_price, month, year, type_id])
+            # print('ward: ', ward)
+        except:
+            pass
+    # insert for district
+    for district in districts:
+        try:
+            total_price = 0
+            district_id = district[0][2]
+            type_id = district[0][6]
+            for item in district:
+                price = item[3]/item[4]
+                total_price += price
+            avg_price = math.floor(total_price/len(district))
+            insert_avg_district([district_id, avg_price, month, year, type_id])
+            # print('district: ', district)
+        except:
+            pass
+
+
+if __name__ == '__main__':
+    bds_urls = ['https://batdongsan.com.vn/ban-nha-dat-tp-hcm/p',
+                'https://batdongsan.com.vn/ban-can-ho-chung-cu-tp-hcm/p']
+    ct_urls = ['https://nha.chotot.com/tp-ho-chi-minh/mua-ban-nha-dat?page=',
+                'https://nha.chotot.com/tp-ho-chi-minh/mua-ban-can-ho-chung-cu?page=']
+    bds_handler(bds_urls[0], house_id[0])
+    bds_handler(bds_urls[1], apartment_id[0])
+    ct_handler(ct_urls[0], house_id[0])
+    ct_handler(ct_urls[1], apartment_id[0])
+    # list_samples = [[35779, 308, 24, 12500000000.0, 200.0, datetime(2021, 6, 29, 0, 0), 2], 
+    # [12363, 317, 24, 5490000000.0, 32.0, datetime(2021, 6, 29, 0, 0), 2], 
+    # [12363, 317, 24, 7490000000.0, 142.0, datetime(2021, 6, 29, 0, 0), 1], 
+    # [12363, 317, 24, 3300000000.0, 242.0, datetime(2021, 6, 29, 0, 0), 1], 
+    # [12363, 317, 24, 5490000000.0, 142.0, datetime(2021, 6, 29, 0, 0), 1], 
+    # [12363, 317, 24, 8300000000.0, 42.0, datetime(2021, 6, 29, 0, 0), 2], 
+    # [12363, 317, 12, 6490000000.0, 142.0, datetime(2021, 6, 29, 0, 0), 2], 
+    # [19867, 163, 12, 8300000000.0, 74.0, datetime(2021, 6, 29, 0, 0), 1]]
+    print(len(list_samples))
+    if len(list_samples) > 0:
+        for sample in list_samples:
+            try:
+                insert_sample(sample)
+            except:
+                pass
+        calculator()

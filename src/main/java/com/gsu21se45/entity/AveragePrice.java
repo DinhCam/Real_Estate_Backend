@@ -43,6 +43,6 @@ public class AveragePrice implements Serializable {
     private int year;
 
     @Column(name = "type")
-    private String type;
+    private int type;
 
 }
