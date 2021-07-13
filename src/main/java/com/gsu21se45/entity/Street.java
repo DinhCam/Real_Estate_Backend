@@ -24,4 +24,7 @@ public class Street implements Serializable {
     @Column(name = "name", length = 255)
     private String name;
 
+    public Street(int id) {
+        this.id = id;
+    }
 }

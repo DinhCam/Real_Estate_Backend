@@ -1,0 +1,7 @@
+step 1: install python
+step 2: open terminal
+step 3: cd to folder crawler in be source
+step 4: run this command 'pip install -r requirements.txt'
+step 5: if you get any problems in install it, please contact me
+step 6: open db_util.py edit host, user, password for you
+step 7: to start crawler -> run this command: python crawler.py 

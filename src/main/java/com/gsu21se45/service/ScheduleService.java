@@ -7,4 +7,6 @@ import java.util.List;
 public interface ScheduleService {
 
     List<Schedule> findBySellerId(String sellerId);
+
+    void save(List<Schedule> entities);
 }
