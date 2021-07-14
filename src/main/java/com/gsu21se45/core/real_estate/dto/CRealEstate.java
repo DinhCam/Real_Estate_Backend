@@ -18,7 +18,6 @@ import java.util.List;
 public class CRealEstate {
     private String sellerId;
     private String title;
-    private int view;
     private Timestamp createAt;
     private String status;
     private int id;

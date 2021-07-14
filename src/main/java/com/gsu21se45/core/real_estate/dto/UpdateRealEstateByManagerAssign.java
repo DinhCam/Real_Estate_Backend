@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateStatusByStaffAccuracy {
+public class UpdateRealEstateByManagerAssign {
     private int id;
     private String staffId;
 }

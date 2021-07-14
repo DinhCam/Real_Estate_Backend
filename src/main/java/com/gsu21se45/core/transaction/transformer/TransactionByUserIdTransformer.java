@@ -27,7 +27,6 @@ public class TransactionByUserIdTransformer implements ResultTransformer {
     private GTransactionDto getGTransactionDto(Object[] tuples, Map<String, Integer> aliasList){
         GTransactionDto rs = new GTransactionDto();
         rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("id")]));
-        rs.setTitle(TypeTransformImpl.castObjectToString(tuples[aliasList.get("title")]));
         rs.setSellerId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerId")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
         rs.setBuyerId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("buyerId")]));
@@ -39,8 +38,11 @@ public class TransactionByUserIdTransformer implements ResultTransformer {
         rs.setStreetName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("streetName")]));
         rs.setWardName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("wardName")]));
         rs.setDisName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("disName")]));
+        rs.setTransactionImg(TypeTransformImpl.castObjectToString(tuples[aliasList.get("transactionImg")]));
+        rs.setDeposit((Double) tuples[aliasList.get("deposit")]);
         rs.setDownPrice((Double) tuples[aliasList.get("downPrice")]);
         rs.setNote(TypeTransformImpl.castObjectToString(tuples[aliasList.get("note")]));
+        rs.setAppointmentDate((Timestamp) tuples[aliasList.get("appointmentDate")]);
         rs.setCreateAt((Timestamp) tuples[aliasList.get("createAt")]);
         return rs;
     }

@@ -48,11 +48,19 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
-    @GetMapping(value = "/getRealEstatesInactive/{page}")
-    @ApiOperation("Get all real estate have inactive status")
-    public PaginationResponse<RealEstateDto> getRealEstatesInactive(@PathVariable Integer page){
+    @GetMapping(value = "/getRealEstatesInactiveByStaff/{staffId}/{page}")
+    @ApiOperation("Get all real estate have inactive status of a staff")
+    public PaginationResponse<RealEstateDto> getRealEstatesInactiveByStaff(@PathVariable String staffId, @PathVariable Integer page){
         Integer size = 30;
-        Page<RealEstateDto> data = rs.getRealEstatesInactive(page, size);
+        Page<RealEstateDto> data = rs.getRealEstatesInactiveByStaff(staffId, page, size);
+        return new PaginationResponse<>(data);
+    }
+
+    @GetMapping(value = "/getRealEstatesActiveByStaff/{staffId}/{page}")
+    @ApiOperation("Get all real estate have inactive status of a staff")
+    public PaginationResponse<RealEstateDto> getRealEstatesActiveByStaff(@PathVariable String staffId, @PathVariable Integer page){
+        Integer size = 30;
+        Page<RealEstateDto> data = rs.getRealEstatesActiveByStaff(staffId, page, size);
         return new PaginationResponse<>(data);
     }
 
@@ -76,21 +84,23 @@ public class RealEstateController {
         return rs.createRealEstate(cRealEstate) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @PutMapping(value = "/updateRealEstateStatusByStaffAccuracy")
-    @ApiOperation("Update the status of real estate when it has been accuracy staffed")
-    public HttpStatus updateRealEstateStatusByStaffAccuracy(@RequestBody UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy){
-        return rs.updateRealEstateStatusByStaffAccuracy(updateStatusByStaffAccuracy) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    @PutMapping(value = "/updateRealEstateByManagerAssign")
+    @ApiOperation("Update staff_id into real estate when manager assigned")
+    public HttpStatus updateRealEstateByManagerAssign(@RequestBody UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign){
+        return rs.updateRealEstateByManagerAssign(updateRealEstateByManagerAssign) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @PutMapping(value = "/updateRealEstateByStaffAssign")
-    @ApiOperation("Update real estate when staff assigned")
-    public HttpStatus updateRealEstateByStaffAssign(@RequestBody UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy){
-        return rs.updateRealEstateByStaffAssign(updateStatusByStaffAccuracy) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    @PutMapping(value = "/updateRealEstateStatus")
+    @ApiOperation("Update the status of real estate")
+    public HttpStatus updateRealEstateStatus(@RequestBody UpdateStatus updateStatus){
+        return rs.updateRealEstateStatus(updateStatus) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @PutMapping(value = "/updateRealEstateStatusBySellerCancel")
-    @ApiOperation("Update the status of real estate when seller wants to cancel post")
-    public HttpStatus updateRealEstateStatusBySellerCancel(@RequestBody UpdateStatusBySellerCancel updateStatusBySellerCancel){
-        return rs.updateRealEstateStatusBySellerCancel(updateStatusBySellerCancel) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    @GetMapping(value = "/getRealEstateByCensor/{page}")
+    @ApiOperation("Get all real estate have inactive status")
+    public PaginationResponse<GRealEstateByCensorDto> getRealEstateByCensor(@PathVariable Integer page){
+        Integer size = 30;
+        Page<GRealEstateByCensorDto> data = rs.getRealEstateByCensor(page, size);
+        return new PaginationResponse<>(data);
     }
 }

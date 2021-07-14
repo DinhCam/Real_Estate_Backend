@@ -12,11 +12,12 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CTransactionDto {
-    private String title;
     private String buyerId;
     private String sellerId;
     private String staffId;
     private int realEstateId;
+    private String img_url;
+    private double deposit;
     private double downPrice;
     private String note;
     private Date createAt;
