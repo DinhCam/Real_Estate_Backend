@@ -32,11 +32,11 @@ public class RealEstateController {
         return rs.getRealEstateDetailById(id);
     }
 
-    @GetMapping(value = "/getRealEstateBySellerId/{sellerId}/{page}")
-    @ApiOperation("Get all real estate of a seller")
-    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateBySellerId(@PathVariable String sellerId, @PathVariable Integer page){
+    @GetMapping(value = "/getRealEstateBySeller/{sellerId}/{status}/{page}")
+    @ApiOperation("Get all real estate have ? status of a seller")
+    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateBySeller(@PathVariable String sellerId, @PathVariable String status, @PathVariable Integer page){
         Integer size = 30;
-        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesBySellerId(sellerId, page, size);
+        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesBySeller(sellerId, status, page, size);
         return new PaginationResponse<>(data);
     }
 
@@ -48,19 +48,11 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
-    @GetMapping(value = "/getRealEstatesInactiveByStaff/{staffId}/{page}")
-    @ApiOperation("Get all real estate have inactive status of a staff")
-    public PaginationResponse<RealEstateDto> getRealEstatesInactiveByStaff(@PathVariable String staffId, @PathVariable Integer page){
+    @GetMapping(value = "/getRealEstatesByStaff/{staffId}/{status}/{page}")
+    @ApiOperation("Get all real estate have ? status of a staff")
+    public PaginationResponse<RealEstateDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){
         Integer size = 30;
-        Page<RealEstateDto> data = rs.getRealEstatesInactiveByStaff(staffId, page, size);
-        return new PaginationResponse<>(data);
-    }
-
-    @GetMapping(value = "/getRealEstatesActiveByStaff/{staffId}/{page}")
-    @ApiOperation("Get all real estate have inactive status of a staff")
-    public PaginationResponse<RealEstateDto> getRealEstatesActiveByStaff(@PathVariable String staffId, @PathVariable Integer page){
-        Integer size = 30;
-        Page<RealEstateDto> data = rs.getRealEstatesActiveByStaff(staffId, page, size);
+        Page<RealEstateDto> data = rs.getRealEstatesByStaff(staffId, status, page, size);
         return new PaginationResponse<>(data);
     }
 
@@ -97,7 +89,7 @@ public class RealEstateController {
     }
 
     @GetMapping(value = "/getRealEstateByCensor/{page}")
-    @ApiOperation("Get all real estate have inactive status")
+    @ApiOperation("Get all real estate new post by seller")
     public PaginationResponse<GRealEstateByCensorDto> getRealEstateByCensor(@PathVariable Integer page){
         Integer size = 30;
         Page<GRealEstateByCensorDto> data = rs.getRealEstateByCensor(page, size);

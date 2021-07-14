@@ -19,11 +19,10 @@ import java.util.*;
 public interface RealEstateRespo {
     Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Pageable p);
-    Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySellerId(String sellerId, Pageable p);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Pageable p);
     Page<GRealEstateByCensorDto> getRealEstateByCensor(Pageable p);
     Page<RealEstateDto> getRealEstatesNotAssign(Pageable p);
-    Page<RealEstateDto> getRealEstatesInactiveByStaff(String staffId, Pageable p);
-    Page<RealEstateDto> getRealEstatesActiveByStaff(String staffId, Pageable p);
+    Page<RealEstateDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
     RealEstateDetailDto getRealEstateDetailById(int id);
     List<RealEstateTypeDto> getAllRealEstateType();
     boolean updateRealEstateStatusByCTransaction(CTransactionDto transactionDto);
@@ -70,10 +69,11 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySellerId(String sellerId, Pageable p) {
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Pageable p) {
             List<GRealEstateBySellerOrStaffDto> rs = (List<GRealEstateBySellerOrStaffDto>) em
-                    .createNativeQuery(Query.getRealEstateBySellerId)
+                    .createNativeQuery(Query.getRealEstateBySeller)
                     .setParameter("sellerId", sellerId)
+                    .setParameter("status", status)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
@@ -107,23 +107,11 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public Page<RealEstateDto> getRealEstatesInactiveByStaff(String staffId,Pageable p) {
+        public Page<RealEstateDto> getRealEstatesByStaff(String staffId, String status, Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
-                    .createNativeQuery(Query.getRealEstatesInactiveByStaff)
+                    .createNativeQuery(Query.getRealEstatesByStaff)
                     .setParameter("staffId", staffId)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
-                    .unwrap(NativeQuery.class)
-                    .setResultTransformer(new RealEstateTransformer())
-                    .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
-        }
-
-        @Override
-        public Page<RealEstateDto> getRealEstatesActiveByStaff(String staffId, Pageable p) {
-            List<RealEstateDto> rs = (List<RealEstateDto>) em
-                    .createNativeQuery(Query.getRealEstatesActiveByStaff)
-                    .setParameter("staffId", staffId)
+                    .setParameter("status", status)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
@@ -377,7 +365,7 @@ public interface RealEstateRespo {
                 "where (st.id = :staffId) \n" +
                 "order by r.create_at DESC";
 
-        public static String getRealEstateBySellerId = "select r.id as id, \n" +
+        public static String getRealEstateBySeller = "select r.id as id, \n" +
                 "r.title as title, \n" +
                 "rd.description as description,\n" +
                 "r.view as view, \n" +
@@ -413,8 +401,8 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "where (s.id = :sellerId) \n" +
-//                "and r.status = 'active' \n" +
+                "where s.id = :sellerId \n" +
+                "and r.status = :status \n" +
                 "order by r.create_at DESC";
 
         public static String getRealEstateDetailById = "select r.id as id, \n" +
@@ -500,7 +488,7 @@ public interface RealEstateRespo {
                 "and r.status = 'accept' \n" +
                 "order by r.create_at DESC";
 
-        public static String getRealEstatesInactiveByStaff = "select r.id as id, \n" +
+        public static String getRealEstatesByStaff = "select r.id as id, \n" +
                 "r.title as title, \n" +
                 "rd.description as description,\n" +
                 "rt.name as typeName,\n" +
@@ -531,43 +519,8 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "where (st.id = :staffId) \n" +
-                "and r.status = 'inactive' \n" +
-                "order by r.create_at DESC";
-
-        public static String getRealEstatesActiveByStaff = "select r.id as id, \n" +
-                "r.title as title, \n" +
-                "rd.description as description,\n" +
-                "rt.name as typeName,\n" +
-                "r.view as view, \n" +
-                "s.id as sellerId, \n" +
-                "s.fullname as sellerName, \n" +
-                "s.avatar as avatar,\n" +
-                "st.id as staffId,\n" +
-                "st.fullname as staffName,\n" +
-                "rd.area as area,\n" +
-                "rd.price as price,\n" +
-                "rd.number_of_bedroom as numberOfBedroom,\n" +
-                "rd.number_of_bathroom as numberOfBathroom,\n" +
-                "rd.project as project,\n" +
-                "i.id as imgId,\n" +
-                "i.img_url as imageUrl,\n" +
-                "r.create_at as createAt,\n" +
-                "street.name as streetName,\n" +
-                "w.name as wardName,\n" +
-                "d.name as disName\n" +
-                "from real_estate r\n" +
-                "left join real_estate_detail rd on r.id = rd.id\n" +
-                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
-                "left join user s on r.seller_id = s.id\n" +
-                "left join user st on r.staff_id = st.id\n" +
-                "left join real_estate_type rt on rt.id = rd.type_id\n" +
-                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
-                "left join street street on sw.street_id = street.id\n" +
-                "left join ward w on sw.ward_id = w.id\n" +
-                "left join district d on w.district_id = d.id\n" +
-                "where (st.id = :staffId) \n" +
-                "and r.status = 'active' \n" +
+                "where st.id = :staffId \n" +
+                "and r.status = :status \n" +
                 "order by r.create_at DESC";
 
         public static String getRealEstateByCensor = "select r.id as id, \n" +

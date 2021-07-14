@@ -14,10 +14,9 @@ import java.util.List;
 
 public interface RealEstateService {
     Page<RealEstateDto> getAllRealEstates(RequestPrams r);
-    Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
-    Page<RealEstateDto> getRealEstatesInactiveByStaff(String staffId, Integer page, Integer size);
-    Page<RealEstateDto> getRealEstatesActiveByStaff(String staffId, Integer page, Integer size);
+    Page<RealEstateDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
@@ -40,9 +39,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size) {
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
-            return rs.getRealEstatesBySellerId(sellerId, pageable);
+            return rs.getRealEstatesBySeller(sellerId, status, pageable);
         }
 
         @Override
@@ -52,15 +51,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public Page<RealEstateDto> getRealEstatesInactiveByStaff(String staffId, Integer page, Integer size) {
+        public Page<RealEstateDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
-            return rs.getRealEstatesInactiveByStaff(staffId, pageable);
-        }
-
-        @Override
-        public Page<RealEstateDto> getRealEstatesActiveByStaff(String staffId, Integer page, Integer size) {
-            Pageable pageable = PageRequest.of(page, size);
-            return rs.getRealEstatesActiveByStaff(staffId, pageable);
+            return rs.getRealEstatesByStaff(staffId, status, pageable);
         }
 
         @Override
