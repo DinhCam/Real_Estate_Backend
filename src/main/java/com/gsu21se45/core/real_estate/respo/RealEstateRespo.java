@@ -31,7 +31,6 @@ public interface RealEstateRespo {
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign);
     boolean updateRealEstateStatus(UpdateStatus updateStatus);
     boolean updateRealEstateRejected(UpdateRejected updateRejected);
-    boolean updateRealEstateByManagerUnassign(UpdateRejected updateRejected);
 
     @Repository
      class RealEstateRespoImpl  implements RealEstateRespo {
@@ -288,20 +287,6 @@ public interface RealEstateRespo {
             }
             return true;
         }
-
-        @Override
-        public boolean updateRealEstateByManagerUnassign(UpdateRejected updateRejected) {
-            try{
-                em.createNativeQuery(Query.updateRealEstateByManagerUnassign)
-                        .setParameter("id", updateRejected.getId())
-                        .setParameter("reason", updateRejected.getReason())
-                        .executeUpdate();
-            }catch(Exception e){
-                e.printStackTrace();
-                return false;
-            }
-            return true;
-        }
     }
 
     class Query{
@@ -516,7 +501,8 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "where ((r.status = 'accept') or (r.status = 'unassign')) \n" +
+                "where st.id is null \n" +
+                "and r.status = 'accept' \n" +
                 "order by r.create_at DESC";
 
         public static String getRealEstatesByStaff = "select r.id as id, \n" +
@@ -601,8 +587,6 @@ public interface RealEstateRespo {
         public static String updateRealEstateRejected = "update real_estate set status = 'rejected', reason = :reason where id = :id";
 
         public static String updateRealEstateByManagerAssign = "update real_estate set staff_id = :staffId, status = 'inactive' where id = :id";
-
-        public static String updateRealEstateByManagerUnassign = "update real_estate set status = 'unassign', reason = :reason where id = :id";
 
         public static String updateView = "update real_estate set view = view + 1 where id = :id";
     }

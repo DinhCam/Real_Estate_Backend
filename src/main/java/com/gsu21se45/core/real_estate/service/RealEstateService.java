@@ -25,7 +25,6 @@ public interface RealEstateService {
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign);
     boolean updateRealEstateStatus(UpdateStatus updateStatus);
     boolean updateRealEstateRejected(UpdateRejected updateRejected);
-    boolean updateRealEstateByManagerUnassign(UpdateRejected updateRejected);
 
     @Service
     @Transactional
@@ -119,17 +118,6 @@ public interface RealEstateService {
         public boolean updateRealEstateRejected(UpdateRejected updateRejected) {
             try {
                 rs.updateRealEstateRejected(updateRejected);
-            } catch (Exception ex){
-                ex.printStackTrace();
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public boolean updateRealEstateByManagerUnassign(UpdateRejected updateRejected) {
-            try {
-                rs.updateRealEstateByManagerUnassign(updateRejected);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;

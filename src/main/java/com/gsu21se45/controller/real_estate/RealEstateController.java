@@ -82,12 +82,6 @@ public class RealEstateController {
         return rs.updateRealEstateByManagerAssign(updateRealEstateByManagerAssign) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @PutMapping(value = "/updateRealEstateByManagerUnassign")
-    @ApiOperation("Update the real estate when manager unassigned with a reason")
-    public HttpStatus updateRealEstateByManagerUnassign(@RequestBody UpdateRejected updateRejected){
-        return rs.updateRealEstateByManagerUnassign(updateRejected) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-    }
-
     @PutMapping(value = "/updateRealEstateStatus")
     @ApiOperation("Update the status of real estate")
     public HttpStatus updateRealEstateStatus(@RequestBody UpdateStatus updateStatus){
