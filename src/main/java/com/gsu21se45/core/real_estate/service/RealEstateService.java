@@ -16,7 +16,7 @@ public interface RealEstateService {
     Page<RealEstateDto> getAllRealEstates(RequestPrams r);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
-    Page<RealEstateDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
@@ -24,6 +24,8 @@ public interface RealEstateService {
     boolean createRealEstate(CRealEstate cRealEstate);
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign);
     boolean updateRealEstateStatus(UpdateStatus updateStatus);
+    boolean updateRealEstateRejected(UpdateRejected updateRejected);
+    boolean updateRealEstateByManagerUnassign(UpdateRejected updateRejected);
 
     @Service
     @Transactional
@@ -51,7 +53,7 @@ public interface RealEstateService {
         }
 
         @Override
-        public Page<RealEstateDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size) {
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstatesByStaff(staffId, status, pageable);
         }
@@ -106,6 +108,28 @@ public interface RealEstateService {
         public boolean updateRealEstateStatus(UpdateStatus updateStatus) {
             try {
                 rs.updateRealEstateStatus(updateStatus);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateRejected(UpdateRejected updateRejected) {
+            try {
+                rs.updateRealEstateRejected(updateRejected);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateByManagerUnassign(UpdateRejected updateRejected) {
+            try {
+                rs.updateRealEstateByManagerUnassign(updateRejected);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;

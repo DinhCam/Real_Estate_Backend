@@ -22,7 +22,7 @@ public interface RealEstateRespo {
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Pageable p);
     Page<GRealEstateByCensorDto> getRealEstateByCensor(Pageable p);
     Page<RealEstateDto> getRealEstatesNotAssign(Pageable p);
-    Page<RealEstateDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
     RealEstateDetailDto getRealEstateDetailById(int id);
     List<RealEstateTypeDto> getAllRealEstateType();
     boolean updateRealEstateStatusByCTransaction(CTransactionDto transactionDto);
@@ -30,6 +30,8 @@ public interface RealEstateRespo {
     boolean createRealEstate(CRealEstate cRealEstate);
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign);
     boolean updateRealEstateStatus(UpdateStatus updateStatus);
+    boolean updateRealEstateRejected(UpdateRejected updateRejected);
+    boolean updateRealEstateByManagerUnassign(UpdateRejected updateRejected);
 
     @Repository
      class RealEstateRespoImpl  implements RealEstateRespo {
@@ -107,15 +109,15 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public Page<RealEstateDto> getRealEstatesByStaff(String staffId, String status, Pageable p) {
-            List<RealEstateDto> rs = (List<RealEstateDto>) em
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p) {
+            List<GRealEstateBySellerOrStaffDto> rs = (List<GRealEstateBySellerOrStaffDto>) em
                     .createNativeQuery(Query.getRealEstatesByStaff)
                     .setParameter("staffId", staffId)
                     .setParameter("status", status)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
-                    .setResultTransformer(new RealEstateTransformer())
+                    .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
             return new PageImpl<>(rs,p,rs.size());
         }
@@ -272,6 +274,34 @@ public interface RealEstateRespo {
             }
             return true;
         }
+
+        @Override
+        public boolean updateRealEstateRejected(UpdateRejected updateRejected) {
+            try{
+                em.createNativeQuery(Query.updateRealEstateRejected)
+                        .setParameter("id", updateRejected.getId())
+                        .setParameter("reason", updateRejected.getReason())
+                        .executeUpdate();
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateByManagerUnassign(UpdateRejected updateRejected) {
+            try{
+                em.createNativeQuery(Query.updateRealEstateByManagerUnassign)
+                        .setParameter("id", updateRejected.getId())
+                        .setParameter("reason", updateRejected.getReason())
+                        .executeUpdate();
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
     }
 
     class Query{
@@ -342,6 +372,7 @@ public interface RealEstateRespo {
                 "st.avatar as staffAvatar,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
+                "r.reason as reason,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
@@ -381,6 +412,7 @@ public interface RealEstateRespo {
                 "st.avatar as staffAvatar,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
+                "r.reason as reason, \n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
@@ -389,7 +421,7 @@ public interface RealEstateRespo {
                 "r.create_at as createAt,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
-                "d.name as disName\n" +
+                "d.name as disName \n" +
                 "from real_estate r\n" +
                 "left join conversation c on r.id = c.real_estate_id\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
@@ -484,22 +516,26 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "where st.id is null \n" +
-                "and r.status = 'accept' \n" +
+                "where ((r.status = 'accept') or (r.status = 'unassign')) \n" +
                 "order by r.create_at DESC";
 
         public static String getRealEstatesByStaff = "select r.id as id, \n" +
                 "r.title as title, \n" +
                 "rd.description as description,\n" +
-                "rt.name as typeName,\n" +
                 "r.view as view, \n" +
-                "s.id as sellerId, \n" +
-                "s.fullname as sellerName, \n" +
-                "s.avatar as avatar,\n" +
+                "r.status as status,\n" +
+                "s.id as sellerId,\n" +
+                "s.fullname as sellerName,\n" +
+                "s.avatar as sellerAvatar,\n" +
+                "c.buyer_id as buyerId,\n" +
+                "b.fullname as buyerName,\n" +
+                "b.avatar as buyerAvatar,\n" +
                 "st.id as staffId,\n" +
                 "st.fullname as staffName,\n" +
+                "st.avatar as staffAvatar,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
+                "r.reason as reason, \n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
@@ -510,17 +546,18 @@ public interface RealEstateRespo {
                 "w.name as wardName,\n" +
                 "d.name as disName\n" +
                 "from real_estate r\n" +
+                "left join conversation c on r.id = c.real_estate_id\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
                 "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
+                "left join user b on c.buyer_id = b.id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
-                "left join real_estate_type rt on rt.id = rd.type_id\n" +
                 "left join street_ward sw on rd.street_ward_id = sw.id\n" +
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "where st.id = :staffId \n" +
-                "and r.status = :status \n" +
+                "where (st.id = :staffId) \n" +
+                "and (r.status = :status) \n" +
                 "order by r.create_at DESC";
 
         public static String getRealEstateByCensor = "select r.id as id, \n" +
@@ -561,7 +598,11 @@ public interface RealEstateRespo {
 
         public static String updateRealEstateStatus = "update real_estate set status = :status where id = :id";
 
+        public static String updateRealEstateRejected = "update real_estate set status = 'rejected', reason = :reason where id = :id";
+
         public static String updateRealEstateByManagerAssign = "update real_estate set staff_id = :staffId, status = 'inactive' where id = :id";
+
+        public static String updateRealEstateByManagerUnassign = "update real_estate set status = 'unassign', reason = :reason where id = :id";
 
         public static String updateView = "update real_estate set view = view + 1 where id = :id";
     }

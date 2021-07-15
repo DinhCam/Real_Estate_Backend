@@ -50,9 +50,9 @@ public class RealEstateController {
 
     @GetMapping(value = "/getRealEstatesByStaff/{staffId}/{status}/{page}")
     @ApiOperation("Get all real estate have ? status of a staff")
-    public PaginationResponse<RealEstateDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){
+    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){
         Integer size = 30;
-        Page<RealEstateDto> data = rs.getRealEstatesByStaff(staffId, status, page, size);
+        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesByStaff(staffId, status, page, size);
         return new PaginationResponse<>(data);
     }
 
@@ -82,10 +82,22 @@ public class RealEstateController {
         return rs.updateRealEstateByManagerAssign(updateRealEstateByManagerAssign) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
+    @PutMapping(value = "/updateRealEstateByManagerUnassign")
+    @ApiOperation("Update the real estate when manager unassigned with a reason")
+    public HttpStatus updateRealEstateByManagerUnassign(@RequestBody UpdateRejected updateRejected){
+        return rs.updateRealEstateByManagerUnassign(updateRejected) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
     @PutMapping(value = "/updateRealEstateStatus")
     @ApiOperation("Update the status of real estate")
     public HttpStatus updateRealEstateStatus(@RequestBody UpdateStatus updateStatus){
         return rs.updateRealEstateStatus(updateStatus) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
+    @PutMapping(value = "/updateRealEstateRejected")
+    @ApiOperation("Update the real estate when rejected with a reason")
+    public HttpStatus updateRealEstateRejected(@RequestBody UpdateRejected updateRejected){
+        return rs.updateRealEstateRejected(updateRejected) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
     @GetMapping(value = "/getRealEstateByCensor/{page}")

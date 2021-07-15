@@ -28,6 +28,7 @@ public class GRealEstateBySellerOrStaffDto {
     private String staffAvatar;
     private Double area;
     private Double price;
+    private String reason;
     private int numberOfBedroom;
     private int numberOfBathroom;
     private String project;
