@@ -70,6 +70,12 @@ public class RealEstateController {
         return  rs.getAllRealEstateType();
     }
 
+    @GetMapping(value = "/getAllStaff")
+    @ApiOperation("Get all staffs")
+    public List<StaffDto> getAllStaff(){
+        return  rs.getAllStaff();
+    }
+
     @PostMapping(value = "/createRealEstate")
     @ApiOperation("Create a new real estate")
     public HttpStatus createRealEstate(@RequestBody CRealEstate cRealEstate){

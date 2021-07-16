@@ -25,6 +25,7 @@ public interface RealEstateRespo {
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
     RealEstateDetailDto getRealEstateDetailById(int id);
     List<RealEstateTypeDto> getAllRealEstateType();
+    List<StaffDto> getAllStaff();
     boolean updateRealEstateStatusByCTransaction(CTransactionDto transactionDto);
     void updateView(int id);
     boolean createRealEstate(CRealEstate cRealEstate);
@@ -138,6 +139,16 @@ public interface RealEstateRespo {
                     .createNativeQuery(Query.getAllRealEstateType)
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTypeTransformer())
+                    .getResultList();
+            return rs;
+        }
+
+        @Override
+        public List<StaffDto> getAllStaff() {
+            List<StaffDto> rs = (List<StaffDto>) em
+                    .createNativeQuery(Query.getAllStaff)
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new StaffTransformer())
                     .getResultList();
             return rs;
         }
@@ -581,6 +592,11 @@ public interface RealEstateRespo {
 
         public static String getAllRealEstateType = "select rt.id as id, rt.name as name\n" +
                 "from real_estate_type rt";
+
+        public static String getAllStaff = "select u.id as id, u.username as username, u.fullname as fullname, u.avatar as avatar\n" +
+                "from user u\n" +
+                "left join role r on u.role_id = r.id\n" +
+                "where r.id = 3";
 
         public static String updateRealEstateStatus = "update real_estate set status = :status where id = :id";
 
