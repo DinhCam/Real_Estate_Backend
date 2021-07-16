@@ -9,7 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateStatusBySellerCancel {
-    private int id;
-    private String sellerId;
+public class StaffDto {
+    private String id;
+    private String username;
+    private String fullname;
+    private String avatar;
 }

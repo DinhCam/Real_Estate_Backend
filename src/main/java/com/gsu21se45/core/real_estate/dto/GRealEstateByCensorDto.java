@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GRealEstateBySellerOrStaffDto {
+public class GRealEstateByCensorDto {
     private int id;
     private String title;
     private String description;
@@ -23,12 +23,8 @@ public class GRealEstateBySellerOrStaffDto {
     private String sellerId;
     private String sellerName;
     private String sellerAvatar;
-    private String staffId;
-    private String staffName;
-    private String staffAvatar;
     private Double area;
     private Double price;
-    private String reason;
     private int numberOfBedroom;
     private int numberOfBathroom;
     private String project;
@@ -38,6 +34,5 @@ public class GRealEstateBySellerOrStaffDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createAt;
-    private Set<BuyerDto> buyers = new HashSet<>();
     private Set<ImageDto> images;
 }

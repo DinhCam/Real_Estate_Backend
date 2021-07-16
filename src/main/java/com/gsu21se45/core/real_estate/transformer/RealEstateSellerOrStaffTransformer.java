@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 import java.sql.Timestamp;
 import java.util.*;
 
-public class RealEstateBuyerOrStaffTransformer implements ResultTransformer {
+public class RealEstateSellerOrStaffTransformer implements ResultTransformer {
     Map<Integer, GRealEstateBySellerOrStaffDto> result = new LinkedHashMap<>();
 
     @Override
@@ -60,6 +60,7 @@ public class RealEstateBuyerOrStaffTransformer implements ResultTransformer {
         rs.setStaffAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffAvatar")]));
         rs.setArea((Double) tuples[aliasList.get("area")]);
         rs.setPrice((Double) tuples[aliasList.get("price")]);
+        rs.setReason((String) tuples[aliasList.get("reason")]);
         rs.setNumberOfBathroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBathroom")]));
         rs.setNumberOfBedroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBedroom")]));
         rs.setProject(TypeTransformImpl.castObjectToString(tuples[aliasList.get("project")]));

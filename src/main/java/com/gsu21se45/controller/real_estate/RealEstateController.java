@@ -32,11 +32,11 @@ public class RealEstateController {
         return rs.getRealEstateDetailById(id);
     }
 
-    @GetMapping(value = "/getRealEstateBySellerId/{sellerId}/{page}")
-    @ApiOperation("Get all real estate of a seller")
-    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateBySellerId(@PathVariable String sellerId, @PathVariable Integer page){
+    @GetMapping(value = "/getRealEstateBySeller/{sellerId}/{status}/{page}")
+    @ApiOperation("Get all real estate have ? status of a seller")
+    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateBySeller(@PathVariable String sellerId, @PathVariable String status, @PathVariable Integer page){
         Integer size = 30;
-        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesBySellerId(sellerId, page, size);
+        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesBySeller(sellerId, status, page, size);
         return new PaginationResponse<>(data);
     }
 
@@ -48,11 +48,11 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
-    @GetMapping(value = "/getRealEstatesInactive/{page}")
-    @ApiOperation("Get all real estate have inactive status")
-    public PaginationResponse<RealEstateDto> getRealEstatesInactive(@PathVariable Integer page){
+    @GetMapping(value = "/getRealEstatesByStaff/{staffId}/{status}/{page}")
+    @ApiOperation("Get all real estate have ? status of a staff")
+    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){
         Integer size = 30;
-        Page<RealEstateDto> data = rs.getRealEstatesInactive(page, size);
+        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesByStaff(staffId, status, page, size);
         return new PaginationResponse<>(data);
     }
 
@@ -70,27 +70,41 @@ public class RealEstateController {
         return  rs.getAllRealEstateType();
     }
 
+    @GetMapping(value = "/getAllStaff")
+    @ApiOperation("Get all staffs")
+    public List<StaffDto> getAllStaff(){
+        return  rs.getAllStaff();
+    }
+
     @PostMapping(value = "/createRealEstate")
     @ApiOperation("Create a new real estate")
     public HttpStatus createRealEstate(@RequestBody CRealEstate cRealEstate){
         return rs.createRealEstate(cRealEstate) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @PutMapping(value = "/updateRealEstateStatusByStaffAccuracy")
-    @ApiOperation("Update the status of real estate when it has been accuracy staffed")
-    public HttpStatus updateRealEstateStatusByStaffAccuracy(@RequestBody UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy){
-        return rs.updateRealEstateStatusByStaffAccuracy(updateStatusByStaffAccuracy) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    @PutMapping(value = "/updateRealEstateByManagerAssign")
+    @ApiOperation("Update staff_id into real estate when manager assigned")
+    public HttpStatus updateRealEstateByManagerAssign(@RequestBody UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign){
+        return rs.updateRealEstateByManagerAssign(updateRealEstateByManagerAssign) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @PutMapping(value = "/updateRealEstateByStaffAssign")
-    @ApiOperation("Update real estate when staff assigned")
-    public HttpStatus updateRealEstateByStaffAssign(@RequestBody UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy){
-        return rs.updateRealEstateByStaffAssign(updateStatusByStaffAccuracy) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    @PutMapping(value = "/updateRealEstateStatus")
+    @ApiOperation("Update the status of real estate")
+    public HttpStatus updateRealEstateStatus(@RequestBody UpdateStatus updateStatus){
+        return rs.updateRealEstateStatus(updateStatus) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @PutMapping(value = "/updateRealEstateStatusBySellerCancel")
-    @ApiOperation("Update the status of real estate when seller wants to cancel post")
-    public HttpStatus updateRealEstateStatusBySellerCancel(@RequestBody UpdateStatusBySellerCancel updateStatusBySellerCancel){
-        return rs.updateRealEstateStatusBySellerCancel(updateStatusBySellerCancel) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    @PutMapping(value = "/updateRealEstateRejected")
+    @ApiOperation("Update the real estate when rejected with a reason")
+    public HttpStatus updateRealEstateRejected(@RequestBody UpdateRejected updateRejected){
+        return rs.updateRealEstateRejected(updateRejected) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
+    @GetMapping(value = "/getRealEstateByCensor/{page}")
+    @ApiOperation("Get all real estate new post by seller")
+    public PaginationResponse<GRealEstateByCensorDto> getRealEstateByCensor(@PathVariable Integer page){
+        Integer size = 30;
+        Page<GRealEstateByCensorDto> data = rs.getRealEstateByCensor(page, size);
+        return new PaginationResponse<>(data);
     }
 }

@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class GTransactionDto {
     private int id;
-    private String title;
     private String sellerId;
     private String sellerName;
     private String buyerId;
@@ -26,8 +25,13 @@ public class GTransactionDto {
     private String streetName;
     private String wardName;
     private String disName;
+    private String transactionImg;
+    private double deposit;
     private double downPrice;
     private String note;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Timestamp appointmentDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createAt;

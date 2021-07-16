@@ -14,16 +14,18 @@ import java.util.List;
 
 public interface RealEstateService {
     Page<RealEstateDto> getAllRealEstates(RequestPrams r);
-    Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
-    Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
+    Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
+    List<StaffDto> getAllStaff();
     RealEstateDetailDto getRealEstateDetailById(int id);
     boolean createRealEstate(CRealEstate cRealEstate);
-    boolean updateRealEstateStatusByStaffAccuracy(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
-    boolean updateRealEstateByStaffAssign(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy);
-    boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel);
+    boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign);
+    boolean updateRealEstateStatus(UpdateStatus updateStatus);
+    boolean updateRealEstateRejected(UpdateRejected updateRejected);
 
     @Service
     @Transactional
@@ -39,9 +41,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySellerId(String sellerId, Integer page, Integer size) {
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
-            return rs.getRealEstatesBySellerId(sellerId, pageable);
+            return rs.getRealEstatesBySeller(sellerId, status, pageable);
         }
 
         @Override
@@ -51,9 +53,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public Page<RealEstateDto> getRealEstatesInactive(Integer page, Integer size) {
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
-            return rs.getRealEstatesInactive(pageable);
+            return rs.getRealEstatesByStaff(staffId, status, pageable);
         }
 
         @Override
@@ -63,8 +65,19 @@ public interface RealEstateService {
         }
 
         @Override
+        public Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return rs.getRealEstateByCensor(pageable);
+        }
+
+        @Override
         public List<RealEstateTypeDto> getAllRealEstateType() {
             return rs.getAllRealEstateType();
+        }
+
+        @Override
+        public List<StaffDto> getAllStaff() {
+            return rs.getAllStaff();
         }
 
         @Override
@@ -86,9 +99,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public boolean updateRealEstateStatusByStaffAccuracy(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy) {
+        public boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign) {
             try {
-                rs.updateRealEstateStatusByStaffAccuracy(updateStatusByStaffAccuracy);
+                rs.updateRealEstateByManagerAssign(updateRealEstateByManagerAssign);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;
@@ -97,9 +110,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public boolean updateRealEstateByStaffAssign(UpdateStatusByStaffAccuracy updateStatusByStaffAccuracy) {
+        public boolean updateRealEstateStatus(UpdateStatus updateStatus) {
             try {
-                rs.updateRealEstateByStaffAssign(updateStatusByStaffAccuracy);
+                rs.updateRealEstateStatus(updateStatus);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;
@@ -108,9 +121,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public boolean updateRealEstateStatusBySellerCancel(UpdateStatusBySellerCancel updateStatusBySellerCancel) {
+        public boolean updateRealEstateRejected(UpdateRejected updateRejected) {
             try {
-                rs.updateRealEstateStatusBySellerCancel(updateStatusBySellerCancel);
+                rs.updateRealEstateRejected(updateRejected);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;
