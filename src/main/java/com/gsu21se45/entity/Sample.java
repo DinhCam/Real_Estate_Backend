@@ -29,7 +29,7 @@ public class Sample implements Serializable {
     private int wardId;
 
     @Column(name = "district_id")
-    private String districtId;
+    private int districtId;
 
     @Column(name = "price")
     private double price;
