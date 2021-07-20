@@ -40,11 +40,27 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
+    @GetMapping(value = "/getRealEstateActiveBySeller/{sellerId}/{page}")
+    @ApiOperation("Get all real estate have active status of a seller")
+    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateActiveBySeller(@PathVariable String sellerId, @PathVariable Integer page){
+        Integer size = 30;
+        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesActiveBySeller(sellerId, page, size);
+        return new PaginationResponse<>(data);
+    }
+
     @GetMapping(value = "/getRealEstatesNotAssign/{page}")
     @ApiOperation("Get all real estate not assigned")
     public PaginationResponse<RealEstateDto> getRealEstatesNotAssign(@PathVariable Integer page){
         Integer size = 30;
         Page<RealEstateDto> data = rs.getRealEstatesNotAssign(page, size);
+        return new PaginationResponse<>(data);
+    }
+
+    @GetMapping(value = "/getRealEstatesAssigned/{page}")
+    @ApiOperation("Get all real estate not assigned")
+    public PaginationResponse<RealEstateDto> getRealEstatesAssigned(@PathVariable Integer page){
+        Integer size = 30;
+        Page<RealEstateDto> data = rs.getRealEstatesAssigned(page, size);
         return new PaginationResponse<>(data);
     }
 
@@ -100,11 +116,11 @@ public class RealEstateController {
         return rs.updateRealEstateRejected(updateRejected) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-    @GetMapping(value = "/getRealEstateByCensor/{page}")
-    @ApiOperation("Get all real estate new post by seller")
-    public PaginationResponse<GRealEstateByCensorDto> getRealEstateByCensor(@PathVariable Integer page){
-        Integer size = 30;
-        Page<GRealEstateByCensorDto> data = rs.getRealEstateByCensor(page, size);
-        return new PaginationResponse<>(data);
-    }
+//    @GetMapping(value = "/getRealEstateByCensor/{page}")
+//    @ApiOperation("Get all real estate new post by seller")
+//    public PaginationResponse<GRealEstateByCensorDto> getRealEstateByCensor(@PathVariable Integer page){
+//        Integer size = 30;
+//        Page<GRealEstateByCensorDto> data = rs.getRealEstateByCensor(page, size);
+//        return new PaginationResponse<>(data);
+//    }
 }

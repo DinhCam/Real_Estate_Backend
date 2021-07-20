@@ -15,10 +15,12 @@ import java.util.List;
 public interface RealEstateService {
     Page<RealEstateDto> getAllRealEstates(RequestPrams r);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
+    Page<RealEstateDto> getRealEstatesAssigned(Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
-    Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size);
+//    Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size);
     List<RealEstateTypeDto> getAllRealEstateType();
     List<StaffDto> getAllStaff();
     RealEstateDetailDto getRealEstateDetailById(int id);
@@ -47,9 +49,21 @@ public interface RealEstateService {
         }
 
         @Override
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return rs.getRealEstatesActiveBySeller(sellerId, pageable);
+        }
+
+        @Override
         public Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstatesNotAssign(pageable);
+        }
+
+        @Override
+        public Page<RealEstateDto> getRealEstatesAssigned(Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return rs.getRealEstatesAssigned(pageable);
         }
 
         @Override
@@ -64,11 +78,11 @@ public interface RealEstateService {
             return rs.getRealEstateAssignStaff(staffId, pageable);
         }
 
-        @Override
-        public Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size) {
-            Pageable pageable = PageRequest.of(page, size);
-            return rs.getRealEstateByCensor(pageable);
-        }
+//        @Override
+//        public Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size) {
+//            Pageable pageable = PageRequest.of(page, size);
+//            return rs.getRealEstateByCensor(pageable);
+//        }
 
         @Override
         public List<RealEstateTypeDto> getAllRealEstateType() {
