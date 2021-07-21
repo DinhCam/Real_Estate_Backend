@@ -11,10 +11,11 @@ from db_util import get_re_type_id, get_address, insert_sample, insert_avg_stree
 list_samples = []
 current_month = datetime.now().month
 current_year = datetime.now().year
-current_date = datetime(year=int(current_year),
-                        month=int(current_month), day=1)
-last_date = datetime(year=int(current_year),
-                     month=(int(current_month) - 1), day=1)
+# edit month_number to get data from multiple month ago
+# default is 1
+month_number = 1 
+current_date = datetime(year=int(current_year), month=int(current_month), day=1)
+last_date = current_date - relativedelta(months=int(month_number))
 apartment_id = get_re_type_id(['Chung cư'])
 house_id = get_re_type_id(['Nhà'])
 unexpected_prices = ['Giá thỏa thuận']
@@ -28,6 +29,8 @@ def convert_date(up_date):
     date_plit = up_date.split(' ')
     date_size = len(date_plit)
     number = date_plit[date_size - 3]
+    if expected_dates[0] in up_date or expected_dates[1] in up_date or expected_dates[2] in up_date:
+        return new_date
     if expected_dates[3] in up_date:
         new_date = new_date - timedelta(days=1)
     elif expected_dates[4] in up_date:
