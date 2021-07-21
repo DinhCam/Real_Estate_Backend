@@ -32,6 +32,7 @@ public class GRealEstateBySellerOrStaffDto {
     private int numberOfBedroom;
     private int numberOfBathroom;
     private String project;
+    private String realEstateNo;
     private String streetName;
     private String wardName;
     private String disName;

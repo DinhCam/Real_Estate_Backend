@@ -348,6 +348,7 @@ public interface RealEstateRespo {
                 "i.id as imgId,\n" +
                 "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName,\n" +
@@ -402,6 +403,7 @@ public interface RealEstateRespo {
                 "i.id as imgId,\n" +
                 "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName\n" +
@@ -442,6 +444,7 @@ public interface RealEstateRespo {
                 "i.id as imgId,\n" +
                 "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName \n" +
@@ -483,6 +486,7 @@ public interface RealEstateRespo {
                 "i.id as imgId,\n" +
                 "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName \n" +
@@ -531,6 +535,7 @@ public interface RealEstateRespo {
                 "f.id as facilityId,\n" +
                 "f.name as facilityName,\n" +
                 "rf.distance as distance,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName\n" +
@@ -567,6 +572,7 @@ public interface RealEstateRespo {
                 "i.id as imgId,\n" +
                 "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName\n" +
@@ -601,6 +607,7 @@ public interface RealEstateRespo {
                 "i.id as imgId,\n" +
                 "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName\n" +
@@ -640,6 +647,7 @@ public interface RealEstateRespo {
                 "i.id as imgId,\n" +
                 "i.img_url as imageUrl,\n" +
                 "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
                 "w.name as wardName,\n" +
                 "d.name as disName\n" +
