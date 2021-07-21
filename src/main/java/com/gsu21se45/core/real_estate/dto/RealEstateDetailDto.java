@@ -40,6 +40,7 @@ public class RealEstateDetailDto {
     private String furniture;
     private Set<ImageDto> images;
     private Set<FacilityDto> facilities = new HashSet<>();
+    private String realEstateNo;
     private String streetName;
     private String wardName;
     private String disName;

@@ -57,7 +57,7 @@ public class RealEstateController {
     }
 
     @GetMapping(value = "/getRealEstatesAssigned/{page}")
-    @ApiOperation("Get all real estate not assigned")
+    @ApiOperation("Get all real estate assigned")
     public PaginationResponse<RealEstateDto> getRealEstatesAssigned(@PathVariable Integer page){
         Integer size = 30;
         Page<RealEstateDto> data = rs.getRealEstatesAssigned(page, size);
