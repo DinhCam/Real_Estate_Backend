@@ -22,7 +22,7 @@ public interface DealRepository extends JpaRepository<Deal, Integer> {
     @Modifying
     @Transactional
     @Query(value = "update deal set status = :status where id = :dealId", nativeQuery = true)
-    void update(@Param(value = "dealId") int dealId,
+    void update(@Param(value = "dealId") String dealId,
                 @Param(value = "status") String status);
 
     Deal findDealByConversationAndCreateAt(Conversation conversation, Date date);

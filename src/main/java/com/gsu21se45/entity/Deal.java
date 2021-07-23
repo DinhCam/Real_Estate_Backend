@@ -18,9 +18,8 @@ import java.util.Date;
 public class Deal implements Serializable {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id", length = 255)
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conversation_id")
@@ -35,4 +34,7 @@ public class Deal implements Serializable {
     @Column(name = "status")
     private String status;
 
+    public Deal(String id) {
+        this.id = id;
+    }
 }

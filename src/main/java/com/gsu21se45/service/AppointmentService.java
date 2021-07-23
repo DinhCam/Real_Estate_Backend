@@ -14,7 +14,7 @@ public interface AppointmentService {
 
     Appointment save(Appointment appointment);
 
-    void update(int appointmentId, String status);
+    void update(String appointmentId, String status);
 
     List<Appointment> findByBuyerIdAndStatus(String buyerId, String status);
 

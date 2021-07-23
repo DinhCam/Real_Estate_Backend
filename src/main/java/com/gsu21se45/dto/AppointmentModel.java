@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class AppointmentModel implements Serializable {
 
-    private int id;
+    private String id;
     private int conversationId;
     private String staffId;
     private Date scheduleDate;

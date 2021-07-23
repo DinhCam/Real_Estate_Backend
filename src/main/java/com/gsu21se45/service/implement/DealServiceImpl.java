@@ -32,7 +32,7 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public void update(int dealId, String status) {
+    public void update(String dealId, String status) {
         dealRepository.update(dealId, status);
     }
 

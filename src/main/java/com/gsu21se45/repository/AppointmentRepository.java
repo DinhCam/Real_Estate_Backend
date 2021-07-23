@@ -30,7 +30,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     @Modifying
     @Transactional
     @Query(value = "update appointment set status = :status where id = :appointmentId", nativeQuery = true)
-    void update(@Param(value = "appointmentId") int appointmentId,
+    void update(@Param(value = "appointmentId") String appointmentId,
                 @Param(value = "status") String status);
 
     @Query(value = "select a.id, a.conversation_id, a.staff_id, a.schedule_date, a.create_at, a.status " +

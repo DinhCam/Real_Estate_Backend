@@ -83,11 +83,6 @@ public class ConversationController {
         Conversation conversation = conversationService.getConversationByRealEstateIdAndStatusOfAppointment(realEstateId, status);
         model = conversationMapper.convertToDTO(conversation, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-
-//        UserModel model = user != null ? ((UserModel) objectMapper.convertToDTO(user, UserModel.class)) : null;
-//        List<Appointment> appointments = appointmentService.findBySellerIdAndStatus(realEstateId, status);
-//        List<AppointmentModel> appointmentModels = appointmentHelper.getRealEstates(appointments);
-
         LOGGER.debug("End inside ConversationController.getBuyerIdByCloseSaleAppointment()");
         return model;
     }

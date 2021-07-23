@@ -18,9 +18,8 @@ import java.util.Date;
 public class Appointment implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", length = 255)
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conversation_id")
@@ -38,5 +37,9 @@ public class Appointment implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    public Appointment(String id) {
+        this.id = id;
+    }
 
 }

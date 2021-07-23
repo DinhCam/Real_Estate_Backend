@@ -14,7 +14,7 @@ public interface DealService {
 
     Deal save(Deal deal);
 
-    void update(int dealId, String status);
+    void update(String dealId, String status);
 
     Deal findByConversationAndCreateAt(Conversation conversation, Date createAt);
 }

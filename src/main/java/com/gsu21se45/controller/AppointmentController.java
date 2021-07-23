@@ -98,7 +98,7 @@ public class AppointmentController {
 
     @PutMapping(value = RestEntityConstant.URI_UPDATE)
     @ApiOperation("Update status")
-    public void update(@RequestParam(name = RestEntityConstant.APPOINTMENT_ID, required = true) int appointmentId,
+    public void update(@RequestParam(name = RestEntityConstant.APPOINTMENT_ID, required = true) String appointmentId,
                        @RequestParam(name = RestEntityConstant.STATUS, required = true) String status) { //defaultValue = RestEntityConstant.CANCEL_STATUS + ""
         LOGGER.debug("Begin inside AppointmentController.update()");
         appointmentService.update(appointmentId, status);

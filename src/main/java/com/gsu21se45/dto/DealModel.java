@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class DealModel implements Serializable {
 
-    private int id;
+    private String id;
     private int conversationId;
     private Date createAt;
     private double offeredPrice;

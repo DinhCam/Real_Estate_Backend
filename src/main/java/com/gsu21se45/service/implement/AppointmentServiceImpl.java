@@ -33,7 +33,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void update(int appointmentId, String status) {
+    public void update(String appointmentId, String status) {
         appointmentRepository.update(appointmentId, status);
     }
 
