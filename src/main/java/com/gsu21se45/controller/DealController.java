@@ -3,19 +3,18 @@ package com.gsu21se45.controller;
 import com.gsu21se45.common.constant.RestEntityConstant;
 import com.gsu21se45.dto.DealModel;
 import com.gsu21se45.entity.Deal;
+import com.gsu21se45.log.Logger;
 import com.gsu21se45.mapper.ObjectMapper;
 import com.gsu21se45.service.DealService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RestController
 @RequestMapping(RestEntityConstant.URI_ROOT + RestEntityConstant.URI_ROOT + RestEntityConstant.URI_DEAL)
-public class DealController {
+public class DealController extends Logger {
 
-    private static final Logger LOGGER = LogManager.getLogger(DealController.class);
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(DealController.class);
 
     @Autowired
     private DealService dealService;

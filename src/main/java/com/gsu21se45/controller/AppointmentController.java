@@ -1,31 +1,27 @@
 package com.gsu21se45.controller;
 
-import com.gsu21se45.common.constant.AppConstant;
 import com.gsu21se45.common.constant.RestEntityConstant;
 import com.gsu21se45.dto.AppointmentModel;
 import com.gsu21se45.dto.RealEstateModel;
 import com.gsu21se45.entity.Appointment;
 import com.gsu21se45.entity.RealEstate;
 import com.gsu21se45.helper.AppointmentHelper;
+import com.gsu21se45.log.Logger;
 import com.gsu21se45.mapper.ObjectMapper;
 import com.gsu21se45.service.AppointmentService;
 import com.gsu21se45.service.RealEstateService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
 @RestController
 @RequestMapping(RestEntityConstant.URI_ROOT + RestEntityConstant.URI_VERSION + RestEntityConstant.URI_APPOINTMENT)
-public class AppointmentController {
+public class AppointmentController extends Logger {
 
-    private static final Logger LOGGER = LogManager.getLogger(AppointmentController.class);
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AppointmentController.class);
 
     @Autowired
     private ObjectMapper objectMapper;

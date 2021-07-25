@@ -4,11 +4,10 @@ import com.gsu21se45.common.constant.AppConstant;
 import com.gsu21se45.common.constant.RestEntityConstant;
 import com.gsu21se45.dto.ScheduleModel;
 import com.gsu21se45.entity.Schedule;
+import com.gsu21se45.log.Logger;
 import com.gsu21se45.mapper.ObjectMapper;
 import com.gsu21se45.service.ScheduleService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +18,9 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping(RestEntityConstant.URI_ROOT + RestEntityConstant.URI_VERSION + RestEntityConstant.URI_SCHEDULE)
-public class ScheduleController {
+public class ScheduleController extends Logger {
 
-    private static final Logger LOGGER = LogManager.getLogger(ScheduleController.class);
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ScheduleController.class);
 
     @Autowired
     private ScheduleService scheduleService;
@@ -46,6 +45,7 @@ public class ScheduleController {
         try {
             List<Schedule> entities = models != null ? objectMapper.convertToListEntity(models, Schedule.class) : null;
             if (entities != null) {
+                scheduleService.delete(entities.get(0).getSeller());
                 scheduleService.save(entities);
             }
         } catch (Exception ex) {

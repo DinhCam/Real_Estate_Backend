@@ -21,6 +21,8 @@ public class RestEntityConstant {
     public static final String URI_IDS = "/ids";
     public static final String URI_GET = "/get";
     public static final String URI_AVERAGE_PRICE = "/average/prices";
+    public static final String URI_DISTRICT = "/districts";
+    public static final String URI_WORKING_AREA = "/working/areas";
 
     //property
     public static final String USER_ID = "userId";

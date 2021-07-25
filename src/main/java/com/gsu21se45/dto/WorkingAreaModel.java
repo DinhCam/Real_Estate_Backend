@@ -5,16 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleModel implements Serializable {
+@Getter
+@Setter
+public class WorkingAreaModel {
 
     private int id;
-    private String sellerId;
-    private WeekDayModel weekDay;
-    private TimeFrameModel timeFrame;
+    private String staffId;
+    private int districtId;
 }

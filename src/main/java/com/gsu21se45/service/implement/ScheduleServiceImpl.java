@@ -28,4 +28,10 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleRepository.save(entity);
         }
     }
+
+    @Override
+    @Transactional
+    public void delete(User seller) {
+        scheduleRepository.deleteAllBySeller(seller);
+    }
 }

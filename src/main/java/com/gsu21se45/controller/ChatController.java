@@ -5,14 +5,13 @@ import com.gsu21se45.dto.*;
 import com.gsu21se45.entity.Appointment;
 import com.gsu21se45.entity.Deal;
 import com.gsu21se45.entity.Message;
+import com.gsu21se45.log.Logger;
 import com.gsu21se45.mapper.MessageMapper;
 import com.gsu21se45.mapper.ObjectMapper;
 import com.gsu21se45.service.AppointmentService;
 import com.gsu21se45.service.DealService;
 import com.gsu21se45.service.MessageService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -27,9 +26,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class ChatController {
+public class ChatController extends Logger {
 
-    private static final Logger LOGGER = LogManager.getLogger(ChatController.class);
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ChatController.class);
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;

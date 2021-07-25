@@ -1,18 +1,15 @@
 package com.gsu21se45.controller;
 
 import com.gsu21se45.common.constant.RestEntityConstant;
-import com.gsu21se45.dto.AppointmentModel;
 import com.gsu21se45.dto.ConversationModel;
-import com.gsu21se45.dto.UserModel;
 import com.gsu21se45.entity.*;
+import com.gsu21se45.log.Logger;
 import com.gsu21se45.mapper.ConversationMapper;
 import com.gsu21se45.service.AppointmentService;
 import com.gsu21se45.service.ConversationService;
 import com.gsu21se45.service.DealService;
 import com.gsu21se45.service.MessageService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +18,9 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping(RestEntityConstant.URI_ROOT + RestEntityConstant.URI_VERSION + RestEntityConstant.URI_CONVERSATION)
-public class ConversationController {
+public class ConversationController extends Logger {
 
-    private static final Logger LOGGER = LogManager.getLogger(ConversationController.class);
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ConversationController.class);
 
     @Autowired
     private ConversationService conversationService;
@@ -60,6 +57,8 @@ public class ConversationController {
             model = conversationMapper.convertToDTO(conversation, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         }
+        model.getSeller().setPassword("********************");
+        model.getBuyer().setPassword("********************");
         LOGGER.debug("End inside ConversationController.getAllMessageByConversation()");
         return model;
     }
@@ -78,10 +77,16 @@ public class ConversationController {
             @RequestParam(name = RestEntityConstant.REAL_ESTATE_ID, required = true) int realEstateId
             , @RequestParam(name = RestEntityConstant.CLOSE_SALE_STATUS, required = true) String status){
         LOGGER.debug("Begin inside ConversationController.getBuyerIdByCloseSaleAppointment()");
-        ConversationModel model = new ConversationModel();
-
         Conversation conversation = conversationService.getConversationByRealEstateIdAndStatusOfAppointment(realEstateId, status);
-        model = conversationMapper.convertToDTO(conversation, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        ConversationModel model = null;
+        if(conversation != null){
+            model = conversationMapper.convertToDTO(conversation, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            model.getBuyer().setPassword("*********************");
+            model.getSeller().setPassword("*********************");
+        }
+//        UserModel model = user != null ? ((UserModel) objectMapper.convertToDTO(user, UserModel.class)) : null;
+//        List<Appointment> appointments = appointmentService.findBySellerIdAndStatus(realEstateId, status);
+//        List<AppointmentModel> appointmentModels = appointmentHelper.getRealEstates(appointments);
 
         LOGGER.debug("End inside ConversationController.getBuyerIdByCloseSaleAppointment()");
         return model;

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
@@ -31,5 +33,36 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                     "from user u join role r " +
                     "on u.role_id = r.id and r.name = :role",
             nativeQuery = true)
-    Page<User> findByRole(String role, Pageable pageable);
+    Page<User> findByRole(@Param(value = "role") String role, Pageable pageable);
+
+
+    @Query(value = "select distinct u.* " +
+            "from (`user` u join working_area w " +
+            "on u.fullname " +
+            "like %:name% " +
+            "and u.id = w.staff_id " +
+            "and u.role_id = :roleId " +
+            "and w.district_id = :districtId) " +
+            "left join (select count(t.staff_id) as c, t.staff_id " +
+            "from `transaction` t " +
+            "group by t.staff_id ) as ts " +
+            "on ts.staff_id = u.id order by ts.c desc",
+            nativeQuery = true)
+    List<User> getByNameAndDistrictIdAndRoleId(@Param(value = "name") String name,
+                                               @Param(value = "districtId") int districtId,
+                                               @Param(value = "roleId") int roleId);
+
+    @Query(value = "select distinct u.* " +
+            "from (`user` u join working_area w " +
+            "on u.fullname " +
+            "like %:name% " +
+            "and u.id = w.staff_id " +
+            "and u.role_id = :roleId) " +
+            "left join (select count(t.staff_id) as c, t.staff_id " +
+            "from `transaction` t " +
+            "group by t.staff_id ) as ts " +
+            "on ts.staff_id = u.id order by ts.c desc",
+            nativeQuery = true)
+    List<User> getByNameAndRoleId(@Param(value = "name") String name,
+                                  @Param(value = "roleId") int roleId);
 }

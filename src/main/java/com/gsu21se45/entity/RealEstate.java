@@ -1,5 +1,7 @@
 package com.gsu21se45.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gsu21se45.dto.AddressModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

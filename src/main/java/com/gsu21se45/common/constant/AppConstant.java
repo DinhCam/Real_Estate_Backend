@@ -12,8 +12,11 @@ public class AppConstant {
 
     public static final String DEFAULT_DEAL_STATUS = "false";
     public static final String DEFAULT_ROLE = "all";
+    public static final String DEFAULT_DISTRICT = "all";
+    public static final String EMPTY_STRING = "";
     public static final String ADMIN_ROLE = "admin";
     public static final String STREET_TYPE = "street";
     public static final String WARD_TYPE = "ward";
     public static final String DISTRICT_TYPE = "district";
+    public static final String STAFF_ROLE = "staff";
 }

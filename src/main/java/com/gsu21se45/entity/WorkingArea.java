@@ -6,31 +6,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "schedule")
+@Table(name = "working_area")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Schedule implements Serializable {
+public class WorkingArea {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
-    private User seller;
+    @JoinColumn(name = "staff_id")
+    private User staff;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "week_day_id")
-    private WeekDay weekDay;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "time_frame_id")
-    private TimeFrame timeFrame;
-
+    @JoinColumn(name = "district_id")
+    private District district;
 }

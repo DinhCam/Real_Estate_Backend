@@ -21,4 +21,5 @@ public class RealEstateModel implements Serializable {
     private int view;
     private Date create_at;
     private String status;
+    private AddressModel address;
 }

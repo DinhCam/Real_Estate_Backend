@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -44,6 +45,10 @@ public class User implements Serializable {
 
     @Column(name = "status", length = 255)
     private String status;
+
+    @OneToMany(fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinColumn(name="staff_id", updatable = false)
+    private List<WorkingArea> workingAreas;
 
     public User(String id) {
         this.id = id;

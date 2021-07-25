@@ -11,4 +11,6 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
     List<Schedule> findSchedulesBySeller(User seller);
+
+    void deleteAllBySeller(User seller);
 }

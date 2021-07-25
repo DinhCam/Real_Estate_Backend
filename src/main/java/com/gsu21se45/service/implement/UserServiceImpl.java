@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -17,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) {
-        return repository.save(user);
+        return repository.saveAndFlush(user);
     }
 
     @Override
@@ -45,4 +47,16 @@ public class UserServiceImpl implements UserService {
         }
         return users;
     }
+
+    @Override
+    public List<User> getByNameAndDistrictIdAndRoleId(String name, int districtId, int roleId) {
+        return repository.getByNameAndDistrictIdAndRoleId(name, districtId, roleId);
+    }
+
+    @Override
+    public List<User> getByNameAndRoleId(String name, int roleId) {
+        return repository.getByNameAndRoleId(name, roleId);
+    }
+
+
 }

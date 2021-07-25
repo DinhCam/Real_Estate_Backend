@@ -7,14 +7,12 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class ScheduleModel implements Serializable {
+public class DistrictModel implements Serializable {
 
     private int id;
-    private String sellerId;
-    private WeekDayModel weekDay;
-    private TimeFrameModel timeFrame;
+    private String name;
 }

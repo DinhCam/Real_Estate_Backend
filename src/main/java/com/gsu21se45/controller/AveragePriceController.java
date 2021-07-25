@@ -4,12 +4,11 @@ import com.gsu21se45.common.constant.AppConstant;
 import com.gsu21se45.common.constant.RestEntityConstant;
 import com.gsu21se45.dto.AveragePriceModel;
 import com.gsu21se45.entity.AveragePrice;
+import com.gsu21se45.log.Logger;
 import com.gsu21se45.mapper.ObjectMapper;
 import com.gsu21se45.service.AveragePriceService;
 import com.gsu21se45.service.RealEstateTypeService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +20,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping(RestEntityConstant.URI_ROOT + RestEntityConstant.URI_VERSION + RestEntityConstant.URI_AVERAGE_PRICE)
-public class AveragePriceController {
+public class AveragePriceController extends Logger {
 
-    private static final Logger LOGGER = LogManager.getLogger(AveragePriceController.class);
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AveragePriceController.class);
 
     @Autowired
     private RealEstateTypeService realEstateTypeService;
