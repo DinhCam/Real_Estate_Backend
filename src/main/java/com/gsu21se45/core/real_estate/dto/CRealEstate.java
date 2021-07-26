@@ -27,6 +27,8 @@ public class CRealEstate {
     private String realEstateNo;
     private int typeId;
     private String description;
+    private double length;
+    private double width;
     private Double area;
     private Double price;
     private String direction;

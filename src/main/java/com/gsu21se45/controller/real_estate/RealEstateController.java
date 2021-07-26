@@ -80,6 +80,12 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
+    @GetMapping(value = "/getNumberOfRealEstateByStaff/{staffId}/{status}")
+    @ApiOperation("Get number of real estate with ? status of a staff")
+    public Integer getNumberOfRealEstateByStaff(@PathVariable String staffId, @PathVariable String status){
+        return rs.getNumberOfRealEstateByStaff(staffId, status);
+    }
+
     @GetMapping(value = "/getAllRealEstateType")
     @ApiOperation("Get all real estate type")
     public List<RealEstateTypeDto> getAllRealEstateType(){
