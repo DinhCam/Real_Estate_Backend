@@ -26,6 +26,7 @@ public interface RealEstateRespo {
     Page<RealEstateDto> getRealEstatesAssigned(Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
     RealEstateDetailDto getRealEstateDetailById(int id);
+    Integer getNumberOfRealEstateByStaff(String staffId, String status);
     List<RealEstateTypeDto> getAllRealEstateType();
     List<StaffDto> getAllStaff();
     boolean updateRealEstateStatusByCTransaction(CTransactionDto transactionDto);
@@ -161,6 +162,15 @@ public interface RealEstateRespo {
         }
 
         @Override
+        public Integer getNumberOfRealEstateByStaff(String staffId, String status) {
+            String rs = em.createNativeQuery(Query.getNumberOfRealEstateByStaff)
+                    .setParameter("staffId", staffId)
+                    .setParameter("status", status)
+                    .getSingleResult().toString();
+            return Integer.parseInt(rs);
+        }
+
+        @Override
         public List<RealEstateTypeDto> getAllRealEstateType() {
             List<RealEstateTypeDto> rs = (List<RealEstateTypeDto>) em
                     .createNativeQuery(Query.getAllRealEstateType)
@@ -240,6 +250,8 @@ public interface RealEstateRespo {
                 realEstateDetail.setLongitude(cRealEstate.getLongitude());
                 realEstateDetail.setRealEstateType(em.find(RealEstateType.class,cRealEstate.getTypeId()));
                 realEstateDetail.setDescription(cRealEstate.getDescription());
+                realEstateDetail.setLength(cRealEstate.getLength());
+                realEstateDetail.setWidth(cRealEstate.getWidth());
                 realEstateDetail.setArea(cRealEstate.getArea());
                 realEstateDetail.setPrice(cRealEstate.getPrice());
                 realEstateDetail.setDirection(cRealEstate.getDirection());
@@ -517,6 +529,8 @@ public interface RealEstateRespo {
                 "st.avatar as avatar,\n" +
                 "rd.direction as direction,\n" +
                 "rd.balcony_direction as balconyDirection,\n" +
+                "rd.length as length,\n" +
+                "rd.width as width,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
@@ -698,6 +712,11 @@ public interface RealEstateRespo {
 //                "left join district d on w.district_id = d.id\n" +
 //                "where r.status = 'new' \n" +
 //                "order by r.create_at DESC";
+
+        public static String getNumberOfRealEstateByStaff = "select count(r.id) as numberOfRealEstate\n" +
+                "from real_estate r\n" +
+                "where staff_id = :staffId \n" +
+                "and status = :status";
 
         public static String getAllRealEstateType = "select rt.id as id, rt.name as name\n" +
                 "from real_estate_type rt";

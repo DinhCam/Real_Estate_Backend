@@ -40,6 +40,12 @@ public class RealEstateDetail implements Serializable {
     @Column(name = "description", length = 5000)
     private String description;
 
+    @Column(name = "length")
+    private double length;
+
+    @Column(name = "width")
+    private double width;
+
     @Column(name = "area")
     private double area;
 

@@ -28,6 +28,8 @@ public class RealEstateDetailDto {
     private String avatar;
     private String staffId;
     private String staffName;
+    private double length;
+    private double width;
     private double area;
     private double price;
     private String direction;
