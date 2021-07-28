@@ -55,8 +55,10 @@ public class RealEstateDetailTransformer implements ResultTransformer {
         rs.setView(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("view")]));
         rs.setSellerId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerId")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
+        rs.setSellerAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerAvatar")]));
         rs.setStaffId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffId")]));
         rs.setStaffName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffName")]));
+        rs.setStaffAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffAvatar")]));
         rs.setLength((Double) tuples[aliasList.get("length")]);
         rs.setWidth((Double) tuples[aliasList.get("width")]);
         rs.setArea((double)tuples[aliasList.get("area")]);
@@ -73,7 +75,6 @@ public class RealEstateDetailTransformer implements ResultTransformer {
         rs.setCreateAt((Timestamp) tuples[aliasList.get("createAt")]);
         rs.setTypeName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("typeName")]));
         rs.setBalconyDirection(TypeTransformImpl.castObjectToString(tuples[aliasList.get("balconyDirection")]));
-        rs.setAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("avatar")]));
         rs.setLatitude((Double) tuples[aliasList.get("latitude")]);
         rs.setLongitude((Double) tuples[aliasList.get("longitude")]);
         rs.setJuridical(TypeTransformImpl.castObjectToString(tuples[aliasList.get("juridical")]));

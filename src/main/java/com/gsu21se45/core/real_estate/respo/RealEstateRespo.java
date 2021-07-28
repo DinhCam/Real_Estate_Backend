@@ -349,9 +349,10 @@ public interface RealEstateRespo {
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
                 "s.fullname as sellerName, \n" +
-                "s.avatar as avatar, \n" +
+                "s.avatar as sellerAvatar, \n" +
                 "st.id as staffId, \n" +
                 "st.fullname as staffName ,\n" +
+                "st.avatar as staffAvatar, \n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
@@ -524,9 +525,10 @@ public interface RealEstateRespo {
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
                 "s.fullname as sellerName, \n" +
+                "s.avatar as sellerAvatar,\n" +
                 "st.id as staffId,\n" +
                 "st.fullname as staffName,\n" +
-                "st.avatar as avatar,\n" +
+                "st.avatar as staffAvatar,\n" +
                 "rd.direction as direction,\n" +
                 "rd.balcony_direction as balconyDirection,\n" +
                 "rd.length as length,\n" +
@@ -575,9 +577,10 @@ public interface RealEstateRespo {
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
                 "s.fullname as sellerName, \n" +
-                "s.avatar as avatar,\n" +
-                "st.id as staffId,\n" +
-                "st.fullname as staffName,\n" +
+                "s.avatar as sellerAvatar, \n" +
+                "st.id as staffId, \n" +
+                "st.fullname as staffName ,\n" +
+                "st.avatar as staffAvatar, \n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
@@ -610,9 +613,10 @@ public interface RealEstateRespo {
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
                 "s.fullname as sellerName, \n" +
-                "s.avatar as avatar,\n" +
-                "st.id as staffId,\n" +
-                "st.fullname as staffName,\n" +
+                "s.avatar as sellerAvatar, \n" +
+                "st.id as staffId, \n" +
+                "st.fullname as staffName ,\n" +
+                "st.avatar as staffAvatar, \n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
