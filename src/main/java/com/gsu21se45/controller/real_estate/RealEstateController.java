@@ -66,9 +66,9 @@ public class RealEstateController {
 
     @GetMapping(value = "/getRealEstatesByStaff/{staffId}/{status}/{page}")
     @ApiOperation("Get all real estate have ? status of a staff")
-    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){
+    public PaginationResponse<RealEstateActiveByStaffDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){
         Integer size = 30;
-        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesByStaff(staffId, status, page, size);
+        Page<RealEstateActiveByStaffDto> data = rs.getRealEstatesByStaff(staffId, status, page, size);
         return new PaginationResponse<>(data);
     }
 

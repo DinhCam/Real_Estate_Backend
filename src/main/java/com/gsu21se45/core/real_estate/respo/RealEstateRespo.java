@@ -24,7 +24,7 @@ public interface RealEstateRespo {
 //    Page<GRealEstateByCensorDto> getRealEstateByCensor(Pageable p);
     Page<RealEstateDto> getRealEstatesNotAssign(Pageable p);
     Page<RealEstateDto> getRealEstatesAssigned(Pageable p);
-    Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
+    Page<RealEstateActiveByStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
     RealEstateDetailDto getRealEstateDetailById(int id);
     Integer getNumberOfRealEstateByStaff(String staffId, String status);
     List<RealEstateTypeDto> getAllRealEstateType();
@@ -137,15 +137,15 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p) {
-            List<GRealEstateBySellerOrStaffDto> rs = (List<GRealEstateBySellerOrStaffDto>) em
+        public Page<RealEstateActiveByStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p) {
+            List<RealEstateActiveByStaffDto> rs = (List<RealEstateActiveByStaffDto>) em
                     .createNativeQuery(Query.getRealEstatesByStaff)
                     .setParameter("staffId", staffId)
                     .setParameter("status", status)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
-                    .setResultTransformer(new RealEstateSellerOrStaffTransformer())
+                    .setResultTransformer(new RealEstateActiveByStaffTransformer())
                     .getResultList();
             return new PageImpl<>(rs,p,rs.size());
         }
@@ -650,9 +650,11 @@ public interface RealEstateRespo {
                 "s.id as sellerId,\n" +
                 "s.fullname as sellerName,\n" +
                 "s.avatar as sellerAvatar,\n" +
-                "c.buyer_id as buyerId,\n" +
+                "r.buyer_id as buyerId,\n" +
                 "b.fullname as buyerName,\n" +
                 "b.avatar as buyerAvatar,\n" +
+                "dl.offered_price as offeredPrice,\n" +
+                "dl.create_at as createAtDeal,\n" +
                 "st.id as staffId,\n" +
                 "st.fullname as staffName,\n" +
                 "st.avatar as staffAvatar,\n" +
@@ -671,6 +673,7 @@ public interface RealEstateRespo {
                 "d.name as disName\n" +
                 "from real_estate r\n" +
                 "left join conversation c on r.id = c.real_estate_id\n" +
+                "left join deal dl on c.id = dl.conversation_id and dl.status = 'accepted'\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
                 "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user b on c.buyer_id = b.id\n" +
