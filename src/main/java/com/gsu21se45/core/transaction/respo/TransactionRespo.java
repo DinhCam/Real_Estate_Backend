@@ -61,7 +61,7 @@ public interface TransactionRespo {
         public static final String CREATE_TRANSACTION = "insert into transaction (buyer_id, seller_id, staff_id, real_estate_id, img_url, deposit, down_price, note, create_at)\n" +
                 "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        public static String getTransactionByUserId = "select tr.id, \n" +
+        public static String getTransactionByUserId = "select distinct tr.id, \n" +
                 "                s.id as sellerId,\n" +
                 "                s.fullname as sellerName, \n" +
                 "                b.id as buyerId,\n" +
