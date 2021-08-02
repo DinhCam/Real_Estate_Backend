@@ -123,6 +123,12 @@ public class RealEstateController {
         return rs.updateRealEstateStatus(updateStatus) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
+    @PutMapping(value = "/updateBuyerId")
+    @ApiOperation("Update the buyerId of real estate")
+    public HttpStatus updateBuyerId(@RequestBody UpdateBuyerIdDto updateBuyerIdDto){
+        return rs.updateBuyerId(updateBuyerIdDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
     @PutMapping(value = "/updateRealEstateRejected")
     @ApiOperation("Update the real estate when rejected with a reason")
     public HttpStatus updateRealEstateRejected(@RequestBody UpdateRejected updateRejected){

@@ -34,6 +34,7 @@ public interface RealEstateRespo {
     boolean createRealEstate(CRealEstate cRealEstate);
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign);
     boolean updateRealEstateStatus(UpdateStatus updateStatus);
+    boolean updateBuyerId(UpdateBuyerIdDto updateBuyerIdDto);
     boolean updateRealEstateRejected(UpdateRejected updateRejected);
 
     @Repository
@@ -316,6 +317,20 @@ public interface RealEstateRespo {
                 em.createNativeQuery(Query.updateRealEstateStatus)
                         .setParameter("id", updateStatus.getId())
                         .setParameter("status", updateStatus.getStatus())
+                        .executeUpdate();
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateBuyerId(UpdateBuyerIdDto updateBuyerIdDto) {
+            try{
+                em.createNativeQuery(Query.updateBuyerId)
+                        .setParameter("id", updateBuyerIdDto.getId())
+                        .setParameter("buyerId", updateBuyerIdDto.getBuyerId())
                         .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();
@@ -734,6 +749,8 @@ public interface RealEstateRespo {
                 "where r.id = 3";
 
         public static String updateRealEstateStatus = "update real_estate set status = :status where id = :id";
+
+        public static String updateBuyerId = "update real_estate set buyer_id = :buyerId where id = :id";
 
         public static String updateRealEstateRejected = "update real_estate set status = 'rejected', reason = :reason where id = :id";
 
