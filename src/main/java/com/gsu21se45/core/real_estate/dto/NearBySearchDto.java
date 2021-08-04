@@ -12,5 +12,5 @@ import lombok.Setter;
 public class NearBySearchDto {
     private GeometryDto geometry;
     private String name;
-    private Integer facilityTypeId = 2;
+    private String vicinity;
 }

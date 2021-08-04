@@ -70,9 +70,9 @@ public class RealEstateController {
 
     @GetMapping(value = "/getRealEstatesByStaff/{staffId}/{status}/{page}")
     @ApiOperation("Get all real estate have ? status of a staff")
-    public PaginationResponse<RealEstateActiveByStaffDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){
+    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){
         Integer size = 30;
-        Page<RealEstateActiveByStaffDto> data = rs.getRealEstatesByStaff(staffId, status, page, size);
+        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesByStaff(staffId, status, page, size);
         return new PaginationResponse<>(data);
     }
 
@@ -159,7 +159,7 @@ public class RealEstateController {
     }
 
     @RequestMapping(value = "nearbysearch/{location}/{type}")
-    public List<GeocodingDto> callNearBySearchApi(@PathVariable String location, @PathVariable String type) {
+    public List<NearBySearchDto> callNearBySearchApi(@PathVariable String location, @PathVariable String type) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -170,7 +170,7 @@ public class RealEstateController {
         uriVariables.put("type", type);
         uriVariables.put("key", "AIzaSyDPzD4tPUGV3HGIiv7fVcWEFEQ0r1AAxwg");
         uriVariables.put("language", "vi");
-        WrapperGeometryDto response =  restTemplate.getForObject(url, WrapperGeometryDto.class, uriVariables);
+        WrapperNearBySearchDto response =  restTemplate.getForObject(url, WrapperNearBySearchDto.class, uriVariables);
         return response.getResults();
     }
 }

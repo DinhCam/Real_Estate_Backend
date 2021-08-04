@@ -30,4 +30,7 @@ public class Facility implements Serializable {
 
     @Column(name = "longitude")
     private double longitude;
+
+    @Column(name = "address", length = 255)
+    private String address;
 }

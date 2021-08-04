@@ -5,7 +5,6 @@ import com.gsu21se45.core.real_estate.dto.*;
 import com.gsu21se45.core.real_estate.transformer.*;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.entity.*;
-import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public interface RealEstateRespo {
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Pageable p);
     Page<RealEstateDto> getRealEstatesNotAssign(Pageable p);
     Page<RealEstateDto> getRealEstatesAssigned(Pageable p);
-    Page<RealEstateActiveByStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
     RealEstateDetailDto getRealEstateDetailById(int id);
     Integer getNumberOfRealEstateByStaff(String staffId, String status);
     List<RealEstateTypeDto> getAllRealEstateType();
@@ -133,15 +132,15 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public Page<RealEstateActiveByStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p) {
-            List<RealEstateActiveByStaffDto> rs = (List<RealEstateActiveByStaffDto>) em
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p) {
+            List<GRealEstateBySellerOrStaffDto> rs = (List<GRealEstateBySellerOrStaffDto>) em
                     .createNativeQuery(Query.getRealEstatesByStaff)
                     .setParameter("staffId", staffId)
                     .setParameter("status", status)
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
-                    .setResultTransformer(new RealEstateActiveByStaffTransformer())
+                    .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
             return new PageImpl<>(rs,p,rs.size());
         }
@@ -256,6 +255,7 @@ public interface RealEstateRespo {
 
                 realEstateDetail.setLatitude(response.getResults().get(0).getGeometry().getLocation().getLat());
                 realEstateDetail.setLongitude(response.getResults().get(0).getGeometry().getLocation().getLng());
+
                 realEstateDetail.setRealEstateType(em.find(RealEstateType.class,cRealEstate.getTypeId()));
                 realEstateDetail.setDescription(cRealEstate.getDescription());
                 realEstateDetail.setLength(cRealEstate.getLength());
@@ -318,6 +318,7 @@ public interface RealEstateRespo {
                         facility.setFacilityName(j.getName());
                         facility.setLatitude(j.getGeometry().getLocation().getLat());
                         facility.setLongitude(j.getGeometry().getLocation().getLng());
+                        facility.setAddress(j.getVicinity());
                         facilityId = (Integer) session.save(facility);
 
                         RealEstateFacility realEstateFacility = new RealEstateFacility();
@@ -339,6 +340,7 @@ public interface RealEstateRespo {
                         Double distance = R * c;
 
                         realEstateFacility.setDistance(distance);
+
                         session.save(facility);
                         session.save(realEstateFacility);
                     }
@@ -618,6 +620,9 @@ public interface RealEstateRespo {
                 "ft.name as facilityTypeName,\n" +
                 "f.id as facilityId,\n" +
                 "f.name as facilityName,\n" +
+                "f.latitude as latitudeFacility,\n" +
+                "f.longitude as longitudeFacility,\n" +
+                "f.address as addressFacility,\n" +
                 "rf.distance as distance,\n" +
                 "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
@@ -721,8 +726,6 @@ public interface RealEstateRespo {
                 "r.buyer_id as buyerId,\n" +
                 "b.fullname as buyerName,\n" +
                 "b.avatar as buyerAvatar,\n" +
-                "dl.offered_price as offeredPrice,\n" +
-                "dl.create_at as createAtDeal,\n" +
                 "st.id as staffId,\n" +
                 "st.fullname as staffName,\n" +
                 "st.avatar as staffAvatar,\n" +
@@ -741,7 +744,6 @@ public interface RealEstateRespo {
                 "d.name as disName\n" +
                 "from real_estate r\n" +
                 "left join conversation c on r.id = c.real_estate_id\n" +
-                "left join deal dl on c.id = dl.conversation_id and dl.status = 'accepted'\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
                 "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user b on c.buyer_id = b.id\n" +

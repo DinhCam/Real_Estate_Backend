@@ -18,7 +18,7 @@ public interface RealEstateService {
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesAssigned(Integer page, Integer size);
-    Page<RealEstateActiveByStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     Integer getNumberOfRealEstateByStaff(String staffId, String status);
     List<RealEstateTypeDto> getAllRealEstateType();
@@ -68,7 +68,7 @@ public interface RealEstateService {
         }
 
         @Override
-        public Page<RealEstateActiveByStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size) {
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstatesByStaff(staffId, status, pageable);
         }
