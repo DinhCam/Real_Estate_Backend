@@ -16,8 +16,9 @@ public class FacilityDto {
     private Integer facilityTypeId;
     private String facilityTypeName;
     private String facilityName;
-    private Double latitude;
-    private Double longitude;
+    private Double latitudeFacility;
+    private Double longitudeFacility;
+    private String addressFacility;
     private Double distance;
 
     @Override
