@@ -20,7 +20,6 @@ public interface RealEstateService {
     Page<RealEstateDto> getRealEstatesAssigned(Integer page, Integer size);
     Page<RealEstateActiveByStaffDto> getRealEstatesByStaff(String staffId, String status, Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
-//    Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size);
     Integer getNumberOfRealEstateByStaff(String staffId, String status);
     List<RealEstateTypeDto> getAllRealEstateType();
     List<StaffDto> getAllStaff();
@@ -84,12 +83,6 @@ public interface RealEstateService {
         public Integer getNumberOfRealEstateByStaff(String staffId, String status) {
             return rs.getNumberOfRealEstateByStaff(staffId, status);
         }
-
-//        @Override
-//        public Page<GRealEstateByCensorDto> getRealEstateByCensor(Integer page, Integer size) {
-//            Pageable pageable = PageRequest.of(page, size);
-//            return rs.getRealEstateByCensor(pageable);
-//        }
 
         @Override
         public List<RealEstateTypeDto> getAllRealEstateType() {

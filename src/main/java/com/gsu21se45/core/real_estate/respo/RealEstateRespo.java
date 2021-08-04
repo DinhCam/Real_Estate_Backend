@@ -5,13 +5,18 @@ import com.gsu21se45.core.real_estate.dto.*;
 import com.gsu21se45.core.real_estate.transformer.*;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.entity.*;
+import com.gsu21se45.util.TypeTransformImpl;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
 import java.util.*;
@@ -21,7 +26,6 @@ public interface RealEstateRespo {
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Pageable p);
-//    Page<GRealEstateByCensorDto> getRealEstateByCensor(Pageable p);
     Page<RealEstateDto> getRealEstatesNotAssign(Pageable p);
     Page<RealEstateDto> getRealEstatesAssigned(Pageable p);
     Page<RealEstateActiveByStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
@@ -41,6 +45,9 @@ public interface RealEstateRespo {
      class RealEstateRespoImpl  implements RealEstateRespo {
         @Autowired
         private EntityManager em;
+
+        @Autowired
+        RestTemplate restTemplate;
 
         @Override
         public Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p) {
@@ -100,18 +107,6 @@ public interface RealEstateRespo {
                     .getResultList();
             return new PageImpl<>(rs,p,rs.size());
         }
-
-//        @Override
-//        public Page<GRealEstateByCensorDto> getRealEstateByCensor(Pageable p) {
-//            List<GRealEstateByCensorDto> rs = (List<GRealEstateByCensorDto>) em
-//                    .createNativeQuery(Query.getRealEstateByCensor)
-//                    .setFirstResult((int) p.getOffset())
-//                    .setMaxResults(p.getPageSize())
-//                    .unwrap(NativeQuery.class)
-//                    .setResultTransformer(new RealEstateCensorTransformer())
-//                    .getResultList();
-//            return new PageImpl<>(rs,p,rs.size());
-//        }
 
         @Override
         public Page<RealEstateDto> getRealEstatesNotAssign(Pageable p) {
@@ -247,8 +242,20 @@ public interface RealEstateRespo {
                 realEstateDetail.setId(id);
                 realEstateDetail.setRealEstateNo(cRealEstate.getRealEstateNo());
                 realEstateDetail.setStreetWard(em.find(StreetWard.class, streetWardId));
-                realEstateDetail.setLatitude(cRealEstate.getLatitude());
-                realEstateDetail.setLongitude(cRealEstate.getLongitude());
+
+                String address = cRealEstate.getAddress();
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+                HttpEntity<String> entity = new HttpEntity<String>(headers);
+                String url = "https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
+                Map<String, String> uriVariables = new HashMap<>();
+                uriVariables.put("address", address);
+                uriVariables.put("key", "AIzaSyAk_HxKWrfBT1g9WkfL0gqRIa9HD0d7Q0I");
+                WrapperGeometryDto response =  restTemplate.getForObject(url, WrapperGeometryDto.class, uriVariables);
+
+                realEstateDetail.setLatitude(response.getResults().get(0).getGeometry().getLocation().getLat());
+                realEstateDetail.setLongitude(response.getResults().get(0).getGeometry().getLocation().getLng());
                 realEstateDetail.setRealEstateType(em.find(RealEstateType.class,cRealEstate.getTypeId()));
                 realEstateDetail.setDescription(cRealEstate.getDescription());
                 realEstateDetail.setLength(cRealEstate.getLength());
@@ -273,23 +280,69 @@ public interface RealEstateRespo {
                     session.save(imageResource);
                 }
 
-                for (FacilityDto i:cRealEstate.getFacilities()) {
-                    Facility facility = new Facility();
-                    Integer facilityId = 0;
-                    facility.setFacilityTypeId(em.find(FacilityType.class, i.getFacilityTypeId()));
-                    facility.setFacilityName(i.getFacilityName());
-                    facility.setLatitude(i.getLatitude());
-                    facility.setLongitude(i.getLongitude());
-                    facilityId = (Integer) session.save(facility);
+                String locationRealEstate = Double.toString(realEstateDetail.getLatitude()).concat(", ").concat(Double.toString(realEstateDetail.getLongitude()));
 
-                    RealEstateFacility realEstateFacility = new RealEstateFacility();
-                    realEstateFacility.setRealEstateDetail(em.find(RealEstateDetail.class, realEstateDetailId));
-                    realEstateFacility.setFacility(em.find(Facility.class, facilityId));
-                    realEstateFacility.setDistance(i.getDistance());
-                    session.save(facility);
-                    session.save(realEstateFacility);
+                for (int i = 1; i <= 5; i++){
+                    String type = null;
+                    if (i == 1) {
+                        type = "school";
+                    }
+                    if (i == 2) {
+                        type = "hospital";
+                    }
+                    if (i == 3) {
+                        type = "supermarket";
+                    }
+                    if (i == 4) {
+                        type = "bank";
+                    }
+                    if (i == 5) {
+                        type = "shopping_mall";
+                    }
+                    HttpHeaders headers1 = new HttpHeaders();
+                    headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+                    HttpEntity<String> entity1 = new HttpEntity<String>(headers1);
+                    String url1 = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location}&radius={radius}&type={type}&key={key}&language={language}";
+                    Map<String, String> uriVariables1 = new HashMap<>();
+                    uriVariables1.put("location", locationRealEstate);
+                    uriVariables1.put("radius", "3000");
+                    uriVariables1.put("type", type);
+                    uriVariables1.put("key", "AIzaSyDPzD4tPUGV3HGIiv7fVcWEFEQ0r1AAxwg");
+                    uriVariables1.put("language", "vi");
+                    WrapperNearBySearchDto response1 =  restTemplate.getForObject(url1, WrapperNearBySearchDto.class, uriVariables1);
+
+                    for (NearBySearchDto j:response1.getResults()) {
+                        Facility facility = new Facility();
+                        Integer facilityId = 0;
+                        facility.setFacilityTypeId(em.find(FacilityType.class, i));
+                        facility.setFacilityName(j.getName());
+                        facility.setLatitude(j.getGeometry().getLocation().getLat());
+                        facility.setLongitude(j.getGeometry().getLocation().getLng());
+                        facilityId = (Integer) session.save(facility);
+
+                        RealEstateFacility realEstateFacility = new RealEstateFacility();
+                        realEstateFacility.setRealEstateDetail(em.find(RealEstateDetail.class, realEstateDetailId));
+                        realEstateFacility.setFacility(em.find(Facility.class, facilityId));
+
+//                      HaversineDistance
+                        final int R = 6371;
+                        Double lat1 = realEstateDetail.getLatitude();
+                        Double lon1 = realEstateDetail.getLongitude();
+                        Double lat2 = facility.getLatitude();
+                        Double lon2 = facility.getLongitude();
+                        Double latDistance = (lat2-lat1) * Math.PI / 180;
+                        Double lonDistance = (lon2-lon1) * Math.PI / 180;
+                        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
+                                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                                        Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+                        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        Double distance = R * c;
+
+                        realEstateFacility.setDistance(distance);
+                        session.save(facility);
+                        session.save(realEstateFacility);
+                    }
                 }
-
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;
@@ -701,39 +754,6 @@ public interface RealEstateRespo {
                 "where (st.id = :staffId) \n" +
                 "and (r.status = :status) \n" +
                 "order by r.create_at DESC";
-
-//        public static String getRealEstateByCensor = "select r.id as id, \n" +
-//                "r.title as title, \n" +
-//                "rd.description as description,\n" +
-//                "r.view as view, \n" +
-//                "r.status as status,\n" +
-//                "s.id as sellerId,\n" +
-//                "s.fullname as sellerName,\n" +
-//                "s.avatar as sellerAvatar,\n" +
-//                "rd.area as area,\n" +
-//                "rd.price as price,\n" +
-//                "rd.number_of_bedroom as numberOfBedroom,\n" +
-//                "rd.number_of_bathroom as numberOfBathroom,\n" +
-//                "rd.project as project,\n" +
-//                "i.id as imgId,\n" +
-//                "i.img_url as imageUrl,\n" +
-//                "r.create_at as createAt,\n" +
-//                "street.name as streetName,\n" +
-//                "w.name as wardName,\n" +
-//                "d.name as disName\n" +
-//                "from real_estate r\n" +
-//                "left join conversation c on r.id = c.real_estate_id\n" +
-//                "left join real_estate_detail rd on r.id = rd.id\n" +
-//                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
-//                "left join user b on c.buyer_id = b.id\n" +
-//                "left join user s on r.seller_id = s.id\n" +
-//                "left join user st on r.staff_id = st.id\n" +
-//                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
-//                "left join street street on sw.street_id = street.id\n" +
-//                "left join ward w on sw.ward_id = w.id\n" +
-//                "left join district d on w.district_id = d.id\n" +
-//                "where r.status = 'new' \n" +
-//                "order by r.create_at DESC";
 
         public static String getNumberOfRealEstateByStaff = "select count(r.id) as numberOfRealEstate\n" +
                 "from real_estate r\n" +

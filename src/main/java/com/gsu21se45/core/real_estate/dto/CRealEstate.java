@@ -25,6 +25,7 @@ public class CRealEstate {
     private int wardId;
     private String streetName;
     private String realEstateNo;
+    private String address;
     private int typeId;
     private String description;
     private double length;
@@ -35,8 +36,6 @@ public class CRealEstate {
     private String balconyDirection;
     private String project;
     private String investor;
-    private Double latitude;
-    private Double longitude;
     private String juridical;
     private String furniture;
     private int numberOfBedroom;
