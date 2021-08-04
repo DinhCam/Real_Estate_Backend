@@ -11,10 +11,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/realEstate")
@@ -135,26 +132,6 @@ public class RealEstateController {
         return rs.updateRealEstateRejected(updateRejected) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
-//    @GetMapping(value = "/getRealEstateByCensor/{page}")
-//    @ApiOperation("Get all real estate new post by seller")
-//    public PaginationResponse<GRealEstateByCensorDto> getRealEstateByCensor(@PathVariable Integer page){
-//        Integer size = 30;
-//        Page<GRealEstateByCensorDto> data = rs.getRealEstateByCensor(page, size);
-//        return new PaginationResponse<>(data);
-//    }
-
-    @RequestMapping(value = "geocoding/{address}")
-    public String callGeocodingApi(@PathVariable String address) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        String url = "https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
-        Map<String, String> uriVariables = new HashMap<>();
-        uriVariables.put("address", address);
-        uriVariables.put("key", "AIzaSyAk_HxKWrfBT1g9WkfL0gqRIa9HD0d7Q0I");
-        return restTemplate.exchange(url, HttpMethod.GET, entity, String.class, uriVariables).getBody();
-    }
-
     @RequestMapping(value = "autocomplete/{input}")
     public String callAutocompleteApi(@PathVariable String input) {
         HttpHeaders headers = new HttpHeaders();
@@ -168,17 +145,32 @@ public class RealEstateController {
         return restTemplate.exchange(url, HttpMethod.GET, entity, String.class, uriVariables).getBody();
     }
 
-    @RequestMapping(value = "nearbysearch/{location}/{type}")
-    public String callNearBySearchApi(@PathVariable String location, @PathVariable String type) {
+    @RequestMapping(value = "geocoding/{address}")
+    public List<GeocodingDto> callGeocodingApi(@PathVariable String address) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location}&radius={radius}&type={type}&key={key}";
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("address", address);
+        uriVariables.put("key", "AIzaSyAk_HxKWrfBT1g9WkfL0gqRIa9HD0d7Q0I");
+        WrapperGeometryDto response =  restTemplate.getForObject(url, WrapperGeometryDto.class, uriVariables);
+        return response.getResults();
+    }
+
+    @RequestMapping(value = "nearbysearch/{location}/{type}")
+    public List<GeocodingDto> callNearBySearchApi(@PathVariable String location, @PathVariable String type) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location}&radius={radius}&type={type}&key={key}&language={language}";
         Map<String, String> uriVariables = new HashMap<>();
         uriVariables.put("location", location);
         uriVariables.put("radius", "3000");
         uriVariables.put("type", type);
         uriVariables.put("key", "AIzaSyDPzD4tPUGV3HGIiv7fVcWEFEQ0r1AAxwg");
-        return restTemplate.exchange(url, HttpMethod.GET, entity, String.class, uriVariables).getBody();
+        uriVariables.put("language", "vi");
+        WrapperGeometryDto response =  restTemplate.getForObject(url, WrapperGeometryDto.class, uriVariables);
+        return response.getResults();
     }
 }
