@@ -23,7 +23,13 @@ public class RealEstateDetailTransformer implements ResultTransformer {
         if(result.containsKey(tuples[aliasList.get("id")])){
             FacilityDto facilityDto = getFacilityDto(tuples,aliasList);
             if (facilityDto != null){
-                result.get(tuples[aliasList.get("id")]).getFacilities().add(facilityDto);
+                if( result.get(tuples[aliasList.get("id")]).getFacilities().containsKey(facilityDto.getFacilityTypeName())){
+                    result.get(tuples[aliasList.get("id")]).getFacilities().get(facilityDto.getFacilityTypeName()).add(facilityDto);
+                }else{
+                    List<FacilityDto> facilityDtos = new ArrayList<>();
+                    facilityDtos.add(facilityDto);
+                    result.get(tuples[aliasList.get("id")]).getFacilities().put(facilityDto.getFacilityTypeName(),facilityDtos);
+                }
             }
 
             ImageDto img = getImageDto(tuples,aliasList);
@@ -43,8 +49,13 @@ public class RealEstateDetailTransformer implements ResultTransformer {
 
     private RealEstateDetailDto getRealEstateDetailDto(Object[] tuples, Map<String, Integer> aliasList){
         RealEstateDetailDto rs = new RealEstateDetailDto();
-        if (getFacilityDto(tuples, aliasList) != null){
-            rs.getFacilities().add(getFacilityDto(tuples, aliasList));
+        if(rs.getFacilities().containsKey(getFacilityDto(tuples,aliasList).getFacilityTypeName())){
+            rs.getFacilities().get(getFacilityDto(tuples,aliasList).getFacilityTypeName()).add(getFacilityDto(tuples,aliasList));
+        }
+        else{
+            List<FacilityDto> facilityDtos = new ArrayList<>();
+            facilityDtos.add(getFacilityDto(tuples,aliasList));
+            rs.getFacilities().put(getFacilityDto(tuples,aliasList).getFacilityTypeName(),facilityDtos);
         }
         Set<ImageDto> imgs = new HashSet<>();
         imgs.add(getImageDto(tuples,aliasList));
@@ -61,8 +72,8 @@ public class RealEstateDetailTransformer implements ResultTransformer {
         rs.setStaffAvatar(TypeTransformImpl.castObjectToString(tuples[aliasList.get("staffAvatar")]));
         rs.setLength((Double) tuples[aliasList.get("length")]);
         rs.setWidth((Double) tuples[aliasList.get("width")]);
-        rs.setArea((double)tuples[aliasList.get("area")]);
-        rs.setPrice((double)tuples[aliasList.get("price")]);
+        rs.setArea((Double)tuples[aliasList.get("area")]);
+        rs.setPrice((Double)tuples[aliasList.get("price")]);
         rs.setDirection(TypeTransformImpl.castObjectToString(tuples[aliasList.get("direction")]));
         rs.setNumberOfBedroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBedroom")]));
         rs.setNumberOfBathroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBathroom")]));

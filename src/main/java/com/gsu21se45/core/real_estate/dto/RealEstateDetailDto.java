@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -42,7 +41,7 @@ public class RealEstateDetailDto {
     private String juridical;
     private String furniture;
     private Set<ImageDto> images;
-    private Set<FacilityDto> facilities = new HashSet<>();
+    private Map<String, List<FacilityDto>> facilities = new LinkedHashMap<>();
     private String realEstateNo;
     private String streetName;
     private String wardName;
