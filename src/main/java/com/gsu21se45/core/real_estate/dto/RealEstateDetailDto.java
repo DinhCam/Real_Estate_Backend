@@ -41,7 +41,7 @@ public class RealEstateDetailDto {
     private String juridical;
     private String furniture;
     private Set<ImageDto> images;
-    private Map<String, List<FacilityDto>> facilities = new LinkedHashMap<>();
+    private Map<String, Set<FacilityDto>> facilities = new LinkedHashMap<>();
     private String realEstateNo;
     private String streetName;
     private String wardName;

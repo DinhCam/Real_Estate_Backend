@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateRealEstateByManagerAssign {
+public class UpdateRejectedDto {
     private int id;
-    private String staffId;
+    private String reason;
 }

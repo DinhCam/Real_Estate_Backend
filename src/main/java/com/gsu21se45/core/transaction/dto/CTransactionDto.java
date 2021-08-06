@@ -1,11 +1,13 @@
 package com.gsu21se45.core.transaction.dto;
 
+import com.gsu21se45.entity.ImageResource;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,9 +18,9 @@ public class CTransactionDto {
     private String sellerId;
     private String staffId;
     private int realEstateId;
-    private String img_url;
-    private double deposit;
     private double downPrice;
+    private double deposit;
     private String note;
     private Date createAt;
+    private List<ImageResource> images;
 }

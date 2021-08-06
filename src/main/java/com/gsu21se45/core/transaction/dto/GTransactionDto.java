@@ -1,12 +1,14 @@
 package com.gsu21se45.core.transaction.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gsu21se45.core.real_estate.dto.ImageDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,7 +27,6 @@ public class GTransactionDto {
     private String streetName;
     private String wardName;
     private String disName;
-    private String transactionImg;
     private double deposit;
     private double downPrice;
     private String note;
@@ -35,4 +36,6 @@ public class GTransactionDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createAt;
+
+    private Set<ImageDto> images;
 }

@@ -26,7 +26,7 @@ public class RealEstateDetailTransformer implements ResultTransformer {
                 if( result.get(tuples[aliasList.get("id")]).getFacilities().containsKey(facilityDto.getFacilityTypeName())){
                     result.get(tuples[aliasList.get("id")]).getFacilities().get(facilityDto.getFacilityTypeName()).add(facilityDto);
                 }else{
-                    List<FacilityDto> facilityDtos = new ArrayList<>();
+                    Set<FacilityDto> facilityDtos = new HashSet<>();
                     facilityDtos.add(facilityDto);
                     result.get(tuples[aliasList.get("id")]).getFacilities().put(facilityDto.getFacilityTypeName(),facilityDtos);
                 }
@@ -53,7 +53,7 @@ public class RealEstateDetailTransformer implements ResultTransformer {
             rs.getFacilities().get(getFacilityDto(tuples,aliasList).getFacilityTypeName()).add(getFacilityDto(tuples,aliasList));
         }
         else{
-            List<FacilityDto> facilityDtos = new ArrayList<>();
+            Set<FacilityDto> facilityDtos = new HashSet<>();
             facilityDtos.add(getFacilityDto(tuples,aliasList));
             rs.getFacilities().put(getFacilityDto(tuples,aliasList).getFacilityTypeName(),facilityDtos);
         }

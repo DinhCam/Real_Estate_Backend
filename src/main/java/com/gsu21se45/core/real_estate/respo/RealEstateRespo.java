@@ -34,11 +34,11 @@ public interface RealEstateRespo {
     List<StaffDto> getAllStaff();
     boolean updateRealEstateStatusByCTransaction(CTransactionDto transactionDto);
     void updateView(int id);
-    boolean createRealEstate(CRealEstate cRealEstate);
-    boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign);
-    boolean updateRealEstateStatus(UpdateStatus updateStatus);
+    boolean createRealEstate(CRealEstateDto cRealEstateDto);
+    boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto);
+    boolean updateRealEstateStatus(UpdateStatusDto updateStatusDto);
     boolean updateBuyerId(UpdateBuyerIdDto updateBuyerIdDto);
-    boolean updateRealEstateRejected(UpdateRejected updateRejected);
+    boolean updateRealEstateRejected(UpdateRejectedDto updateRejectedDto);
 
     @Repository
      class RealEstateRespoImpl  implements RealEstateRespo {
@@ -211,7 +211,7 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public boolean createRealEstate(CRealEstate cRealEstate) {
+        public boolean createRealEstate(CRealEstateDto cRealEstateDto) {
             Session session = em.unwrap(Session.class);
             RealEstate realEstate = new RealEstate();
             Integer id = 0;
@@ -224,25 +224,25 @@ public interface RealEstateRespo {
             try {
                 java.sql.Timestamp  sqlDate = new java.sql.Timestamp (new java.util.Date().getTime());
                 String status = "inactive";
-                realEstate.setSeller(em.find(User.class,cRealEstate.getSellerId()));
-                realEstate.setTitle(cRealEstate.getTitle());
+                realEstate.setSeller(em.find(User.class, cRealEstateDto.getSellerId()));
+                realEstate.setTitle(cRealEstateDto.getTitle());
                 realEstate.setCreateAt(sqlDate);
                 realEstate.setStatus(status);
                 id = (Integer) session.save(realEstate);
 
-                street.setName(cRealEstate.getStreetName());
+                street.setName(cRealEstateDto.getStreetName());
                 streetId = (Integer) session.save(street);
 
                 streetWard.setStreet(em.find(Street.class, streetId));
-                streetWard.setWard(em.find(Ward.class, cRealEstate.getWardId()));
+                streetWard.setWard(em.find(Ward.class, cRealEstateDto.getWardId()));
 
                 streetWardId = (Integer) session.save(streetWard);
 
                 realEstateDetail.setId(id);
-                realEstateDetail.setRealEstateNo(cRealEstate.getRealEstateNo());
+                realEstateDetail.setRealEstateNo(cRealEstateDto.getRealEstateNo());
                 realEstateDetail.setStreetWard(em.find(StreetWard.class, streetWardId));
 
-                String address = cRealEstate.getAddress();
+                String address = cRealEstateDto.getAddress();
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -256,24 +256,24 @@ public interface RealEstateRespo {
                 realEstateDetail.setLatitude(response.getResults().get(0).getGeometry().getLocation().getLat());
                 realEstateDetail.setLongitude(response.getResults().get(0).getGeometry().getLocation().getLng());
 
-                realEstateDetail.setRealEstateType(em.find(RealEstateType.class,cRealEstate.getTypeId()));
-                realEstateDetail.setDescription(cRealEstate.getDescription());
-                realEstateDetail.setLength(cRealEstate.getLength());
-                realEstateDetail.setWidth(cRealEstate.getWidth());
-                realEstateDetail.setArea(cRealEstate.getArea());
-                realEstateDetail.setPrice(cRealEstate.getPrice());
-                realEstateDetail.setDirection(cRealEstate.getDirection());
-                realEstateDetail.setBalconyDirection(cRealEstate.getBalconyDirection());
-                realEstateDetail.setProject(cRealEstate.getProject());
-                realEstateDetail.setInvestor(cRealEstate.getInvestor());
-                realEstateDetail.setJuridical(cRealEstate.getJuridical());
-                realEstateDetail.setFurniture(cRealEstate.getFurniture());
-                realEstateDetail.setNumOfBedroom(cRealEstate.getNumberOfBedroom());
-                realEstateDetail.setNumOfBathroom(cRealEstate.getNumberOfBathroom());
+                realEstateDetail.setRealEstateType(em.find(RealEstateType.class, cRealEstateDto.getTypeId()));
+                realEstateDetail.setDescription(cRealEstateDto.getDescription());
+                realEstateDetail.setLength(cRealEstateDto.getLength());
+                realEstateDetail.setWidth(cRealEstateDto.getWidth());
+                realEstateDetail.setArea(cRealEstateDto.getArea());
+                realEstateDetail.setPrice(cRealEstateDto.getPrice());
+                realEstateDetail.setDirection(cRealEstateDto.getDirection());
+                realEstateDetail.setBalconyDirection(cRealEstateDto.getBalconyDirection());
+                realEstateDetail.setProject(cRealEstateDto.getProject());
+                realEstateDetail.setInvestor(cRealEstateDto.getInvestor());
+                realEstateDetail.setJuridical(cRealEstateDto.getJuridical());
+                realEstateDetail.setFurniture(cRealEstateDto.getFurniture());
+                realEstateDetail.setNumOfBedroom(cRealEstateDto.getNumberOfBedroom());
+                realEstateDetail.setNumOfBathroom(cRealEstateDto.getNumberOfBathroom());
 
                 realEstateDetailId = (Integer) session.save(realEstateDetail);
 
-                for (ImageResource i:cRealEstate.getImages()) {
+                for (ImageResource i: cRealEstateDto.getImages()) {
                     ImageResource imageResource = new ImageResource();
                     imageResource.setRealEstateDetail(em.find(RealEstateDetail.class, realEstateDetailId));
                     imageResource.setImgUrl(i.getImgUrl());
@@ -297,7 +297,7 @@ public interface RealEstateRespo {
                         type = "bank";
                     }
                     if (i == 5) {
-                        type = "shopping_mall";
+                        type = "post_office";
                     }
                     HttpHeaders headers1 = new HttpHeaders();
                     headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -353,11 +353,11 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign) {
+        public boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto) {
             try{
                 em.createNativeQuery(Query.updateRealEstateByManagerAssign)
-                        .setParameter("id", updateRealEstateByManagerAssign.getId())
-                        .setParameter("staffId", updateRealEstateByManagerAssign.getStaffId())
+                        .setParameter("id", updateRealEstateByManagerAssignDto.getId())
+                        .setParameter("staffId", updateRealEstateByManagerAssignDto.getStaffId())
                         .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();
@@ -367,11 +367,11 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public boolean updateRealEstateStatus(UpdateStatus updateStatus) {
+        public boolean updateRealEstateStatus(UpdateStatusDto updateStatusDto) {
             try{
                 em.createNativeQuery(Query.updateRealEstateStatus)
-                        .setParameter("id", updateStatus.getId())
-                        .setParameter("status", updateStatus.getStatus())
+                        .setParameter("id", updateStatusDto.getId())
+                        .setParameter("status", updateStatusDto.getStatus())
                         .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();
@@ -395,11 +395,11 @@ public interface RealEstateRespo {
         }
 
         @Override
-        public boolean updateRealEstateRejected(UpdateRejected updateRejected) {
+        public boolean updateRealEstateRejected(UpdateRejectedDto updateRejectedDto) {
             try{
                 em.createNativeQuery(Query.updateRealEstateRejected)
-                        .setParameter("id", updateRejected.getId())
-                        .setParameter("reason", updateRejected.getReason())
+                        .setParameter("id", updateRejectedDto.getId())
+                        .setParameter("reason", updateRejectedDto.getReason())
                         .executeUpdate();
             }catch(Exception e){
                 e.printStackTrace();
