@@ -24,11 +24,11 @@ public interface RealEstateService {
     List<RealEstateTypeDto> getAllRealEstateType();
     List<StaffDto> getAllStaff();
     RealEstateDetailDto getRealEstateDetailById(int id);
-    boolean createRealEstate(CRealEstate cRealEstate);
-    boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign);
-    boolean updateRealEstateStatus(UpdateStatus updateStatus);
+    boolean createRealEstate(CRealEstateDto cRealEstateDto);
+    boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto);
+    boolean updateRealEstateStatus(UpdateStatusDto updateStatusDto);
     boolean updateBuyerId(UpdateBuyerIdDto updateBuyerIdDto);
-    boolean updateRealEstateRejected(UpdateRejected updateRejected);
+    boolean updateRealEstateRejected(UpdateRejectedDto updateRejectedDto);
 
     @Service
     @Transactional
@@ -102,9 +102,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public boolean createRealEstate(CRealEstate cRealEstate) {
+        public boolean createRealEstate(CRealEstateDto cRealEstateDto) {
             try {
-                rs.createRealEstate(cRealEstate);
+                rs.createRealEstate(cRealEstateDto);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;
@@ -113,9 +113,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign) {
+        public boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto) {
             try {
-                rs.updateRealEstateByManagerAssign(updateRealEstateByManagerAssign);
+                rs.updateRealEstateByManagerAssign(updateRealEstateByManagerAssignDto);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;
@@ -124,9 +124,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public boolean updateRealEstateStatus(UpdateStatus updateStatus) {
+        public boolean updateRealEstateStatus(UpdateStatusDto updateStatusDto) {
             try {
-                rs.updateRealEstateStatus(updateStatus);
+                rs.updateRealEstateStatus(updateStatusDto);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;
@@ -146,9 +146,9 @@ public interface RealEstateService {
         }
 
         @Override
-        public boolean updateRealEstateRejected(UpdateRejected updateRejected) {
+        public boolean updateRealEstateRejected(UpdateRejectedDto updateRejectedDto) {
             try {
-                rs.updateRealEstateRejected(updateRejected);
+                rs.updateRealEstateRejected(updateRejectedDto);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;

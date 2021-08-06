@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateStatus {
+public class UpdateStatusDto {
     private int id;
     private String status;
 }

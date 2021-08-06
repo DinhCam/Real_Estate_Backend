@@ -104,20 +104,20 @@ public class RealEstateController {
 
     @PostMapping(value = "/createRealEstate")
     @ApiOperation("Create a new real estate")
-    public HttpStatus createRealEstate(@RequestBody CRealEstate cRealEstate){
-        return rs.createRealEstate(cRealEstate) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    public HttpStatus createRealEstate(@RequestBody CRealEstateDto cRealEstateDto){
+        return rs.createRealEstate(cRealEstateDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
     @PutMapping(value = "/updateRealEstateByManagerAssign")
     @ApiOperation("Update staff_id into real estate when manager assigned")
-    public HttpStatus updateRealEstateByManagerAssign(@RequestBody UpdateRealEstateByManagerAssign updateRealEstateByManagerAssign){
-        return rs.updateRealEstateByManagerAssign(updateRealEstateByManagerAssign) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    public HttpStatus updateRealEstateByManagerAssign(@RequestBody UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto){
+        return rs.updateRealEstateByManagerAssign(updateRealEstateByManagerAssignDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
     @PutMapping(value = "/updateRealEstateStatus")
     @ApiOperation("Update the status of real estate")
-    public HttpStatus updateRealEstateStatus(@RequestBody UpdateStatus updateStatus){
-        return rs.updateRealEstateStatus(updateStatus) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    public HttpStatus updateRealEstateStatus(@RequestBody UpdateStatusDto updateStatusDto){
+        return rs.updateRealEstateStatus(updateStatusDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
     @PutMapping(value = "/updateBuyerId")
@@ -128,8 +128,8 @@ public class RealEstateController {
 
     @PutMapping(value = "/updateRealEstateRejected")
     @ApiOperation("Update the real estate when rejected with a reason")
-    public HttpStatus updateRealEstateRejected(@RequestBody UpdateRejected updateRejected){
-        return rs.updateRealEstateRejected(updateRejected) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    public HttpStatus updateRealEstateRejected(@RequestBody UpdateRejectedDto updateRejectedDto){
+        return rs.updateRealEstateRejected(updateRejectedDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
     @RequestMapping(value = "autocomplete/{input}")

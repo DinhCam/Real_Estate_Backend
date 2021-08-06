@@ -1,5 +1,6 @@
 package com.gsu21se45.core.transaction.transformer;
 
+import com.gsu21se45.core.real_estate.dto.ImageDto;
 import com.gsu21se45.core.transaction.dto.GTransactionDto;
 import com.gsu21se45.util.AliasHelper;
 import com.gsu21se45.util.TypeTransformImpl;
@@ -10,22 +11,33 @@ import java.sql.Timestamp;
 import java.util.*;
 
 public class TransactionByUserIdTransformer implements ResultTransformer {
-    private GTransactionDto rs = new GTransactionDto();
+    Map<Integer, GTransactionDto> result = new LinkedHashMap<>();
 
     @Override
     public Object transformTuple(Object[] tuples, String[] alias) {
         Map<String, Integer> aliasList = AliasHelper.toMap(alias);
-        rs = getGTransactionDto(tuples, aliasList);
-        return rs;
+
+        if(result.containsKey(tuples[aliasList.get("id")])){
+            ImageDto img = getImageDto(tuples,aliasList);
+            result.get(tuples[aliasList.get("id")]).getImages().add(img);
+        }
+        else{
+            GTransactionDto gTransactionDto = getGTransactionDto(tuples,aliasList);
+            result.put((Integer) tuples[aliasList.get("id")], gTransactionDto);
+        }
+        return null;
     }
 
     @Override
     public List transformList(List list) {
-        return list;
+        return new ArrayList(result.values());
     }
 
     private GTransactionDto getGTransactionDto(Object[] tuples, Map<String, Integer> aliasList){
         GTransactionDto rs = new GTransactionDto();
+        Set<ImageDto> imgs = new HashSet<>();
+        imgs.add(getImageDto(tuples,aliasList));
+        rs.setImages(imgs);
         rs.setId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("id")]));
         rs.setSellerId(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerId")]));
         rs.setSellerName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("sellerName")]));
@@ -38,12 +50,18 @@ public class TransactionByUserIdTransformer implements ResultTransformer {
         rs.setStreetName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("streetName")]));
         rs.setWardName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("wardName")]));
         rs.setDisName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("disName")]));
-        rs.setTransactionImg(TypeTransformImpl.castObjectToString(tuples[aliasList.get("transactionImg")]));
-        rs.setDeposit((Double) tuples[aliasList.get("deposit")]);
         rs.setDownPrice((Double) tuples[aliasList.get("downPrice")]);
+        rs.setDeposit((Double) tuples[aliasList.get("deposit")]);
         rs.setNote(TypeTransformImpl.castObjectToString(tuples[aliasList.get("note")]));
         rs.setAppointmentDate((Timestamp) tuples[aliasList.get("appointmentDate")]);
         rs.setCreateAt((Timestamp) tuples[aliasList.get("createAt")]);
+        return rs;
+    }
+
+    private ImageDto getImageDto(Object[] tuples, Map<String, Integer> aliasList){
+        ImageDto  rs = new ImageDto();
+        rs.setImgId(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("imgId")]));
+        rs.setImgUrl(TypeTransformImpl.castObjectToString(tuples[aliasList.get("imageUrl")]));
         return rs;
     }
 }

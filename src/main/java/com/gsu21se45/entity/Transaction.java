@@ -22,9 +22,6 @@ public class Transaction implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "title", length = 3000)
-    private String title;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id")
     private User buyer;
@@ -43,6 +40,12 @@ public class Transaction implements Serializable {
 
     @Column(name = "down_price")
     private double downPrice;
+
+    @Column(name = "deposit")
+    private double deposit;
+
+    @Column(name = "note")
+    private String note;
 
     @Column(name = "create_at")
     private Date createAt;

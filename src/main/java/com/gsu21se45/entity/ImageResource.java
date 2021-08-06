@@ -25,8 +25,10 @@ public class ImageResource implements Serializable {
     @JoinColumn(name = "real_estate_detail_id")
     private RealEstateDetail realEstateDetail;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "transaction_id")
+    private Transaction transaction;
+
     @Column(name = "img_url", length = 3000)
     private String imgUrl;
-
-
 }

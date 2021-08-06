@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CRealEstate {
+public class CRealEstateDto {
     private String sellerId;
     private String title;
     private Timestamp createAt;
