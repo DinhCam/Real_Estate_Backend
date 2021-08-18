@@ -44,6 +44,14 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
+    @GetMapping(value = "/getRealEstateByDataentry/{dataentryId}/{status}/{page}")
+    @ApiOperation("Get all real estate have ? status of a dataentry")
+    public PaginationResponse<GRealEstateByDataentryDto> getRealEstateByDataentry(@PathVariable String dataentryId, @PathVariable String status, @PathVariable Integer page){
+        Integer size = 30;
+        Page<GRealEstateByDataentryDto> data = rs.getRealEstatesByDataentry(dataentryId, status, page, size);
+        return new PaginationResponse<>(data);
+    }
+
     @GetMapping(value = "/getRealEstateActiveBySeller/{sellerId}/{page}")
     @ApiOperation("Get all real estate have active status of a seller")
     public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateActiveBySeller(@PathVariable String sellerId, @PathVariable Integer page){
@@ -96,10 +104,10 @@ public class RealEstateController {
         return  rs.getAllRealEstateType();
     }
 
-    @GetMapping(value = "/getAllStaff")
+    @GetMapping(value = "/getAllStaff/{phone}/{fullname}")
     @ApiOperation("Get all staffs")
-    public List<StaffDto> getAllStaff(){
-        return  rs.getAllStaff();
+    public List<StaffDto> getAllStaff(@PathVariable String phone, @PathVariable String fullname){
+        return  rs.getAllStaff(phone,fullname);
     }
 
     @PostMapping(value = "/createRealEstate")
