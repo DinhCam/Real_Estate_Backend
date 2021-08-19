@@ -15,6 +15,7 @@ import java.util.List;
 public interface RealEstateService {
     Page<RealEstateDto> getAllRealEstates(RequestPrams r);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size);
+    Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesAssigned(Integer page, Integer size);
@@ -22,7 +23,7 @@ public interface RealEstateService {
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Integer page, Integer size);
     Integer getNumberOfRealEstateByStaff(String staffId, String status);
     List<RealEstateTypeDto> getAllRealEstateType();
-    List<StaffDto> getAllStaff();
+    List<StaffDto> getAllStaff(String phone, String fullname);
     RealEstateDetailDto getRealEstateDetailById(int id);
     boolean createRealEstate(CRealEstateDto cRealEstateDto);
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto);
@@ -47,6 +48,12 @@ public interface RealEstateService {
         public Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstatesBySeller(sellerId, status, pageable);
+        }
+
+        @Override
+        public Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return rs.getRealEstatesByDataentry(dataentryId, status, pageable);
         }
 
         @Override
@@ -90,8 +97,8 @@ public interface RealEstateService {
         }
 
         @Override
-        public List<StaffDto> getAllStaff() {
-            return rs.getAllStaff();
+        public List<StaffDto> getAllStaff(String phone, String fullname) {
+            return rs.getAllStaff(phone,fullname);
         }
 
         @Override

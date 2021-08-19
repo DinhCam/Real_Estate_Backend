@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CRealEstateDto {
     private String sellerId;
+    private String dataentryId;
     private String title;
     private Timestamp createAt;
     private String status;
