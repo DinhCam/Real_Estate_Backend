@@ -7,4 +7,6 @@ import java.util.List;
 public interface DistrictService {
 
     List<District> getAll();
+
+    public String getDistrictNameByDistrictId(int id);
 }

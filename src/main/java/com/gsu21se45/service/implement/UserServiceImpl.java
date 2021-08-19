@@ -58,5 +58,10 @@ public class UserServiceImpl implements UserService {
         return repository.getByNameAndRoleId(name, roleId);
     }
 
+    @Override
+    public int getTransactionNum(String staffId) {
+        return repository.getTransactionNumById(staffId);
+    }
+
 
 }

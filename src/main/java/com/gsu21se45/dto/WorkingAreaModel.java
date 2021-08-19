@@ -14,4 +14,6 @@ public class WorkingAreaModel {
     private int id;
     private String staffId;
     private int districtId;
+    private String districtName;
+
 }
