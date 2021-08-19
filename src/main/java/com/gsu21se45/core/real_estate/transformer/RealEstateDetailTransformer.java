@@ -73,6 +73,7 @@ public class RealEstateDetailTransformer implements ResultTransformer {
         rs.setLength((Double) tuples[aliasList.get("length")]);
         rs.setWidth((Double) tuples[aliasList.get("width")]);
         rs.setArea((Double)tuples[aliasList.get("area")]);
+        rs.setFloor(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("floor")]));
         rs.setPrice((Double)tuples[aliasList.get("price")]);
         rs.setDirection(TypeTransformImpl.castObjectToString(tuples[aliasList.get("direction")]));
         rs.setNumberOfBedroom(TypeTransformImpl.castObjectToInt(tuples[aliasList.get("numberOfBedroom")]));

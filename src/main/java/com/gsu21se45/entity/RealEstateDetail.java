@@ -49,6 +49,9 @@ public class RealEstateDetail implements Serializable {
     @Column(name = "area")
     private double area;
 
+    @Column(name = "floor")
+    private int floor;
+
     @Column(name = "price")
     private double price;
 
