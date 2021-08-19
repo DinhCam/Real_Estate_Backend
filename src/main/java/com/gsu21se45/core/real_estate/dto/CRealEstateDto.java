@@ -32,6 +32,7 @@ public class CRealEstateDto {
     private double length;
     private double width;
     private Double area;
+    private int floor;
     private Double price;
     private String direction;
     private String balconyDirection;

@@ -31,6 +31,7 @@ public class RealEstateDetailDto {
     private double length;
     private double width;
     private double area;
+    private int floor;
     private double price;
     private String direction;
     private String balconyDirection;

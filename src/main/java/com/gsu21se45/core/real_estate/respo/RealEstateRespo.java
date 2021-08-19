@@ -279,6 +279,7 @@ public interface RealEstateRespo {
                 realEstateDetail.setLength(cRealEstateDto.getLength());
                 realEstateDetail.setWidth(cRealEstateDto.getWidth());
                 realEstateDetail.setArea(cRealEstateDto.getArea());
+                realEstateDetail.setFloor(cRealEstateDto.getFloor());
                 realEstateDetail.setPrice(cRealEstateDto.getPrice());
                 realEstateDetail.setDirection(cRealEstateDto.getDirection());
                 realEstateDetail.setBalconyDirection(cRealEstateDto.getBalconyDirection());
@@ -622,6 +623,7 @@ public interface RealEstateRespo {
                 "rd.length as length,\n" +
                 "rd.width as width,\n" +
                 "rd.area as area,\n" +
+                "rd.floor as floor,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
