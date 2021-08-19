@@ -242,6 +242,7 @@ public interface RealEstateRespo {
                 java.sql.Timestamp  sqlDate = new java.sql.Timestamp (new java.util.Date().getTime());
                 String status = "inactive";
                 realEstate.setSeller(em.find(User.class, cRealEstateDto.getSellerId()));
+                realEstate.setDataentry(em.find(User.class, cRealEstateDto.getDataentryId()));
                 realEstate.setTitle(cRealEstateDto.getTitle());
                 realEstate.setCreateAt(sqlDate);
                 realEstate.setStatus(status);

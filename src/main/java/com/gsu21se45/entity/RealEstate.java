@@ -32,6 +32,14 @@ public class RealEstate implements Serializable {
     @JoinColumn(name = "staff_id")
     private User staff;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dataentry_id")
+    private User dataentry;
+
     @Column(name = "title", length = 255)
     private String title;
 
@@ -40,6 +48,9 @@ public class RealEstate implements Serializable {
 
     @Column(name = "create_at")
     private Date createAt;
+
+    @Column(name = "reason")
+    private String reason;
 
     @Column(name = "status")
     private String status;
