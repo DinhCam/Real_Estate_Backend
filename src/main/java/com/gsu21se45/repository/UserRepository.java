@@ -71,5 +71,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             nativeQuery = true)
     int getTransactionNumById(@Param(value = "staffId") String staffId);
 
+    //getBySearchAndRoleId
+    @Query(value = "select distinct u.* from `user` u where (u.fullname like %:search% or u.phone like %:search%) and u.role_id = :roleId",
+            nativeQuery = true)
+    List<User> getBySearchAndRoleId(@Param(value = "search") String search,
+                                  @Param(value = "roleId") int roleId);
 
 }

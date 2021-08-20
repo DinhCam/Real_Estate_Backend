@@ -23,4 +23,6 @@ public interface UserService {
     List<User> getByNameAndRoleId(String name, int roleId);
 
     int getTransactionNum(String staffId);
+
+    List<User> getBySearchAndRoleId(String search, int roleId);
 }

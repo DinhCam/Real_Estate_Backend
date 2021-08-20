@@ -19,4 +19,5 @@ public class AppConstant {
     public static final String WARD_TYPE = "ward";
     public static final String DISTRICT_TYPE = "district";
     public static final String STAFF_ROLE = "staff";
+    public static final String CUSTOMER_ROLE = "customer";
 }

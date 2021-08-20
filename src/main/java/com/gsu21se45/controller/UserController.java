@@ -121,4 +121,24 @@ public class UserController extends Logger {
         LOGGER.debug("End inside UserController.getByNameAndDistrict()");
         return staffModels;
     }
+
+    @GetMapping(value = RestEntityConstant.URI_GET + RestEntityConstant.URI_CUSTOMER)
+    @ApiOperation(value = "Get list seller by name or phone")
+    public @ResponseBody
+    List<UserModel> getSellerByNameAndPhone(@RequestParam(name = "search", defaultValue = AppConstant.EMPTY_STRING, required = false) String search) {
+        LOGGER.debug("Begin inside UserController.getBySearchAndRoleId()");
+        List<User> users = null;
+        int roleId = roleService.getIdByName(AppConstant.CUSTOMER_ROLE);
+
+        users = userService.getBySearchAndRoleId(search, roleId);
+
+        List<UserModel> userModels = users != null ? objectMapper.convertToListDTO(users, UserModel.class) : new ArrayList<>();
+
+
+//        List<UserModel> userModels = userHelper.getUsers(users);
+//        List<StaffModel> staffModels = userHelper.getStaffs(users);
+
+        LOGGER.debug("End inside UserController.getBySearchAndRoleId()");
+        return userModels;
+    }
 }
