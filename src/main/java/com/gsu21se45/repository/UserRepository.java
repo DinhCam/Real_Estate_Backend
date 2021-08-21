@@ -65,4 +65,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             nativeQuery = true)
     List<User> getByNameAndRoleId(@Param(value = "name") String name,
                                   @Param(value = "roleId") int roleId);
+
+    //getTransactionNumById
+    @Query(value = "select count(t.staff_id) from `transaction` t where t.staff_id = :staffId",
+            nativeQuery = true)
+    int getTransactionNumById(@Param(value = "staffId") String staffId);
+
+    //getBySearchAndRoleId
+    @Query(value = "select distinct u.* from `user` u where (u.fullname like %:search% or u.phone like %:search%) and u.role_id = :roleId",
+            nativeQuery = true)
+    List<User> getBySearchAndRoleId(@Param(value = "search") String search,
+                                  @Param(value = "roleId") int roleId);
+
 }

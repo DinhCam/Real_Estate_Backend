@@ -2,9 +2,11 @@ package com.gsu21se45.controller;
 
 import com.gsu21se45.common.constant.AppConstant;
 import com.gsu21se45.common.constant.RestEntityConstant;
+import com.gsu21se45.dto.StaffModel;
 import com.gsu21se45.dto.UserModel;
 import com.gsu21se45.dto.WorkingAreaModel;
 import com.gsu21se45.entity.User;
+import com.gsu21se45.helper.UserHelper;
 import com.gsu21se45.log.Logger;
 import com.gsu21se45.mapper.ObjectMapper;
 import com.gsu21se45.service.RoleService;
@@ -39,6 +41,9 @@ public class UserController extends Logger {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private UserHelper userHelper;
+
     @ApiOperation(value = "Create a new account")
     @PostMapping(value = RestEntityConstant.URI_CREATE)
     public @ResponseBody
@@ -63,6 +68,9 @@ public class UserController extends Logger {
         LOGGER.debug("Begin inside UserController.get()");
         User user = userService.getByUserId(userId);
         UserModel model = user != null ? ((UserModel) objectMapper.convertToDTO(user, UserModel.class)) : null;
+        if(user != null) {
+            model = userHelper.getUser(model);
+        }
         if (model != null) {
             model.setPassword("*************");
         }
@@ -96,7 +104,7 @@ public class UserController extends Logger {
     @GetMapping(value = RestEntityConstant.URI_GET + RestEntityConstant.URI_STAFF)
     @ApiOperation(value = "Get list staff by name and district")
     public @ResponseBody
-    List<UserModel> getByNameAndDistrict(@RequestParam(name = "name", defaultValue = AppConstant.EMPTY_STRING, required = false) String name,
+    List<StaffModel> getByNameAndDistrict(@RequestParam(name = "name", defaultValue = AppConstant.EMPTY_STRING, required = false) String name,
                                          @RequestParam(name = "district", required = true) String district) {
         LOGGER.debug("Begin inside UserController.getByNameAndDistrict()");
         List<User> users = null;
@@ -106,7 +114,31 @@ public class UserController extends Logger {
         } else {
             users = userService.getByNameAndDistrictIdAndRoleId(name, Integer.valueOf(district), roleId);
         }
+
+//        List<UserModel> userModels = userHelper.getUsers(users);
+        List<StaffModel> staffModels = userHelper.getStaffs(users);
+
         LOGGER.debug("End inside UserController.getByNameAndDistrict()");
-        return users != null ? objectMapper.convertToListDTO(users, UserModel.class) : new ArrayList<>();
+        return staffModels;
+    }
+
+    @GetMapping(value = RestEntityConstant.URI_GET + RestEntityConstant.URI_CUSTOMER)
+    @ApiOperation(value = "Get list seller by name or phone")
+    public @ResponseBody
+    List<UserModel> getSellerByNameAndPhone(@RequestParam(name = "search", defaultValue = AppConstant.EMPTY_STRING, required = false) String search) {
+        LOGGER.debug("Begin inside UserController.getBySearchAndRoleId()");
+        List<User> users = null;
+        int roleId = roleService.getIdByName(AppConstant.CUSTOMER_ROLE);
+
+        users = userService.getBySearchAndRoleId(search, roleId);
+
+        List<UserModel> userModels = users != null ? objectMapper.convertToListDTO(users, UserModel.class) : new ArrayList<>();
+
+
+//        List<UserModel> userModels = userHelper.getUsers(users);
+//        List<StaffModel> staffModels = userHelper.getStaffs(users);
+
+        LOGGER.debug("End inside UserController.getBySearchAndRoleId()");
+        return userModels;
     }
 }

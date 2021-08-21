@@ -21,4 +21,8 @@ public interface UserService {
     List<User> getByNameAndDistrictIdAndRoleId(String name, int districtId, int roleId);
 
     List<User> getByNameAndRoleId(String name, int roleId);
+
+    int getTransactionNum(String staffId);
+
+    List<User> getBySearchAndRoleId(String search, int roleId);
 }
