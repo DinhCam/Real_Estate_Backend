@@ -20,6 +20,7 @@ public class RealEstateDetailDto {
     private String description;
     private Double latitude;
     private Double longitude;
+    private int typeId;
     private String typeName;
     private int view;
     private String sellerId;
@@ -45,7 +46,9 @@ public class RealEstateDetailDto {
     private Map<String, Set<FacilityDto>> facilities = new LinkedHashMap<>();
     private String realEstateNo;
     private String streetName;
+    private int wardId;
     private String wardName;
+    private int disId;
     private String disName;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
