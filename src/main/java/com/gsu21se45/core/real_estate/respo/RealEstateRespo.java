@@ -610,6 +610,7 @@ public interface RealEstateRespo {
         public static String getRealEstateDetailById = "select r.id as id, \n" +
                 "r.title as title, \n" +
                 "rd.description as description,\n" +
+                "rt.id as typeId,\n" +
                 "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
@@ -646,7 +647,9 @@ public interface RealEstateRespo {
                 "rf.distance as distance,\n" +
                 "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
+                "w.id as wardId,\n" +
                 "w.name as wardName,\n" +
+                "d.id as disId, \n" +
                 "d.name as disName\n" +
                 "from real_estate r\n" +
                 "left join real_estate_detail rd on r.id = rd.id\n" +
