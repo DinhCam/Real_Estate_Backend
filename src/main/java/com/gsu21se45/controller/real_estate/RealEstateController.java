@@ -128,6 +128,12 @@ public class RealEstateController {
         return rs.updateRealEstateStatus(updateStatusDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
+    @PutMapping(value = "/updateRealEstateDetailLatLng")
+    @ApiOperation("Update the lat, lng of real estate")
+    public HttpStatus updateRealEstateDetailLatLng(@RequestBody UpdateLatLngDto updateLatLngDto){
+        return rs.updateRealEstateDetailLatLng(updateLatLngDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
     @PutMapping(value = "/updateBuyerId")
     @ApiOperation("Update the buyerId of real estate")
     public HttpStatus updateBuyerId(@RequestBody UpdateBuyerIdDto updateBuyerIdDto){
