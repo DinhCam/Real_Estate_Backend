@@ -5,6 +5,7 @@ import com.gsu21se45.core.real_estate.dto.*;
 import com.gsu21se45.core.real_estate.transformer.*;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.entity.*;
+import com.gsu21se45.util.filterHelper.SortBuilder;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,12 @@ public interface RealEstateRespo {
 
         @Override
         public Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p) {
+            StringBuilder getAllRealEstatesBuilder = new StringBuilder(Query.getAllRealEstates);
+            SortBuilder sortBuilder = new SortBuilder();
+            sortBuilder.buildOrder(getAllRealEstatesBuilder, p);
+
             List<RealEstateDto> rs = (List<RealEstateDto>) em
-                    .createNativeQuery(Query.getAllRealEstates)
+                    .createNativeQuery(getAllRealEstatesBuilder.toString())
                     .setParameter("minPrice", rq.getMinPrice())
                     .setParameter("maxPrice", rq.getMaxPrice())
                     .setParameter("minArea", rq.getMinArea())
@@ -71,27 +76,6 @@ public interface RealEstateRespo {
                     .getResultList();
             return new PageImpl<>(rs, p, rs.size());
         }
-
-//                    List<RealEstateDto> rs = (List<RealEstateDto>) em
-//                            .createNativeQuery(Query.getAllRealEstates)
-//                            .setParameter("minPrice",rq.getMinPrice())
-//                            .setParameter("maxPrice", rq.getMaxPrice())
-//                            .setParameter("minArea", rq.getMinArea())
-//                            .setParameter("maxArea", rq.getMaxArea())
-//                            .setParameter("type", rq.getType())
-//                            .setParameter("search", rq.getSearch())
-//                            .setParameter("disId", rq.getDisId())
-//                            .setParameter("wardId", rq.getWardId())
-//                            .setParameter("direction", rq.getDirection())
-//                            .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
-//                            .setParameter("sort", "r.view")
-//                            .setFirstResult((int) p.getOffset())
-//                            .setMaxResults(p.getPageSize())
-//                            .unwrap(NativeQuery.class)
-//                            .setResultTransformer(new RealEstateTransformer())
-//                            .getResultList();
-//                    return new PageImpl<>(rs,p,rs.size());
-//            }
 
         @Override
         public Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Pageable p) {
@@ -525,9 +509,8 @@ public interface RealEstateRespo {
                 "and ((:numberOfBedroom is null) or (numberOfBedroom = :numberOfBedroom))\n" +
                 "and ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
                 "and ((:disId is null) or (disId = :disId))\n" +
-                "and ((:wardId is null) or (wardId = :wardId))\n" +
-                "order by r.view DESC";
-//                "order by :sort DESC";
+                "and ((:wardId is null) or (wardId = :wardId))\n" ;
+//                "order by r.view DESC";
 
         public static String getRealEstateAssignStaff = "select r.id as id, \n" +
                 "r.title as title, \n" +
