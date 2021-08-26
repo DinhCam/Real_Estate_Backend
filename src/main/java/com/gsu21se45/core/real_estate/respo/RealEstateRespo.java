@@ -38,6 +38,7 @@ public interface RealEstateRespo {
     boolean createRealEstate(CRealEstateDto cRealEstateDto);
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto);
     boolean updateRealEstateStatus(UpdateStatusDto updateStatusDto);
+    boolean updateRealEstateDetailLatLng(UpdateLatLngDto updateLatLngDto);
     boolean updateBuyerId(UpdateBuyerIdDto updateBuyerIdDto);
     boolean updateRealEstateRejected(UpdateRejectedDto updateRejectedDto);
 
@@ -53,20 +54,44 @@ public interface RealEstateRespo {
         public Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
                     .createNativeQuery(Query.getAllRealEstates)
-                    .setParameter("minPrice",rq.getMinPrice())
+                    .setParameter("minPrice", rq.getMinPrice())
                     .setParameter("maxPrice", rq.getMaxPrice())
                     .setParameter("minArea", rq.getMinArea())
                     .setParameter("maxArea", rq.getMaxArea())
                     .setParameter("type", rq.getType())
                     .setParameter("search", rq.getSearch())
-                    .setParameter("disName", rq.getDisName())
+                    .setParameter("disId", rq.getDisId())
+                    .setParameter("wardId", rq.getWardId())
+                    .setParameter("direction", rq.getDirection())
+                    .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+            return new PageImpl<>(rs, p, rs.size());
         }
+
+//                    List<RealEstateDto> rs = (List<RealEstateDto>) em
+//                            .createNativeQuery(Query.getAllRealEstates)
+//                            .setParameter("minPrice",rq.getMinPrice())
+//                            .setParameter("maxPrice", rq.getMaxPrice())
+//                            .setParameter("minArea", rq.getMinArea())
+//                            .setParameter("maxArea", rq.getMaxArea())
+//                            .setParameter("type", rq.getType())
+//                            .setParameter("search", rq.getSearch())
+//                            .setParameter("disId", rq.getDisId())
+//                            .setParameter("wardId", rq.getWardId())
+//                            .setParameter("direction", rq.getDirection())
+//                            .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
+//                            .setParameter("sort", "r.view")
+//                            .setFirstResult((int) p.getOffset())
+//                            .setMaxResults(p.getPageSize())
+//                            .unwrap(NativeQuery.class)
+//                            .setResultTransformer(new RealEstateTransformer())
+//                            .getResultList();
+//                    return new PageImpl<>(rs,p,rs.size());
+//            }
 
         @Override
         public Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Pageable p) {
@@ -400,6 +425,21 @@ public interface RealEstateRespo {
         }
 
         @Override
+        public boolean updateRealEstateDetailLatLng(UpdateLatLngDto updateLatLngDto) {
+            try{
+                em.createNativeQuery(Query.updateRealEstateDetailLatLng)
+                        .setParameter("id", updateLatLngDto.getId())
+                        .setParameter("lat", updateLatLngDto.getLat())
+                        .setParameter("lng", updateLatLngDto.getLng())
+                        .executeUpdate();
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
         public boolean updateBuyerId(UpdateBuyerIdDto updateBuyerIdDto) {
             try{
                 em.createNativeQuery(Query.updateBuyerId)
@@ -444,6 +484,7 @@ public interface RealEstateRespo {
                 "st.avatar as staffAvatar, \n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
+                "rd.direction as direction,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
                 "rd.number_of_bathroom as numberOfBathroom,\n" +
                 "rd.project as project,\n" +
@@ -452,7 +493,9 @@ public interface RealEstateRespo {
                 "r.create_at as createAt,\n" +
                 "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
+                "w.id as wardId,\n" +
                 "w.name as wardName,\n" +
+                "d.id as disId,\n" +
                 "d.name as disName,\n" +
                 "concat(street.name, ' ', w.name, ' ', d.name, ' ', r.title, ' ', rd.project) as search\n" +
                 "from real_estate r\n" +
@@ -465,7 +508,7 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "having r.status = 'active'\n" +
+                "having r.status = 'inactive'\n" +
 
                 "and ((:minPrice is null and :maxPrice is null) or " +
                 "((:minPrice is not null and :maxPrice is not null) and (rd.price between :minPrice and :maxPrice)) or " +
@@ -478,9 +521,13 @@ public interface RealEstateRespo {
                 "((:maxArea is null) and (rd.area >= :minArea)))\n" +
 
                 "and ((:type is null) or (typeId = :type))\n" +
+                "and ((:direction is null) or (direction = :direction))\n" +
+                "and ((:numberOfBedroom is null) or (numberOfBedroom = :numberOfBedroom))\n" +
                 "and ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
-                "and ((:disName is null) or (disName like concat('%', concat(:disName, '%'))))\n"+
+                "and ((:disId is null) or (disId = :disId))\n" +
+                "and ((:wardId is null) or (wardId = :wardId))\n" +
                 "order by r.view DESC";
+//                "order by :sort DESC";
 
         public static String getRealEstateAssignStaff = "select r.id as id, \n" +
                 "r.title as title, \n" +
@@ -857,6 +904,8 @@ public interface RealEstateRespo {
         public static String updateBuyerId = "update real_estate set buyer_id = :buyerId where id = :id";
 
         public static String updateRealEstateRejected = "update real_estate set status = 'rejected', reason = :reason where id = :id";
+
+        public static String updateRealEstateDetailLatLng = "update real_estate_detail set latitude = :lat, longitude = :lng where id = :id";
 
         public static String updateRealEstateByManagerAssign = "update real_estate set staff_id = :staffId where id = :id";
 

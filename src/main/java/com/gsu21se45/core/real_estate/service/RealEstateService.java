@@ -28,6 +28,7 @@ public interface RealEstateService {
     boolean createRealEstate(CRealEstateDto cRealEstateDto);
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto);
     boolean updateRealEstateStatus(UpdateStatusDto updateStatusDto);
+    boolean updateRealEstateDetailLatLng(UpdateLatLngDto updateLatLngDto);
     boolean updateBuyerId(UpdateBuyerIdDto updateBuyerIdDto);
     boolean updateRealEstateRejected(UpdateRejectedDto updateRejectedDto);
 
@@ -134,6 +135,17 @@ public interface RealEstateService {
         public boolean updateRealEstateStatus(UpdateStatusDto updateStatusDto) {
             try {
                 rs.updateRealEstateStatus(updateStatusDto);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstateDetailLatLng(UpdateLatLngDto updateLatLngDto) {
+            try {
+                rs.updateRealEstateDetailLatLng(updateLatLngDto);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;

@@ -17,5 +17,8 @@ public class RequestPrams {
     private String staffId;
     private String sellerId;
     private String userId;
-    private String disName;
+    private Integer disId;
+    private Integer wardId;
+    private String direction;
+    private Integer numberOfBedroom;
 }
