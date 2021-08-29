@@ -28,6 +28,7 @@ public interface RealEstateService {
     List<StaffDto> getAllStaff(String phone, String fullname);
     RealEstateDetailDto getRealEstateDetailById(int id);
     boolean createRealEstate(CRealEstateDto cRealEstateDto);
+    boolean updateRealEstate(UpdateRealEstateDto updateRealEstateDto);
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto);
     boolean updateRealEstateStatus(UpdateStatusDto updateStatusDto);
     boolean updateRealEstateDetailLatLng(UpdateLatLngDto updateLatLngDto);
@@ -122,6 +123,17 @@ public interface RealEstateService {
         public boolean createRealEstate(CRealEstateDto cRealEstateDto) {
             try {
                 rs.createRealEstate(cRealEstateDto);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstate(UpdateRealEstateDto updateRealEstateDto) {
+            try {
+                rs.updateRealEstate(updateRealEstateDto);
             } catch (Exception ex){
                 ex.printStackTrace();
                 return false;
