@@ -37,6 +37,7 @@ public interface RealEstateRespo {
     boolean updateRealEstateStatusByCTransaction(CTransactionDto transactionDto);
     void updateView(int id);
     boolean createRealEstate(CRealEstateDto cRealEstateDto);
+    boolean updateRealEstate(UpdateRealEstateDto updateRealEstateDto);
     boolean updateRealEstateByManagerAssign(UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto);
     boolean updateRealEstateStatus(UpdateStatusDto updateStatusDto);
     boolean updateRealEstateDetailLatLng(UpdateLatLngDto updateLatLngDto);
@@ -375,6 +376,155 @@ public interface RealEstateRespo {
                 }
             } catch (Exception ex){
                 ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean updateRealEstate(UpdateRealEstateDto updateRealEstateDto) {
+            Session session = em.unwrap(Session.class);
+            Street street = new Street();
+            Integer streetId = 0;
+            StreetWard streetWard = new StreetWard();
+            Integer streetWardId = 0;
+            try{
+                java.sql.Timestamp  sqlDate = new java.sql.Timestamp (new java.util.Date().getTime());
+                em.createNativeQuery(Query.updateRealEstate)
+                        .setParameter("id", updateRealEstateDto.getId())
+                        .setParameter("title", updateRealEstateDto.getTitle())
+                        .setParameter("sellerId", updateRealEstateDto.getSellerId())
+                        .setParameter("createAt", sqlDate)
+                        .executeUpdate();
+
+                street.setName(updateRealEstateDto.getStreetName());
+                streetId = (Integer) session.save(street);
+
+                streetWard.setStreet(em.find(Street.class, streetId));
+                streetWard.setWard(em.find(Ward.class, updateRealEstateDto.getWardId()));
+
+                streetWardId = (Integer) session.save(streetWard);
+
+                em.createNativeQuery(Query.deleteImage)
+                        .setParameter("realEstateDetailId", updateRealEstateDto.getId())
+                        .executeUpdate();
+
+                for (ImageResource i: updateRealEstateDto.getImages()) {
+                    ImageResource imageResource = new ImageResource();
+                    imageResource.setRealEstateDetail(em.find(RealEstateDetail.class, updateRealEstateDto.getId()));
+                    imageResource.setImgUrl(i.getImgUrl());
+                    session.save(imageResource);
+                }
+
+                em.createNativeQuery(Query.deleteFacility)
+                        .setParameter("realEstateDetailId", updateRealEstateDto.getId())
+                        .executeUpdate();
+
+                String address = updateRealEstateDto.getAddress();
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+                HttpEntity<String> entity = new HttpEntity<String>(headers);
+                String url = "https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
+                Map<String, String> uriVariables = new HashMap<>();
+                uriVariables.put("address", address);
+                uriVariables.put("key", "AIzaSyAk_HxKWrfBT1g9WkfL0gqRIa9HD0d7Q0I");
+                WrapperGeometryDto response =  restTemplate.getForObject(url, WrapperGeometryDto.class, uriVariables);
+
+                Double realEstateLat = response.getResults().get(0).getGeometry().getLocation().getLat();
+                Double realEstateLng = response.getResults().get(0).getGeometry().getLocation().getLng();
+
+                String locationRealEstate = Double.toString(realEstateLat).concat(", ").concat(Double.toString(realEstateLng));
+
+                for (int i = 1; i <= 5; i++){
+                    String type = null;
+                    if (i == 1) {
+                        type = "school";
+                    }
+                    if (i == 2) {
+                        type = "hospital";
+                    }
+                    if (i == 3) {
+                        type = "supermarket";
+                    }
+                    if (i == 4) {
+                        type = "bank";
+                    }
+                    if (i == 5) {
+                        type = "post_office";
+                    }
+                    HttpHeaders headers1 = new HttpHeaders();
+                    headers1.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+                    HttpEntity<String> entity1 = new HttpEntity<String>(headers1);
+                    String url1 = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location}&radius={radius}&type={type}&key={key}&language={language}";
+                    Map<String, String> uriVariables1 = new HashMap<>();
+                    uriVariables1.put("location", locationRealEstate);
+                    uriVariables1.put("radius", "3000");
+                    uriVariables1.put("type", type);
+                    uriVariables1.put("key", "AIzaSyDPzD4tPUGV3HGIiv7fVcWEFEQ0r1AAxwg");
+                    uriVariables1.put("language", "vi");
+                    WrapperNearBySearchDto response1 =  restTemplate.getForObject(url1, WrapperNearBySearchDto.class, uriVariables1);
+
+                    for (NearBySearchDto j:response1.getResults()) {
+                        Facility facility = new Facility();
+                        Integer facilityId = 0;
+                        facility.setFacilityTypeId(em.find(FacilityType.class, i));
+                        facility.setFacilityName(j.getName());
+                        facility.setLatitude(j.getGeometry().getLocation().getLat());
+                        facility.setLongitude(j.getGeometry().getLocation().getLng());
+                        facility.setAddress(j.getVicinity());
+                        facilityId = (Integer) session.save(facility);
+
+                        RealEstateFacility realEstateFacility = new RealEstateFacility();
+                        realEstateFacility.setRealEstateDetail(em.find(RealEstateDetail.class, updateRealEstateDto.getId()));
+                        realEstateFacility.setFacility(em.find(Facility.class, facilityId));
+
+//                      HaversineDistance
+                        final int R = 6371;
+                        Double lat1 = realEstateLat;
+                        Double lon1 = realEstateLng;
+                        Double lat2 = facility.getLatitude();
+                        Double lon2 = facility.getLongitude();
+                        Double latDistance = (lat2-lat1) * Math.PI / 180;
+                        Double lonDistance = (lon2-lon1) * Math.PI / 180;
+                        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
+                                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                                        Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+                        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        Double distance = R * c;
+
+                        realEstateFacility.setDistance(distance);
+
+                        session.save(facility);
+                        session.save(realEstateFacility);
+                    }
+                }
+
+                em.createNativeQuery(Query.updateRealEstateDetail)
+                        .setParameter("id", updateRealEstateDto.getId())
+                        .setParameter("streetWardId", streetWardId)
+                        .setParameter("realEstateNo", updateRealEstateDto.getRealEstateNo())
+                        .setParameter("lat", realEstateLat)
+                        .setParameter("lng", realEstateLng)
+                        .setParameter("typeId", updateRealEstateDto.getTypeId())
+                        .setParameter("description", updateRealEstateDto.getDescription())
+                        .setParameter("length", updateRealEstateDto.getLength())
+                        .setParameter("width", updateRealEstateDto.getWidth())
+                        .setParameter("area", updateRealEstateDto.getArea())
+                        .setParameter("floor", updateRealEstateDto.getFloor())
+                        .setParameter("price", updateRealEstateDto.getPrice())
+                        .setParameter("direction", updateRealEstateDto.getDirection())
+                        .setParameter("balconyDirection", updateRealEstateDto.getBalconyDirection())
+                        .setParameter("project", updateRealEstateDto.getProject())
+                        .setParameter("investor", updateRealEstateDto.getInvestor())
+                        .setParameter("juridical", updateRealEstateDto.getJuridical())
+                        .setParameter("furniture", updateRealEstateDto.getFurniture())
+                        .setParameter("numberOfBedroom", updateRealEstateDto.getNumberOfBedroom())
+                        .setParameter("numberOfBathroom", updateRealEstateDto.getNumberOfBathroom())
+                        .executeUpdate();
+
+            }catch(Exception e){
+                e.printStackTrace();
                 return false;
             }
             return true;
@@ -889,6 +1039,38 @@ public interface RealEstateRespo {
         public static String updateRealEstateRejected = "update real_estate set status = 'rejected', reason = :reason where id = :id";
 
         public static String updateRealEstateDetailLatLng = "update real_estate_detail set latitude = :lat, longitude = :lng where id = :id";
+
+        public static String updateRealEstateDetail = "update real_estate_detail set street_ward_id = :streetWardId, \n" +
+                "real_estate_no = :realEstateNo, \n" +
+                "latitude = :lat, \n" +
+                "longitude = :lng, \n" +
+                "type_id = :typeId, \n" +
+                "description = :description, \n" +
+                "length = :length, \n" +
+                "width = :width, \n" +
+                "area = :area, \n" +
+                "floor = :floor, \n" +
+                "price = :price, \n" +
+                "direction = :direction, \n" +
+                "balcony_direction = :balconyDirection, \n" +
+                "project = :project, \n" +
+                "investor = :investor, \n" +
+                "juridical = :juridical, \n" +
+                "furniture = :furniture, \n" +
+                "number_of_bedroom = :numberOfBedroom, \n" +
+                "number_of_bathroom = :numberOfBathroom \n" +
+                "where id = :id";
+
+        public static String updateRealEstate = "update real_estate set seller_id = :sellerId, \n" +
+                "title = :title, \n" +
+                "create_at = :createAt \n" +
+                "where id = :id";
+
+        public static String deleteFacility = "delete from real_estate_facility \n" +
+                "where real_estate_detail_id = :realEstateDetailId";
+
+        public static String deleteImage = "delete from image_resource \n" +
+                "where real_estate_detail_id = :realEstateDetailId";
 
         public static String updateRealEstateByManagerAssign = "update real_estate set staff_id = :staffId where id = :id";
 

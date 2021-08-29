@@ -116,6 +116,12 @@ public class RealEstateController {
         return rs.createRealEstate(cRealEstateDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
     }
 
+    @PutMapping(value = "/updateRealEstate")
+    @ApiOperation("Update a real estate")
+    public HttpStatus updateRealEstate(@RequestBody UpdateRealEstateDto updateRealEstateDto){
+        return rs.updateRealEstate(updateRealEstateDto) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
     @PutMapping(value = "/updateRealEstateByManagerAssign")
     @ApiOperation("Update staff_id into real estate when manager assigned")
     public HttpStatus updateRealEstateByManagerAssign(@RequestBody UpdateRealEstateByManagerAssignDto updateRealEstateByManagerAssignDto){
