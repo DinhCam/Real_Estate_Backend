@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
+import java.math.BigInteger;
 import java.util.*;
 
 public interface RealEstateRespo {
@@ -76,7 +77,24 @@ public interface RealEstateRespo {
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
-            return new PageImpl<>(rs, p, rs.size());
+            return new PageImpl<>(rs,p,rs.size());
+
+//            BigInteger total = (BigInteger) em
+//                    .createNativeQuery(count)
+//                    .setParameter("minPrice", rq.getMinPrice())
+//                    .setParameter("maxPrice", rq.getMaxPrice())
+//                    .setParameter("minArea", rq.getMinArea())
+//                    .setParameter("maxArea", rq.getMaxArea())
+//                    .setParameter("type", rq.getType())
+//                    .setParameter("search", rq.getSearch())
+//                    .setParameter("disId", rq.getDisId())
+//                    .setParameter("wardId", rq.getWardId())
+//                    .setParameter("direction", rq.getDirection())
+//                    .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
+//                    .setParameter("numberOfBathroom", rq.getNumberOfBathroom())
+//                    .unwrap(NativeQuery.class)
+//                    .getSingleResult();
+//            return new PageImpl<>(rs, p, total.longValue());
         }
 
         @Override
