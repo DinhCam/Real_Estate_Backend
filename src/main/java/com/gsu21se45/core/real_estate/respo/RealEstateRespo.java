@@ -70,6 +70,7 @@ public interface RealEstateRespo {
                     .setParameter("wardId", rq.getWardId())
                     .setParameter("direction", rq.getDirection())
                     .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
+                    .setParameter("numberOfBathroom", rq.getNumberOfBathroom())
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
@@ -656,7 +657,8 @@ public interface RealEstateRespo {
 
                 "and ((:type is null) or (typeId = :type))\n" +
                 "and ((:direction is null) or (direction = :direction))\n" +
-                "and ((:numberOfBedroom is null) or (numberOfBedroom = :numberOfBedroom))\n" +
+                "and ((:numberOfBedroom is null) or (numberOfBedroom >= :numberOfBedroom))\n" +
+                "and ((:numberOfBathroom is null) or (numberOfBathroom >= :numberOfBathroom))\n" +
                 "and ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
                 "and ((:disId is null) or (disId = :disId))\n" +
                 "and ((:wardId is null) or (wardId = :wardId))\n" ;
