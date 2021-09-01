@@ -22,4 +22,5 @@ public class RequestPrams {
     private Integer wardId;
     private String direction;
     private Integer numberOfBedroom;
+    private Integer numberOfBathroom;
 }

@@ -53,7 +53,7 @@ public class RealEstateDetailTransformer implements ResultTransformer {
             rs.getFacilities().get(getFacilityDto(tuples,aliasList).getFacilityTypeName()).add(getFacilityDto(tuples,aliasList));
         }
         else{
-            Set<FacilityDto> facilityDtos = new HashSet<>();
+            Set<FacilityDto> facilityDtos = new LinkedHashSet<>();
             facilityDtos.add(getFacilityDto(tuples,aliasList));
             rs.getFacilities().put(getFacilityDto(tuples,aliasList).getFacilityTypeName(),facilityDtos);
         }

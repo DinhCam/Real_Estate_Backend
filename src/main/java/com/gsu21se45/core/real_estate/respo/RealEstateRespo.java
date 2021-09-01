@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
+import java.math.BigInteger;
 import java.util.*;
 
 public interface RealEstateRespo {
@@ -70,12 +71,37 @@ public interface RealEstateRespo {
                     .setParameter("wardId", rq.getWardId())
                     .setParameter("direction", rq.getDirection())
                     .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
+                    .setParameter("numberOfBathroom", rq.getNumberOfBathroom())
                     .setFirstResult((int) p.getOffset())
                     .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
             return new PageImpl<>(rs, p, rs.size());
+
+//            List<RealEstateDto> content = new ArrayList<>();
+//            for(int i = (int) p.getOffset(); i< p.getPageSize(); i++){
+//                content.add(rs.get(i));
+//            }
+//
+//            return new PageImpl<>(content,p,rs.size());
+
+//            BigInteger total = (BigInteger) em
+//                    .createNativeQuery(Query.countAllRealEstates)
+//                    .setParameter("minPrice", rq.getMinPrice())
+//                    .setParameter("maxPrice", rq.getMaxPrice())
+//                    .setParameter("minArea", rq.getMinArea())
+//                    .setParameter("maxArea", rq.getMaxArea())
+//                    .setParameter("type", rq.getType())
+//                    .setParameter("search", rq.getSearch())
+//                    .setParameter("disId", rq.getDisId())
+//                    .setParameter("wardId", rq.getWardId())
+//                    .setParameter("direction", rq.getDirection())
+//                    .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
+//                    .setParameter("numberOfBathroom", rq.getNumberOfBathroom())
+//                    .unwrap(NativeQuery.class)
+//                    .getSingleResult();
+//            return new PageImpl<>(rs, p, total.longValue());
         }
 
         @Override
@@ -656,11 +682,44 @@ public interface RealEstateRespo {
 
                 "and ((:type is null) or (typeId = :type))\n" +
                 "and ((:direction is null) or (direction = :direction))\n" +
-                "and ((:numberOfBedroom is null) or (numberOfBedroom = :numberOfBedroom))\n" +
+                "and ((:numberOfBedroom is null) or (numberOfBedroom >= :numberOfBedroom))\n" +
+                "and ((:numberOfBathroom is null) or (numberOfBathroom >= :numberOfBathroom))\n" +
                 "and ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
                 "and ((:disId is null) or (disId = :disId))\n" +
                 "and ((:wardId is null) or (wardId = :wardId))\n" ;
 //                "order by r.view DESC";
+
+//        public static String countAllRealEstates = "select count(distinct r.id) as num, \n" +
+//                "concat(street.name, ' ', w.name, ' ', d.name, ' ', r.title, ' ', rd.project) as search \n" +
+//                "from real_estate r\n" +
+//                "left join real_estate_detail rd on r.id = rd.id\n" +
+//                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
+//                "left join real_estate_type rt on rd.type_id = rt.id \n" +
+//                "left join user s on r.seller_id = s.id\n" +
+//                "left join user st on r.staff_id = st.id\n" +
+//                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
+//                "left join street street on sw.street_id = street.id\n" +
+//                "left join ward w on sw.ward_id = w.id\n" +
+//                "left join district d on w.district_id = d.id\n" +
+//                "where r.status = 'active'\n" +
+//
+//                "and ((:minPrice is null and :maxPrice is null) or " +
+//                "((:minPrice is not null and :maxPrice is not null) and (rd.price between :minPrice and :maxPrice)) or " +
+//                "((:minPrice is null) and (rd.price <= :maxPrice)) or " +
+//                "((:maxPrice is null) and (rd.price >= :minPrice)))\n" +
+//
+//                "and ((:minArea is null and :maxArea is null) or " +
+//                "((:minArea is not null and :maxArea is not null) and (rd.area between :minArea and :maxArea)) or " +
+//                "((:minArea is null) and (rd.area <= :maxArea)) or " +
+//                "((:maxArea is null) and (rd.area >= :minArea)))\n" +
+//
+//                "and ((:type is null) or (rt.id = :type))\n" +
+//                "and ((:direction is null) or (rd.direction = :direction))\n" +
+//                "and ((:numberOfBedroom is null) or (rd.number_of_bedroom >= :numberOfBedroom))\n" +
+//                "and ((:numberOfBathroom is null) or (rd.number_of_bathroom >= :numberOfBathroom))\n" +
+//                "and ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
+//                "and ((:disId is null) or (d.id = :disId))\n" +
+//                "and ((:wardId is null) or (w.id = :wardId))\n" ;
 
         public static String getRealEstateAssignStaff = "select r.id as id, \n" +
                 "r.title as title, \n" +

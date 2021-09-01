@@ -26,11 +26,11 @@ public class FacilityDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FacilityDto that = (FacilityDto) o;
-        return facilityId == that.facilityId;
+        return Objects.equals(facilityId, that.facilityId) && Objects.equals(facilityTypeId, that.facilityTypeId) && Objects.equals(facilityTypeName, that.facilityTypeName) && Objects.equals(facilityName, that.facilityName) && Objects.equals(latitudeFacility, that.latitudeFacility) && Objects.equals(longitudeFacility, that.longitudeFacility) && Objects.equals(addressFacility, that.addressFacility) && Objects.equals(distance, that.distance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(facilityId);
+        return Objects.hash(facilityId, facilityTypeId, facilityTypeName, facilityName, latitudeFacility, longitudeFacility, addressFacility, distance);
     }
 }
