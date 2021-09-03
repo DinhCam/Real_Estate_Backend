@@ -23,10 +23,12 @@ public class RealEstateController {
     @Autowired
     private RealEstateService rs;
 
-    @PostMapping(value = "/getAllRealEstate")
-    @ApiOperation("Get all real estate")
-    public PaginationResponse<RealEstateDto> getAllRealEstates(@RequestBody RequestPrams r){
-        Page<RealEstateDto> data = rs.getAllRealEstates(r);
+    Integer size = 15;
+
+    @PostMapping(value = "/getRealEstate")
+    @ApiOperation("Get real estate")
+    public PaginationResponse<RealEstateDto> getRealEstate(@RequestBody RequestPrams r){
+        Page<RealEstateDto> data = rs.getRealEstate(r);
         return new PaginationResponse<>(data);
     }
 
@@ -39,7 +41,6 @@ public class RealEstateController {
     @GetMapping(value = "/getRealEstateBySeller/{sellerId}/{status}/{page}")
     @ApiOperation("Get all real estate have ? status of a seller")
     public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateBySeller(@PathVariable String sellerId, @PathVariable String status, @PathVariable Integer page){
-        Integer size = 30;
         Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesBySeller(sellerId, status, page, size);
         return new PaginationResponse<>(data);
     }
@@ -47,7 +48,6 @@ public class RealEstateController {
     @GetMapping(value = "/getRealEstateByDataentry/{dataentryId}/{status}/{page}")
     @ApiOperation("Get all real estate have ? status of a dataentry")
     public PaginationResponse<GRealEstateByDataentryDto> getRealEstateByDataentry(@PathVariable String dataentryId, @PathVariable String status, @PathVariable Integer page){
-        Integer size = 30;
         Page<GRealEstateByDataentryDto> data = rs.getRealEstatesByDataentry(dataentryId, status, page, size);
         return new PaginationResponse<>(data);
     }
@@ -55,7 +55,6 @@ public class RealEstateController {
     @GetMapping(value = "/getRealEstateActiveBySeller/{sellerId}/{page}")
     @ApiOperation("Get all real estate have active status of a seller")
     public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateActiveBySeller(@PathVariable String sellerId, @PathVariable Integer page){
-        Integer size = 30;
         Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesActiveBySeller(sellerId, page, size);
         return new PaginationResponse<>(data);
     }
@@ -63,7 +62,6 @@ public class RealEstateController {
     @GetMapping(value = "/getRealEstatesNotAssign/{page}")
     @ApiOperation("Get all real estate not assigned")
     public PaginationResponse<RealEstateDto> getRealEstatesNotAssign(@PathVariable Integer page){
-        Integer size = 30;
         Page<RealEstateDto> data = rs.getRealEstatesNotAssign(page, size);
         return new PaginationResponse<>(data);
     }
@@ -71,7 +69,6 @@ public class RealEstateController {
     @GetMapping(value = "/getRealEstatesAssigned/{page}")
     @ApiOperation("Get all real estate assigned")
     public PaginationResponse<RealEstateDto> getRealEstatesAssigned(@PathVariable Integer page){
-        Integer size = 30;
         Page<RealEstateDto> data = rs.getRealEstatesAssigned(page, size);
         return new PaginationResponse<>(data);
     }
@@ -79,7 +76,6 @@ public class RealEstateController {
     @GetMapping(value = "/getRealEstatesByStaff/{staffId}/{status}/{page}")
     @ApiOperation("Get all real estate have ? status of a staff")
     public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){
-        Integer size = 30;
         Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesByStaff(staffId, status, page, size);
         return new PaginationResponse<>(data);
     }
@@ -87,7 +83,6 @@ public class RealEstateController {
     @GetMapping(value = "/getRealEstateAssignStaff/{staffId}/{page}")
     @ApiOperation("Get all real estate assigned of a staff")
     public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(@PathVariable String staffId, @PathVariable Integer page){
-        Integer size = 30;
         Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstateAssignStaff(staffId, page, size);
         return new PaginationResponse<>(data);
     }

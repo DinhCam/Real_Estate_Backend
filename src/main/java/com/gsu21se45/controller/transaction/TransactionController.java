@@ -26,7 +26,7 @@ public class TransactionController {
     @GetMapping(value = "/getTransactionByUserId/{userId}/{page}")
     @ApiOperation("Get all transaction of a user")
     public PaginationResponse<GTransactionDto> getTransactionByUserId(@PathVariable String userId, @PathVariable Integer page){
-        Integer size = 30;
+        Integer size = 15;
         Page<GTransactionDto> data = transactionService.getTransactionByUserId(userId, page, size);
         return new PaginationResponse<>(data);
     }

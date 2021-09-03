@@ -19,11 +19,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
-import java.math.BigInteger;
 import java.util.*;
 
-public interface RealEstateRespo {
-    Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p);
+public interface RealEstateRepository {
+    Page<RealEstateDto> getRealEstate(RequestPrams rq, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Pageable p);
     Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Pageable p);
@@ -46,7 +45,7 @@ public interface RealEstateRespo {
     boolean updateRealEstateRejected(UpdateRejectedDto updateRejectedDto);
 
     @Repository
-     class RealEstateRespoImpl  implements RealEstateRespo {
+     class RealEstateRepositoryImpl implements RealEstateRepository {
         @Autowired
         private EntityManager em;
 
@@ -54,8 +53,8 @@ public interface RealEstateRespo {
         RestTemplate restTemplate;
 
         @Override
-        public Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p) {
-            StringBuilder getAllRealEstatesBuilder = new StringBuilder(Query.getAllRealEstates);
+        public Page<RealEstateDto> getRealEstate(RequestPrams rq, Pageable p) {
+            StringBuilder getAllRealEstatesBuilder = new StringBuilder(Query.getRealEstate);
             SortBuilder sortBuilder = new SortBuilder();
             sortBuilder.buildOrder(getAllRealEstatesBuilder, p);
 
@@ -72,36 +71,27 @@ public interface RealEstateRespo {
                     .setParameter("direction", rq.getDirection())
                     .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
                     .setParameter("numberOfBathroom", rq.getNumberOfBathroom())
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
-            return new PageImpl<>(rs, p, rs.size());
+//            return new PageImpl<>(rs, p, rs.size());
 
-//            List<RealEstateDto> content = new ArrayList<>();
-//            for(int i = (int) p.getOffset(); i< p.getPageSize(); i++){
-//                content.add(rs.get(i));
-//            }
-//
-//            return new PageImpl<>(content,p,rs.size());
-
-//            BigInteger total = (BigInteger) em
-//                    .createNativeQuery(Query.countAllRealEstates)
-//                    .setParameter("minPrice", rq.getMinPrice())
-//                    .setParameter("maxPrice", rq.getMaxPrice())
-//                    .setParameter("minArea", rq.getMinArea())
-//                    .setParameter("maxArea", rq.getMaxArea())
-//                    .setParameter("type", rq.getType())
-//                    .setParameter("search", rq.getSearch())
-//                    .setParameter("disId", rq.getDisId())
-//                    .setParameter("wardId", rq.getWardId())
-//                    .setParameter("direction", rq.getDirection())
-//                    .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
-//                    .setParameter("numberOfBathroom", rq.getNumberOfBathroom())
-//                    .unwrap(NativeQuery.class)
-//                    .getSingleResult();
-//            return new PageImpl<>(rs, p, total.longValue());
+            List<RealEstateDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -109,12 +99,27 @@ public interface RealEstateRespo {
             List<GRealEstateBySellerOrStaffDto> rs = (List<GRealEstateBySellerOrStaffDto>) em
                     .createNativeQuery(Query.getRealEstateAssignStaff)
                     .setParameter("staffId", staffId)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateBySellerOrStaffDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -123,12 +128,27 @@ public interface RealEstateRespo {
                     .createNativeQuery(Query.getRealEstateBySeller)
                     .setParameter("sellerId", sellerId)
                     .setParameter("status", status)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateBySellerOrStaffDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -137,12 +157,27 @@ public interface RealEstateRespo {
                     .createNativeQuery(Query.getRealEstateByDataentry)
                     .setParameter("dataentryId", dataentryId)
                     .setParameter("status", status)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateDataentryTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateByDataentryDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -150,36 +185,81 @@ public interface RealEstateRespo {
             List<GRealEstateBySellerOrStaffDto> rs = (List<GRealEstateBySellerOrStaffDto>) em
                     .createNativeQuery(Query.getRealEstateActiveBySeller)
                     .setParameter("sellerId", sellerId)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateBySellerOrStaffDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
         public Page<RealEstateDto> getRealEstatesNotAssign(Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
                     .createNativeQuery(Query.getRealEstatesNotAssign)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<RealEstateDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
         public Page<RealEstateDto> getRealEstatesAssigned(Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
                     .createNativeQuery(Query.getRealEstatesAssigned)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<RealEstateDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -188,12 +268,27 @@ public interface RealEstateRespo {
                     .createNativeQuery(Query.getRealEstatesByStaff)
                     .setParameter("staffId", staffId)
                     .setParameter("status", status)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateBySellerOrStaffDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -629,7 +724,7 @@ public interface RealEstateRespo {
     }
 
     class Query{
-        public static String getAllRealEstates = "select r.id as id, \n" +
+        public static String getRealEstate = "select r.id as id, \n" +
                 "r.title as title, \n" +
                 "rd.type_id as typeId, \n" +
                 "r.status as status, \n" +
@@ -668,7 +763,7 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "having r.status = 'active'\n" +
+                "having r.status = 'inactive'\n" +
 
                 "and ((:minPrice is null and :maxPrice is null) or " +
                 "((:minPrice is not null and :maxPrice is not null) and (rd.price between :minPrice and :maxPrice)) or " +
