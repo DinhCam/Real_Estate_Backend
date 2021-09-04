@@ -1,4 +1,4 @@
-package com.gsu21se45.core.address.respo;
+package com.gsu21se45.core.address.repository;
 
 import com.gsu21se45.core.address.dto.DistrictDto;
 import com.gsu21se45.core.address.dto.WardDto;
@@ -11,13 +11,13 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public interface AddressRespo {
+public interface AddressRepository {
     boolean insertDistrict(DistrictDto districtDto);
     boolean insertWard(WardDto wardDto, DistrictDto districtDto);
     List<AddressDto> getAddress();
 
     @Repository
-    class AddressRespoImpl implements AddressRespo{
+    class AddressRepositoryImpl implements AddressRepository {
         @Autowired
         private EntityManager em;
 

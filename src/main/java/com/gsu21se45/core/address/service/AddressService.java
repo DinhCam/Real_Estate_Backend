@@ -2,7 +2,7 @@ package com.gsu21se45.core.address.service;
 
 import com.gsu21se45.core.address.dto.DistrictDto;
 import com.gsu21se45.core.address.dto.WardDto;
-import com.gsu21se45.core.address.respo.AddressRespo;
+import com.gsu21se45.core.address.repository.AddressRepository;
 import com.gsu21se45.core.address.dto.AddressDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,15 @@ public interface AddressService {
     @Transactional
     class AddressServiceImpl implements AddressService{
         @Autowired
-        private AddressRespo addressRespo;
+        private AddressRepository addressRepository;
 
         @Override
         public boolean insertDistrictWard(List<DistrictDto> districtDtos){
             try {
                 for (DistrictDto d:districtDtos) {
-                    addressRespo.insertDistrict(d);
+                    addressRepository.insertDistrict(d);
                     for (WardDto w:d.getWards()) {
-                        addressRespo.insertWard(w, d);
+                        addressRepository.insertWard(w, d);
                     }
                 }
             } catch (Exception ex){
@@ -38,7 +38,7 @@ public interface AddressService {
 
         @Override
         public List<AddressDto> getAddress() {
-            return addressRespo.getAddress();
+            return addressRepository.getAddress();
         }
     }
 }

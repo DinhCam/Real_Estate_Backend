@@ -21,7 +21,7 @@ public class RealEstateTransformer implements ResultTransformer {
             result.get(tuples[aliasList.get("id")]).getImages().add(img);
         }
         else{
-            RealEstateDto realEstateDto = getAllRealEstates(tuples,aliasList);
+            RealEstateDto realEstateDto = getRealEstate(tuples,aliasList);
             result.put((Integer) tuples[aliasList.get("id")], realEstateDto);
         }
         return null;
@@ -32,7 +32,7 @@ public class RealEstateTransformer implements ResultTransformer {
         return new ArrayList(result.values());
     }
 
-    private RealEstateDto getAllRealEstates(Object[] tuples, Map<String, Integer> aliasList){
+    private RealEstateDto getRealEstate(Object[] tuples, Map<String, Integer> aliasList){
         RealEstateDto rs = new RealEstateDto();
         Set<ImageDto> imgs = new HashSet<>();
         imgs.add(getImageDto(tuples,aliasList));

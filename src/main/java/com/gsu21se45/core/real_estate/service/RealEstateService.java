@@ -2,7 +2,7 @@ package com.gsu21se45.core.real_estate.service;
 
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate.dto.*;
-import com.gsu21se45.core.real_estate.respo.RealEstateRespo;
+import com.gsu21se45.core.real_estate.repository.RealEstateRepository;
 import com.gsu21se45.util.filterHelper.OrderFilterHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface RealEstateService {
-    Page<RealEstateDto> getAllRealEstates(RequestPrams r);
+    Page<RealEstateDto> getRealEstate(RequestPrams r);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size);
     Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Integer page, Integer size);
@@ -40,10 +40,10 @@ public interface RealEstateService {
     class RealEstateServiceImpl implements RealEstateService {
 
         @Autowired
-        private RealEstateRespo rs;
+        private RealEstateRepository rs;
 
         @Override
-        public Page<RealEstateDto> getAllRealEstates(RequestPrams r) {
+        public Page<RealEstateDto> getRealEstate(RequestPrams r) {
             List<String> columnsAllow = Arrays.asList(
                     "r.view",
                     "rd.price",
@@ -52,7 +52,7 @@ public interface RealEstateService {
             );
             OrderFilterHelper orderFilterHelperImpl = new OrderFilterHelper(r.getSort(), columnsAllow);
             Pageable pageable = PageRequest.of(r.getPage(), r.getSize(), orderFilterHelperImpl.getSort());
-            return rs.getAllRealEstates(r, pageable);
+            return rs.getRealEstate(r, pageable);
         }
 
         @Override

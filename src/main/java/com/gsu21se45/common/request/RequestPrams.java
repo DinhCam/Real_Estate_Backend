@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class RequestPrams {
     private Integer page;
-    private Integer size = 30;
+    private Integer size = 15;
     private String sort = "r.view";
     private String search;
     private Double minPrice;

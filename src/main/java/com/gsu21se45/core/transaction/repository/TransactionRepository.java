@@ -1,4 +1,4 @@
-package com.gsu21se45.core.transaction.respo;
+package com.gsu21se45.core.transaction.repository;
 
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.core.transaction.dto.GTransactionDto;
@@ -16,14 +16,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
-public interface TransactionRespo {
+public interface TransactionRepository {
     boolean createTransaction(CTransactionDto transactionDto);
     Page<GTransactionDto> getTransactionByUserId(String userId, Pageable p);
 
     @Repository
-    class TransactionRespoImpl implements TransactionRespo{
+    class TransactionRepositoryImpl implements TransactionRepository {
         @Autowired
         private EntityManager em;
 
@@ -64,12 +65,27 @@ public interface TransactionRespo {
             List<GTransactionDto> rs = (List<GTransactionDto>) em
                     .createNativeQuery(Query.getTransactionByUserId)
                     .setParameter("userId", userId)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new TransactionByUserIdTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GTransactionDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
     }
     class Query{

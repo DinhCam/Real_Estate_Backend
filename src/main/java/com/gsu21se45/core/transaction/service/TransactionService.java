@@ -1,9 +1,9 @@
 package com.gsu21se45.core.transaction.service;
 
-import com.gsu21se45.core.real_estate.respo.RealEstateRespo;
+import com.gsu21se45.core.real_estate.repository.RealEstateRepository;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.core.transaction.dto.GTransactionDto;
-import com.gsu21se45.core.transaction.respo.TransactionRespo;
+import com.gsu21se45.core.transaction.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,16 +20,16 @@ public interface TransactionService {
     @Transactional
     class TransactionServiceImpl implements  TransactionService{
         @Autowired
-        private TransactionRespo transactionRespo;
+        private TransactionRepository transactionRepository;
 
         @Autowired
-        private RealEstateRespo realEstateRespo;
+        private RealEstateRepository realEstateRepository;
 
         @Override
         public boolean createTransaction(CTransactionDto transactionDto) {
             try{
-                if (transactionRespo.createTransaction(transactionDto)){
-                    realEstateRespo.updateRealEstateStatusByCTransaction(transactionDto);
+                if (transactionRepository.createTransaction(transactionDto)){
+                    realEstateRepository.updateRealEstateStatusByCTransaction(transactionDto);
                 }
             }
             catch(Exception e){
@@ -42,7 +42,7 @@ public interface TransactionService {
         @Override
         public Page<GTransactionDto> getTransactionByUserId(String userId, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
-            return transactionRespo.getTransactionByUserId(userId, pageable);
+            return transactionRepository.getTransactionByUserId(userId, pageable);
         }
     }
 }

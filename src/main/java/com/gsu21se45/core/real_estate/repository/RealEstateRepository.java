@@ -1,4 +1,4 @@
-package com.gsu21se45.core.real_estate.respo;
+package com.gsu21se45.core.real_estate.repository;
 
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate.dto.*;
@@ -19,11 +19,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
-import java.math.BigInteger;
 import java.util.*;
 
-public interface RealEstateRespo {
-    Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p);
+public interface RealEstateRepository {
+    Page<RealEstateDto> getRealEstate(RequestPrams rq, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Pageable p);
     Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Pageable p);
@@ -46,7 +45,7 @@ public interface RealEstateRespo {
     boolean updateRealEstateRejected(UpdateRejectedDto updateRejectedDto);
 
     @Repository
-     class RealEstateRespoImpl  implements RealEstateRespo {
+     class RealEstateRepositoryImpl implements RealEstateRepository {
         @Autowired
         private EntityManager em;
 
@@ -54,8 +53,8 @@ public interface RealEstateRespo {
         RestTemplate restTemplate;
 
         @Override
-        public Page<RealEstateDto> getAllRealEstates(RequestPrams rq, Pageable p) {
-            StringBuilder getAllRealEstatesBuilder = new StringBuilder(Query.getAllRealEstates);
+        public Page<RealEstateDto> getRealEstate(RequestPrams rq, Pageable p) {
+            StringBuilder getAllRealEstatesBuilder = new StringBuilder(Query.getRealEstate);
             SortBuilder sortBuilder = new SortBuilder();
             sortBuilder.buildOrder(getAllRealEstatesBuilder, p);
 
@@ -72,36 +71,27 @@ public interface RealEstateRespo {
                     .setParameter("direction", rq.getDirection())
                     .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
                     .setParameter("numberOfBathroom", rq.getNumberOfBathroom())
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
-            return new PageImpl<>(rs, p, rs.size());
+//            return new PageImpl<>(rs, p, rs.size());
 
-//            List<RealEstateDto> content = new ArrayList<>();
-//            for(int i = (int) p.getOffset(); i< p.getPageSize(); i++){
-//                content.add(rs.get(i));
-//            }
-//
-//            return new PageImpl<>(content,p,rs.size());
-
-//            BigInteger total = (BigInteger) em
-//                    .createNativeQuery(Query.countAllRealEstates)
-//                    .setParameter("minPrice", rq.getMinPrice())
-//                    .setParameter("maxPrice", rq.getMaxPrice())
-//                    .setParameter("minArea", rq.getMinArea())
-//                    .setParameter("maxArea", rq.getMaxArea())
-//                    .setParameter("type", rq.getType())
-//                    .setParameter("search", rq.getSearch())
-//                    .setParameter("disId", rq.getDisId())
-//                    .setParameter("wardId", rq.getWardId())
-//                    .setParameter("direction", rq.getDirection())
-//                    .setParameter("numberOfBedroom", rq.getNumberOfBedroom())
-//                    .setParameter("numberOfBathroom", rq.getNumberOfBathroom())
-//                    .unwrap(NativeQuery.class)
-//                    .getSingleResult();
-//            return new PageImpl<>(rs, p, total.longValue());
+            List<RealEstateDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -109,12 +99,27 @@ public interface RealEstateRespo {
             List<GRealEstateBySellerOrStaffDto> rs = (List<GRealEstateBySellerOrStaffDto>) em
                     .createNativeQuery(Query.getRealEstateAssignStaff)
                     .setParameter("staffId", staffId)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateBySellerOrStaffDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -123,12 +128,27 @@ public interface RealEstateRespo {
                     .createNativeQuery(Query.getRealEstateBySeller)
                     .setParameter("sellerId", sellerId)
                     .setParameter("status", status)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateBySellerOrStaffDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -137,12 +157,27 @@ public interface RealEstateRespo {
                     .createNativeQuery(Query.getRealEstateByDataentry)
                     .setParameter("dataentryId", dataentryId)
                     .setParameter("status", status)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateDataentryTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateByDataentryDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -150,36 +185,81 @@ public interface RealEstateRespo {
             List<GRealEstateBySellerOrStaffDto> rs = (List<GRealEstateBySellerOrStaffDto>) em
                     .createNativeQuery(Query.getRealEstateActiveBySeller)
                     .setParameter("sellerId", sellerId)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateBySellerOrStaffDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
         public Page<RealEstateDto> getRealEstatesNotAssign(Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
                     .createNativeQuery(Query.getRealEstatesNotAssign)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<RealEstateDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
         public Page<RealEstateDto> getRealEstatesAssigned(Pageable p) {
             List<RealEstateDto> rs = (List<RealEstateDto>) em
                     .createNativeQuery(Query.getRealEstatesAssigned)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<RealEstateDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -188,12 +268,27 @@ public interface RealEstateRespo {
                     .createNativeQuery(Query.getRealEstatesByStaff)
                     .setParameter("staffId", staffId)
                     .setParameter("status", status)
-                    .setFirstResult((int) p.getOffset())
-                    .setMaxResults(p.getPageSize())
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateSellerOrStaffTransformer())
                     .getResultList();
-            return new PageImpl<>(rs,p,rs.size());
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateBySellerOrStaffDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
         }
 
         @Override
@@ -431,6 +526,15 @@ public interface RealEstateRespo {
 
                 streetWardId = (Integer) session.save(streetWard);
 
+                String address = updateRealEstateDto.getAddress();
+
+//                int addressDb = em.createNativeQuery(Query.getAddressDb)
+//                        .executeUpdate();
+//
+//                if (address.equals(addressDb)){
+//
+//                }
+
                 em.createNativeQuery(Query.deleteImage)
                         .setParameter("realEstateDetailId", updateRealEstateDto.getId())
                         .executeUpdate();
@@ -445,8 +549,6 @@ public interface RealEstateRespo {
                 em.createNativeQuery(Query.deleteFacility)
                         .setParameter("realEstateDetailId", updateRealEstateDto.getId())
                         .executeUpdate();
-
-                String address = updateRealEstateDto.getAddress();
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -629,7 +731,7 @@ public interface RealEstateRespo {
     }
 
     class Query{
-        public static String getAllRealEstates = "select r.id as id, \n" +
+        public static String getRealEstate = "select r.id as id, \n" +
                 "r.title as title, \n" +
                 "rd.type_id as typeId, \n" +
                 "r.status as status, \n" +
@@ -668,7 +770,7 @@ public interface RealEstateRespo {
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
-                "having r.status = 'active'\n" +
+                "having r.status = 'inactive'\n" +
 
                 "and ((:minPrice is null and :maxPrice is null) or " +
                 "((:minPrice is not null and :maxPrice is not null) and (rd.price between :minPrice and :maxPrice)) or " +
@@ -688,38 +790,6 @@ public interface RealEstateRespo {
                 "and ((:disId is null) or (disId = :disId))\n" +
                 "and ((:wardId is null) or (wardId = :wardId))\n" ;
 //                "order by r.view DESC";
-
-//        public static String countAllRealEstates = "select count(distinct r.id) as num, \n" +
-//                "concat(street.name, ' ', w.name, ' ', d.name, ' ', r.title, ' ', rd.project) as search \n" +
-//                "from real_estate r\n" +
-//                "left join real_estate_detail rd on r.id = rd.id\n" +
-//                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
-//                "left join real_estate_type rt on rd.type_id = rt.id \n" +
-//                "left join user s on r.seller_id = s.id\n" +
-//                "left join user st on r.staff_id = st.id\n" +
-//                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
-//                "left join street street on sw.street_id = street.id\n" +
-//                "left join ward w on sw.ward_id = w.id\n" +
-//                "left join district d on w.district_id = d.id\n" +
-//                "where r.status = 'active'\n" +
-//
-//                "and ((:minPrice is null and :maxPrice is null) or " +
-//                "((:minPrice is not null and :maxPrice is not null) and (rd.price between :minPrice and :maxPrice)) or " +
-//                "((:minPrice is null) and (rd.price <= :maxPrice)) or " +
-//                "((:maxPrice is null) and (rd.price >= :minPrice)))\n" +
-//
-//                "and ((:minArea is null and :maxArea is null) or " +
-//                "((:minArea is not null and :maxArea is not null) and (rd.area between :minArea and :maxArea)) or " +
-//                "((:minArea is null) and (rd.area <= :maxArea)) or " +
-//                "((:maxArea is null) and (rd.area >= :minArea)))\n" +
-//
-//                "and ((:type is null) or (rt.id = :type))\n" +
-//                "and ((:direction is null) or (rd.direction = :direction))\n" +
-//                "and ((:numberOfBedroom is null) or (rd.number_of_bedroom >= :numberOfBedroom))\n" +
-//                "and ((:numberOfBathroom is null) or (rd.number_of_bathroom >= :numberOfBathroom))\n" +
-//                "and ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
-//                "and ((:disId is null) or (d.id = :disId))\n" +
-//                "and ((:wardId is null) or (w.id = :wardId))\n" ;
 
         public static String getRealEstateAssignStaff = "select r.id as id, \n" +
                 "r.title as title, \n" +
@@ -853,9 +923,11 @@ public interface RealEstateRespo {
                 "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
+                "s.username as sellerUserName, \n" +
                 "s.fullname as sellerName, \n" +
                 "s.avatar as sellerAvatar,\n" +
                 "st.id as staffId,\n" +
+                "st.username as staffUserName,\n" +
                 "st.fullname as staffName,\n" +
                 "st.avatar as staffAvatar,\n" +
                 "rd.direction as direction,\n" +
@@ -1027,11 +1099,6 @@ public interface RealEstateRespo {
         public static String getAllRealEstateType = "select rt.id as id, rt.name as name\n" +
                 "from real_estate_type rt";
 
-//        public static String getAllStaff = "select u.id as id, u.username as username, u.fullname as fullname, u.avatar as avatar\n" +
-//                "from user u\n" +
-//                "left join role r on u.role_id = r.id\n" +
-//                "where r.id = 3";
-
         public static String getAllStaff = "select u.id as id, \n" +
                 "u.fullname as fullname, \n" +
                 "u.avatar as avatar, \n" +
@@ -1119,6 +1186,15 @@ public interface RealEstateRespo {
                 "number_of_bedroom = :numberOfBedroom, \n" +
                 "number_of_bathroom = :numberOfBathroom \n" +
                 "where id = :id";
+
+//        public static String getAddressDb = "select concat(street.name, ', ', w.name, ', ', d.name) as address\n" +
+//                "from real_estate r\n" +
+//                "left join real_estate_detail rd on r.id = rd.id\n" +
+//                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
+//                "left join street street on sw.street_id = street.id\n" +
+//                "left join ward w on sw.ward_id = w.id\n" +
+//                "left join district d on w.district_id = d.id\n" +
+//                "where r.status = 'inactive'";
 
         public static String updateRealEstate = "update real_estate set seller_id = :sellerId, \n" +
                 "title = :title, \n" +
