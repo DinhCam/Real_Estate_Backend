@@ -923,9 +923,11 @@ public interface RealEstateRepository {
                 "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
+                "s.username as sellerUserName, \n" +
                 "s.fullname as sellerName, \n" +
                 "s.avatar as sellerAvatar,\n" +
                 "st.id as staffId,\n" +
+                "st.username as staffUserName,\n" +
                 "st.fullname as staffName,\n" +
                 "st.avatar as staffAvatar,\n" +
                 "rd.direction as direction,\n" +

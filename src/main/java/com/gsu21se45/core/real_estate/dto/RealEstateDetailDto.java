@@ -24,9 +24,11 @@ public class RealEstateDetailDto {
     private String typeName;
     private int view;
     private String sellerId;
+    private String sellerUserName;
     private String sellerName;
     private String sellerAvatar;
     private String staffId;
+    private String staffUserName;
     private String staffName;
     private String staffAvatar;
     private double length;
