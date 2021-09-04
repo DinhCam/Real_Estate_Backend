@@ -1,4 +1,4 @@
-package com.gsu21se45.core.real_estate.respo;
+package com.gsu21se45.core.real_estate.repository;
 
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate.dto.*;
@@ -526,6 +526,15 @@ public interface RealEstateRepository {
 
                 streetWardId = (Integer) session.save(streetWard);
 
+                String address = updateRealEstateDto.getAddress();
+
+//                int addressDb = em.createNativeQuery(Query.getAddressDb)
+//                        .executeUpdate();
+//
+//                if (address.equals(addressDb)){
+//
+//                }
+
                 em.createNativeQuery(Query.deleteImage)
                         .setParameter("realEstateDetailId", updateRealEstateDto.getId())
                         .executeUpdate();
@@ -540,8 +549,6 @@ public interface RealEstateRepository {
                 em.createNativeQuery(Query.deleteFacility)
                         .setParameter("realEstateDetailId", updateRealEstateDto.getId())
                         .executeUpdate();
-
-                String address = updateRealEstateDto.getAddress();
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -783,38 +790,6 @@ public interface RealEstateRepository {
                 "and ((:disId is null) or (disId = :disId))\n" +
                 "and ((:wardId is null) or (wardId = :wardId))\n" ;
 //                "order by r.view DESC";
-
-//        public static String countAllRealEstates = "select count(distinct r.id) as num, \n" +
-//                "concat(street.name, ' ', w.name, ' ', d.name, ' ', r.title, ' ', rd.project) as search \n" +
-//                "from real_estate r\n" +
-//                "left join real_estate_detail rd on r.id = rd.id\n" +
-//                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
-//                "left join real_estate_type rt on rd.type_id = rt.id \n" +
-//                "left join user s on r.seller_id = s.id\n" +
-//                "left join user st on r.staff_id = st.id\n" +
-//                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
-//                "left join street street on sw.street_id = street.id\n" +
-//                "left join ward w on sw.ward_id = w.id\n" +
-//                "left join district d on w.district_id = d.id\n" +
-//                "where r.status = 'active'\n" +
-//
-//                "and ((:minPrice is null and :maxPrice is null) or " +
-//                "((:minPrice is not null and :maxPrice is not null) and (rd.price between :minPrice and :maxPrice)) or " +
-//                "((:minPrice is null) and (rd.price <= :maxPrice)) or " +
-//                "((:maxPrice is null) and (rd.price >= :minPrice)))\n" +
-//
-//                "and ((:minArea is null and :maxArea is null) or " +
-//                "((:minArea is not null and :maxArea is not null) and (rd.area between :minArea and :maxArea)) or " +
-//                "((:minArea is null) and (rd.area <= :maxArea)) or " +
-//                "((:maxArea is null) and (rd.area >= :minArea)))\n" +
-//
-//                "and ((:type is null) or (rt.id = :type))\n" +
-//                "and ((:direction is null) or (rd.direction = :direction))\n" +
-//                "and ((:numberOfBedroom is null) or (rd.number_of_bedroom >= :numberOfBedroom))\n" +
-//                "and ((:numberOfBathroom is null) or (rd.number_of_bathroom >= :numberOfBathroom))\n" +
-//                "and ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
-//                "and ((:disId is null) or (d.id = :disId))\n" +
-//                "and ((:wardId is null) or (w.id = :wardId))\n" ;
 
         public static String getRealEstateAssignStaff = "select r.id as id, \n" +
                 "r.title as title, \n" +
@@ -1122,11 +1097,6 @@ public interface RealEstateRepository {
         public static String getAllRealEstateType = "select rt.id as id, rt.name as name\n" +
                 "from real_estate_type rt";
 
-//        public static String getAllStaff = "select u.id as id, u.username as username, u.fullname as fullname, u.avatar as avatar\n" +
-//                "from user u\n" +
-//                "left join role r on u.role_id = r.id\n" +
-//                "where r.id = 3";
-
         public static String getAllStaff = "select u.id as id, \n" +
                 "u.fullname as fullname, \n" +
                 "u.avatar as avatar, \n" +
@@ -1214,6 +1184,15 @@ public interface RealEstateRepository {
                 "number_of_bedroom = :numberOfBedroom, \n" +
                 "number_of_bathroom = :numberOfBathroom \n" +
                 "where id = :id";
+
+//        public static String getAddressDb = "select concat(street.name, ', ', w.name, ', ', d.name) as address\n" +
+//                "from real_estate r\n" +
+//                "left join real_estate_detail rd on r.id = rd.id\n" +
+//                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
+//                "left join street street on sw.street_id = street.id\n" +
+//                "left join ward w on sw.ward_id = w.id\n" +
+//                "left join district d on w.district_id = d.id\n" +
+//                "where r.status = 'inactive'";
 
         public static String updateRealEstate = "update real_estate set seller_id = :sellerId, \n" +
                 "title = :title, \n" +

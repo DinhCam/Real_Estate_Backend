@@ -1,9 +1,9 @@
 package com.gsu21se45.core.transaction.service;
 
-import com.gsu21se45.core.real_estate.respo.RealEstateRepository;
+import com.gsu21se45.core.real_estate.repository.RealEstateRepository;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.core.transaction.dto.GTransactionDto;
-import com.gsu21se45.core.transaction.respo.TransactionRepository;
+import com.gsu21se45.core.transaction.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

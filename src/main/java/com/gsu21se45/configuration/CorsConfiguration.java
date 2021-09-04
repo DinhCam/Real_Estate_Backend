@@ -1,4 +1,4 @@
-package com.gsu21se45.config;
+package com.gsu21se45.configuration;
 
 
 import org.springframework.context.annotation.Bean;

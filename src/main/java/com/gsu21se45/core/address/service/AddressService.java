@@ -2,7 +2,7 @@ package com.gsu21se45.core.address.service;
 
 import com.gsu21se45.core.address.dto.DistrictDto;
 import com.gsu21se45.core.address.dto.WardDto;
-import com.gsu21se45.core.address.respo.AddressRepository;
+import com.gsu21se45.core.address.repository.AddressRepository;
 import com.gsu21se45.core.address.dto.AddressDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

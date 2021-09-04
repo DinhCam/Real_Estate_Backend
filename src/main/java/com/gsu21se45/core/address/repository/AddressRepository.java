@@ -1,4 +1,4 @@
-package com.gsu21se45.core.address.respo;
+package com.gsu21se45.core.address.repository;
 
 import com.gsu21se45.core.address.dto.DistrictDto;
 import com.gsu21se45.core.address.dto.WardDto;

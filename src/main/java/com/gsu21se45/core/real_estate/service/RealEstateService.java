@@ -2,7 +2,7 @@ package com.gsu21se45.core.real_estate.service;
 
 import com.gsu21se45.common.request.RequestPrams;
 import com.gsu21se45.core.real_estate.dto.*;
-import com.gsu21se45.core.real_estate.respo.RealEstateRepository;
+import com.gsu21se45.core.real_estate.repository.RealEstateRepository;
 import com.gsu21se45.util.filterHelper.OrderFilterHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

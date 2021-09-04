@@ -160,32 +160,32 @@ public class RealEstateController {
         return restTemplate.exchange(url, HttpMethod.GET, entity, String.class, uriVariables).getBody();
     }
 
-    @RequestMapping(value = "geocoding/{address}")
-    public List<GeocodingDto> callGeocodingApi(@PathVariable String address) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        String url = "https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
-        Map<String, String> uriVariables = new HashMap<>();
-        uriVariables.put("address", address);
-        uriVariables.put("key", "AIzaSyAk_HxKWrfBT1g9WkfL0gqRIa9HD0d7Q0I");
-        WrapperGeometryDto response =  restTemplate.getForObject(url, WrapperGeometryDto.class, uriVariables);
-        return response.getResults();
-    }
-
-    @RequestMapping(value = "nearbysearch/{location}/{type}")
-    public List<NearBySearchDto> callNearBySearchApi(@PathVariable String location, @PathVariable String type) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location}&radius={radius}&type={type}&key={key}&language={language}";
-        Map<String, String> uriVariables = new HashMap<>();
-        uriVariables.put("location", location);
-        uriVariables.put("radius", "3000");
-        uriVariables.put("type", type);
-        uriVariables.put("key", "AIzaSyDPzD4tPUGV3HGIiv7fVcWEFEQ0r1AAxwg");
-        uriVariables.put("language", "vi");
-        WrapperNearBySearchDto response =  restTemplate.getForObject(url, WrapperNearBySearchDto.class, uriVariables);
-        return response.getResults();
-    }
+//    @RequestMapping(value = "geocoding/{address}")
+//    public List<GeocodingDto> callGeocodingApi(@PathVariable String address) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//        HttpEntity<String> entity = new HttpEntity<String>(headers);
+//        String url = "https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
+//        Map<String, String> uriVariables = new HashMap<>();
+//        uriVariables.put("address", address);
+//        uriVariables.put("key", "AIzaSyAk_HxKWrfBT1g9WkfL0gqRIa9HD0d7Q0I");
+//        WrapperGeometryDto response =  restTemplate.getForObject(url, WrapperGeometryDto.class, uriVariables);
+//        return response.getResults();
+//    }
+//
+//    @RequestMapping(value = "nearbysearch/{location}/{type}")
+//    public List<NearBySearchDto> callNearBySearchApi(@PathVariable String location, @PathVariable String type) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//        HttpEntity<String> entity = new HttpEntity<String>(headers);
+//        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location}&radius={radius}&type={type}&key={key}&language={language}";
+//        Map<String, String> uriVariables = new HashMap<>();
+//        uriVariables.put("location", location);
+//        uriVariables.put("radius", "3000");
+//        uriVariables.put("type", type);
+//        uriVariables.put("key", "AIzaSyDPzD4tPUGV3HGIiv7fVcWEFEQ0r1AAxwg");
+//        uriVariables.put("language", "vi");
+//        WrapperNearBySearchDto response =  restTemplate.getForObject(url, WrapperNearBySearchDto.class, uriVariables);
+//        return response.getResults();
+//    }
 }

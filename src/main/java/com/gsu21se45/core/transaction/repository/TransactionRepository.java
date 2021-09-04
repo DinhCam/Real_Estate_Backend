@@ -1,4 +1,4 @@
-package com.gsu21se45.core.transaction.respo;
+package com.gsu21se45.core.transaction.repository;
 
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
 import com.gsu21se45.core.transaction.dto.GTransactionDto;
