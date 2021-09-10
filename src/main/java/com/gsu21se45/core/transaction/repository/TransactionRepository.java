@@ -21,7 +21,9 @@ import java.util.List;
 
 public interface TransactionRepository {
     boolean createTransaction(CTransactionDto transactionDto);
-    Page<GTransactionDto> getTransactionByUserId(String userId, Pageable p);
+    Page<GTransactionDto> getTransactionBySellerId(String userId, Pageable p);
+    Page<GTransactionDto> getTransactionByBuyerId(String userId, Pageable p);
+    Page<GTransactionDto> getTransactionByStaffId(String userId, Pageable p);
 
     @Repository
     class TransactionRepositoryImpl implements TransactionRepository {
@@ -61,9 +63,65 @@ public interface TransactionRepository {
         }
 
         @Override
-        public Page<GTransactionDto> getTransactionByUserId(String userId, Pageable p) {
+        public Page<GTransactionDto> getTransactionBySellerId(String userId, Pageable p) {
             List<GTransactionDto> rs = (List<GTransactionDto>) em
-                    .createNativeQuery(Query.getTransactionByUserId)
+                    .createNativeQuery(Query.getTransactionBySellerId)
+                    .setParameter("userId", userId)
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new TransactionByUserIdTransformer())
+                    .getResultList();
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GTransactionDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
+        }
+
+        @Override
+        public Page<GTransactionDto> getTransactionByBuyerId(String userId, Pageable p) {
+            List<GTransactionDto> rs = (List<GTransactionDto>) em
+                    .createNativeQuery(Query.getTransactionByBuyerId)
+                    .setParameter("userId", userId)
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new TransactionByUserIdTransformer())
+                    .getResultList();
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GTransactionDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
+        }
+
+        @Override
+        public Page<GTransactionDto> getTransactionByStaffId(String userId, Pageable p) {
+            List<GTransactionDto> rs = (List<GTransactionDto>) em
+                    .createNativeQuery(Query.getTransactionByStaffId)
                     .setParameter("userId", userId)
 //                    .setFirstResult((int) p.getOffset())
 //                    .setMaxResults(p.getPageSize())
@@ -89,7 +147,7 @@ public interface TransactionRepository {
         }
     }
     class Query{
-        public static String getTransactionByUserId = "select distinct tr.id, \n" +
+        public static String getTransactionBySellerId = "select distinct tr.id, \n" +
                 "                s.id as sellerId,\n" +
                 "                s.fullname as sellerName, \n" +
                 "                b.id as buyerId,\n" +
@@ -121,7 +179,77 @@ public interface TransactionRepository {
                 "                left join street street on sw.street_id = street.id\n" +
                 "                left join ward w on sw.ward_id = w.id\n" +
                 "                left join district d on w.district_id = d.id\n" +
-                "                where (tr.seller_id = :userId) or (tr.buyer_id = :userId) or (tr.staff_id = :userId)\n" +
+                "                where tr.seller_id = :userId\n" +
+                "                order by tr.create_at DESC";
+
+        public static String getTransactionByBuyerId = "select distinct tr.id, \n" +
+                "                s.id as sellerId,\n" +
+                "                s.fullname as sellerName, \n" +
+                "                b.id as buyerId,\n" +
+                "                b.fullname as buyerName,\n" +
+                "                st.id as staffId, \n" +
+                "                st.fullname as staffName,\n" +
+                "                r.id as realEstateId, \n" +
+                "                r.title as realEstateTitle,\n" +
+                "                street.name as streetName, \n" +
+                "                w.name as wardName, \n" +
+                "                d.name as disName,\n" +
+                "                tr.down_price as downPrice, \n" +
+                "                tr.deposit as deposit,\n" +
+                "                tr.note as note, \n" +
+                "                a.create_at as appointmentDate,\n" +
+                "                i.id as imgId,\n" +
+                "                i.img_url as imageUrl,\n" +
+                "                tr.create_at as createAt\n" +
+                "                from transaction tr\n" +
+                "                left join user s on tr.seller_id = s.id\n" +
+                "                left join user b on tr.buyer_id = b.id\n" +
+                "                left join user st on tr.staff_id = st.id\n" +
+                "                left join real_estate r on tr.real_estate_id = r.id\n" +
+                "                left join image_resource i on tr.id = i.transaction_id\n" +
+                "                left join conversation c on c.real_estate_id = r.id\n" +
+                "                left join appointment a on a.conversation_id = c.id\n" +
+                "                left join real_estate_detail rd on r.id = rd.id\n" +
+                "                left join street_ward sw on rd.street_ward_id = sw.id\n" +
+                "                left join street street on sw.street_id = street.id\n" +
+                "                left join ward w on sw.ward_id = w.id\n" +
+                "                left join district d on w.district_id = d.id\n" +
+                "                where tr.buyer_id = :userId\n" +
+                "                order by tr.create_at DESC";
+
+        public static String getTransactionByStaffId = "select distinct tr.id, \n" +
+                "                s.id as sellerId,\n" +
+                "                s.fullname as sellerName, \n" +
+                "                b.id as buyerId,\n" +
+                "                b.fullname as buyerName,\n" +
+                "                st.id as staffId, \n" +
+                "                st.fullname as staffName,\n" +
+                "                r.id as realEstateId, \n" +
+                "                r.title as realEstateTitle,\n" +
+                "                street.name as streetName, \n" +
+                "                w.name as wardName, \n" +
+                "                d.name as disName,\n" +
+                "                tr.down_price as downPrice, \n" +
+                "                tr.deposit as deposit,\n" +
+                "                tr.note as note, \n" +
+                "                a.create_at as appointmentDate,\n" +
+                "                i.id as imgId,\n" +
+                "                i.img_url as imageUrl,\n" +
+                "                tr.create_at as createAt\n" +
+                "                from transaction tr\n" +
+                "                left join user s on tr.seller_id = s.id\n" +
+                "                left join user b on tr.buyer_id = b.id\n" +
+                "                left join user st on tr.staff_id = st.id\n" +
+                "                left join real_estate r on tr.real_estate_id = r.id\n" +
+                "                left join image_resource i on tr.id = i.transaction_id\n" +
+                "                left join conversation c on c.real_estate_id = r.id\n" +
+                "                left join appointment a on a.conversation_id = c.id\n" +
+                "                left join real_estate_detail rd on r.id = rd.id\n" +
+                "                left join street_ward sw on rd.street_ward_id = sw.id\n" +
+                "                left join street street on sw.street_id = street.id\n" +
+                "                left join ward w on sw.ward_id = w.id\n" +
+                "                left join district d on w.district_id = d.id\n" +
+                "                where tr.staff_id = :userId\n" +
                 "                order by tr.create_at DESC";
     }
 }
