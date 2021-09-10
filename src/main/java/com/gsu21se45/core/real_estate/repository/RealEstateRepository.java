@@ -16,6 +16,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
@@ -26,6 +27,7 @@ public interface RealEstateRepository {
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Pageable p);
     Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Pageable p);
+    Page<GRealEstateByDataentryDto> getRealEstatesNotVerifyByDataentry(Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Pageable p);
     Page<RealEstateDto> getRealEstatesNotAssign(Pageable p);
     Page<RealEstateDto> getRealEstatesAssigned(Pageable p);
@@ -161,6 +163,33 @@ public interface RealEstateRepository {
 //                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateDataentryTransformer())
+                    .getResultList();
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateByDataentryDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
+        }
+
+        @Override
+        public Page<GRealEstateByDataentryDto> getRealEstatesNotVerifyByDataentry(Pageable p) {
+            List<GRealEstateByDataentryDto> rs = (List<GRealEstateByDataentryDto>) em
+                    .createNativeQuery(Query.getRealEstatesNotVerifyByDataentry)
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new RealEstateNotVerifyByDataentryTransformer())
                     .getResultList();
 //            return new PageImpl<>(rs,p,rs.size());
 
@@ -372,8 +401,12 @@ public interface RealEstateRepository {
             try {
                 java.sql.Timestamp  sqlDate = new java.sql.Timestamp (new java.util.Date().getTime());
                 String status = "inactive";
-                realEstate.setSeller(em.find(User.class, cRealEstateDto.getSellerId()));
-                realEstate.setDataentry(em.find(User.class, cRealEstateDto.getDataentryId()));
+                if (!StringUtils.isEmpty(cRealEstateDto.getSellerId())) {
+                    realEstate.setSeller(em.find(User.class, cRealEstateDto.getSellerId()));
+                }
+                if (!StringUtils.isEmpty(cRealEstateDto.getDataentryId())){
+                    realEstate.setDataentry(em.find(User.class, cRealEstateDto.getDataentryId()));
+                }
                 realEstate.setTitle(cRealEstateDto.getTitle());
                 realEstate.setCreateAt(sqlDate);
                 realEstate.setStatus(status);
@@ -988,6 +1021,9 @@ public interface RealEstateRepository {
                 "st.id as staffId, \n" +
                 "st.fullname as staffName ,\n" +
                 "st.avatar as staffAvatar, \n" +
+                "de.id as dataentryId,\n" +
+                "de.fullname as dataentryName,\n" +
+                "de.avatar as dataentryAvatar,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
@@ -1005,12 +1041,14 @@ public interface RealEstateRepository {
                 "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
+                "left join user de on r.dataentry_id = de.id\n" +
                 "left join real_estate_type rt on rt.id = rd.type_id\n" +
                 "left join street_ward sw on rd.street_ward_id = sw.id\n" +
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
                 "where st.id is null \n" +
+                "and de.id is not null \n" +
                 "order by r.create_at DESC";
 
         public static String getRealEstatesAssigned = "select r.id as id, \n" +
@@ -1024,6 +1062,9 @@ public interface RealEstateRepository {
                 "st.id as staffId, \n" +
                 "st.fullname as staffName ,\n" +
                 "st.avatar as staffAvatar, \n" +
+                "de.id as dataentryId,\n" +
+                "de.fullname as dataentryName,\n" +
+                "de.avatar as dataentryAvatar,\n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.number_of_bedroom as numberOfBedroom,\n" +
@@ -1041,12 +1082,14 @@ public interface RealEstateRepository {
                 "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
+                "left join user de on r.dataentry_id = de.id\n" +
                 "left join real_estate_type rt on rt.id = rd.type_id\n" +
                 "left join street_ward sw on rd.street_ward_id = sw.id\n" +
                 "left join street street on sw.street_id = street.id\n" +
                 "left join ward w on sw.ward_id = w.id\n" +
                 "left join district d on w.district_id = d.id\n" +
                 "where st.id is not null \n" +
+                "and de.id is not null \n" +
                 "order by r.create_at DESC";
 
         public static String getRealEstatesByStaff = "select r.id as id, \n" +
@@ -1156,6 +1199,42 @@ public interface RealEstateRepository {
                 "left join district d on w.district_id = d.id\n" +
                 "where de.id = :dataentryId \n" +
                 "and r.status = :status \n" +
+                "order by r.create_at DESC";
+
+        public static String getRealEstatesNotVerifyByDataentry = "select r.id as id, \n" +
+                "r.title as title, \n" +
+                "rd.description as description,\n" +
+                "rt.name as typeName,\n" +
+                "r.view as view, \n" +
+                "s.id as sellerId, \n" +
+                "s.fullname as sellerName, \n" +
+                "s.avatar as sellerAvatar, \n" +
+                "de.id as dataentryId,\n" +
+                "de.fullname as dataentryName,\n" +
+                "de.avatar as dataentryAvatar,\n" +
+                "rd.area as area,\n" +
+                "rd.price as price,\n" +
+                "rd.number_of_bedroom as numberOfBedroom,\n" +
+                "rd.number_of_bathroom as numberOfBathroom,\n" +
+                "rd.project as project,\n" +
+                "i.id as imgId,\n" +
+                "i.img_url as imageUrl,\n" +
+                "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
+                "street.name as streetName,\n" +
+                "w.name as wardName,\n" +
+                "d.name as disName\n" +
+                "from real_estate r\n" +
+                "left join real_estate_detail rd on r.id = rd.id\n" +
+                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
+                "left join user s on r.seller_id = s.id\n" +
+                "left join user de on r.dataentry_id = de.id\n" +
+                "left join real_estate_type rt on rt.id = rd.type_id\n" +
+                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
+                "left join street street on sw.street_id = street.id\n" +
+                "left join ward w on sw.ward_id = w.id\n" +
+                "left join district d on w.district_id = d.id\n" +
+                "where de.id is null \n" +
                 "order by r.create_at DESC";
 
         public static String updateRealEstateStatus = "update real_estate set status = :status where id = :id";
