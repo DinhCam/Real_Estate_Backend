@@ -18,6 +18,7 @@ public interface RealEstateService {
     Page<RealEstateDto> getRealEstate(RequestPrams r);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size);
     Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Integer page, Integer size);
+    Page<GRealEstateByDataentryDto> getRealEstatesNotVerifyByDataentry(Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesNotAssign(Integer page, Integer size);
     Page<RealEstateDto> getRealEstatesAssigned(Integer page, Integer size);
@@ -65,6 +66,12 @@ public interface RealEstateService {
         public Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Integer page, Integer size) {
             Pageable pageable = PageRequest.of(page, size);
             return rs.getRealEstatesByDataentry(dataentryId, status, pageable);
+        }
+
+        @Override
+        public Page<GRealEstateByDataentryDto> getRealEstatesNotVerifyByDataentry(Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page, size);
+            return rs.getRealEstatesNotVerifyByDataentry(pageable);
         }
 
         @Override
