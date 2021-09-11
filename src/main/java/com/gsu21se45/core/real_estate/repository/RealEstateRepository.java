@@ -548,6 +548,7 @@ public interface RealEstateRepository {
                         .setParameter("id", updateRealEstateDto.getId())
                         .setParameter("title", updateRealEstateDto.getTitle())
                         .setParameter("sellerId", updateRealEstateDto.getSellerId())
+                        .setParameter("dataentryId", updateRealEstateDto.getDataentryId())
                         .setParameter("createAt", sqlDate)
                         .executeUpdate();
 
@@ -1276,6 +1277,7 @@ public interface RealEstateRepository {
 //                "where r.status = 'inactive'";
 
         public static String updateRealEstate = "update real_estate set seller_id = :sellerId, \n" +
+                "dataentry_id = :dataentryId, \n" +
                 "title = :title, \n" +
                 "create_at = :createAt \n" +
                 "where id = :id";
