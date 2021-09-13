@@ -52,6 +52,9 @@ public class RealEstate implements Serializable {
     @Column(name = "reason")
     private String reason;
 
+    @Column(name = "note")
+    private String note;
+
     @Column(name = "status")
     private String status;
 

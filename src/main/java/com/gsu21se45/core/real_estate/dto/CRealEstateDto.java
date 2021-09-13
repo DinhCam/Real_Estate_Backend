@@ -21,6 +21,7 @@ public class CRealEstateDto {
     private String title;
     private Timestamp createAt;
     private String status;
+    private String note;
     private int id;
     private int districtId;
     private int wardId;
