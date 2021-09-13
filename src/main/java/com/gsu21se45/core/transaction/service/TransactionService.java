@@ -2,6 +2,7 @@ package com.gsu21se45.core.transaction.service;
 
 import com.gsu21se45.core.real_estate.repository.RealEstateRepository;
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
+import com.gsu21se45.core.transaction.dto.GTransactionDetailDto;
 import com.gsu21se45.core.transaction.dto.GTransactionDto;
 import com.gsu21se45.core.transaction.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import javax.transaction.Transactional;
 public interface TransactionService {
     boolean createTransaction(CTransactionDto transactionDto);
     Page<GTransactionDto> getTransactionByUserId(String userId, String role, Integer page, Integer size);
+    GTransactionDetailDto getTransactionDetailById(int id);
 
     @Service
     @Transactional
@@ -49,6 +51,11 @@ public interface TransactionService {
                 return transactionRepository.getTransactionBySellerId(userId, pageable);
             }
             return transactionRepository.getTransactionByStaffId(userId, pageable);
+        }
+
+        @Override
+        public GTransactionDetailDto getTransactionDetailById(int id) {
+            return transactionRepository.getTransactionDetailById(id);
         }
     }
 }

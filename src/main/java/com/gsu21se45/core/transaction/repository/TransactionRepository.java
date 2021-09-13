@@ -1,8 +1,10 @@
 package com.gsu21se45.core.transaction.repository;
 
 import com.gsu21se45.core.transaction.dto.CTransactionDto;
+import com.gsu21se45.core.transaction.dto.GTransactionDetailDto;
 import com.gsu21se45.core.transaction.dto.GTransactionDto;
 import com.gsu21se45.core.transaction.transformer.TransactionByUserIdTransformer;
+import com.gsu21se45.core.transaction.transformer.TransactionDetailByIdTransformer;
 import com.gsu21se45.entity.ImageResource;
 import com.gsu21se45.entity.RealEstate;
 import com.gsu21se45.entity.Transaction;
@@ -24,6 +26,7 @@ public interface TransactionRepository {
     Page<GTransactionDto> getTransactionBySellerId(String userId, Pageable p);
     Page<GTransactionDto> getTransactionByBuyerId(String userId, Pageable p);
     Page<GTransactionDto> getTransactionByStaffId(String userId, Pageable p);
+    GTransactionDetailDto getTransactionDetailById(int id);
 
     @Repository
     class TransactionRepositoryImpl implements TransactionRepository {
@@ -145,6 +148,17 @@ public interface TransactionRepository {
             }
             return new PageImpl<>(content,p,rs.size());
         }
+
+        @Override
+        public GTransactionDetailDto getTransactionDetailById(int id) {
+            List<GTransactionDetailDto> rs = (List<GTransactionDetailDto>) em
+                    .createNativeQuery(Query.getTransactionDetailById)
+                    .setParameter("id", id)
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new TransactionDetailByIdTransformer())
+                    .getResultList();
+            return rs.get(0);
+        }
     }
     class Query{
         public static String getTransactionBySellerId = "select distinct tr.id, \n" +
@@ -251,5 +265,48 @@ public interface TransactionRepository {
                 "                left join district d on w.district_id = d.id\n" +
                 "                where tr.staff_id = :userId\n" +
                 "                order by tr.create_at DESC";
+
+        public static String getTransactionDetailById = "select tr.id, \n" +
+                "                s.id as sellerId,\n" +
+                "                s.fullname as sellerName, \n" +
+                "                s.avatar as sellerAvatar,\n" +
+                "                s.phone as sellerPhone, \n" +
+                "                s.email as sellerEmail,\n" +
+                "                b.id as buyerId,\n" +
+                "                b.fullname as buyerName,\n" +
+                "                b.avatar as buyerAvatar,\n" +
+                "                b.phone as buyerPhone, \n" +
+                "                b.email as buyerEmail,\n" +
+                "                st.id as staffId, \n" +
+                "                st.fullname as staffName,\n" +
+                "                st.avatar as staffAvatar,\n" +
+                "                st.phone as staffPhone, \n" +
+                "                st.email as staffEmail,\n" +
+                "                r.id as realEstateId, \n" +
+                "                r.title as realEstateTitle,\n" +
+                "                street.name as streetName, \n" +
+                "                w.name as wardName, \n" +
+                "                d.name as disName,\n" +
+                "                tr.down_price as downPrice, \n" +
+                "                tr.deposit as deposit,\n" +
+                "                tr.note as note, \n" +
+                "                a.create_at as appointmentDate,\n" +
+                "                i.id as imgId,\n" +
+                "                i.img_url as imageUrl,\n" +
+                "                tr.create_at as createAt\n" +
+                "                from transaction tr\n" +
+                "                left join user s on tr.seller_id = s.id\n" +
+                "                left join user b on tr.buyer_id = b.id\n" +
+                "                left join user st on tr.staff_id = st.id\n" +
+                "                left join real_estate r on tr.real_estate_id = r.id\n" +
+                "                left join image_resource i on tr.id = i.transaction_id\n" +
+                "                left join conversation c on c.real_estate_id = r.id\n" +
+                "                left join appointment a on a.conversation_id = c.id\n" +
+                "                left join real_estate_detail rd on r.id = rd.id\n" +
+                "                left join street_ward sw on rd.street_ward_id = sw.id\n" +
+                "                left join street street on sw.street_id = street.id\n" +
+                "                left join ward w on sw.ward_id = w.id\n" +
+                "                left join district d on w.district_id = d.id\n" +
+                "                where tr.id = :id" ;
     }
 }
