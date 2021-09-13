@@ -59,6 +59,13 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
+    @GetMapping(value = "/getRealEstatesVerifyByDataentry/{dataentryId}/{page}")
+    @ApiOperation("Get all real estate verify of a dataentry")
+    public PaginationResponse<GRealEstateByDataentryDto> getRealEstatesVerifyByDataentry(@PathVariable String dataentryId, @PathVariable Integer page){
+        Page<GRealEstateByDataentryDto> data = rs.getRealEstatesVerifyByDataentry(dataentryId, page, size);
+        return new PaginationResponse<>(data);
+    }
+
     @GetMapping(value = "/getRealEstateActiveBySeller/{sellerId}/{page}")
     @ApiOperation("Get all real estate have active status of a seller")
     public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstateActiveBySeller(@PathVariable String sellerId, @PathVariable Integer page){
