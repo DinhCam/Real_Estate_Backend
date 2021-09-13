@@ -26,8 +26,8 @@ public class Appointment implements Serializable {
     private Conversation conversation;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "staff_id")
-    private User staff;
+    @JoinColumn(name = "seller_id")
+    private User seller;
 
     @Column(name = "schedule_date")
     private Date scheduleDate;

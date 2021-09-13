@@ -16,7 +16,7 @@ public class AppointmentModel implements Serializable {
 
     private String id;
     private int conversationId;
-    private String staffId;
+    private String sellerId;
     private Date scheduleDate;
     private Date createAt;
     private String status;

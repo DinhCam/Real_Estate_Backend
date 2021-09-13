@@ -4,7 +4,7 @@ import com.gsu21se45.entity.RealEstate;
 
 public interface RealEstateService {
 
-    String getStaffId(int conversationId);
+    String getSellerId(int conversationId);
 
     RealEstate getByConversationId(int conversationId);
 }

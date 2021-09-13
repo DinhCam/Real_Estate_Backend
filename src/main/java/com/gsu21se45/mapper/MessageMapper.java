@@ -39,8 +39,8 @@ public class MessageMapper {
         model.setAppointment(appointment);
         model.setDeal(deal);
         if (message.getConversation().getBuyer().getId().equals(message.getSender().getId())) {
-            model.setRecipientId(message.getConversation().getSeller().getId());
-            model.setRecipientName(message.getConversation().getSeller().getFullname());
+            model.setRecipientId(message.getConversation().getStaff().getId());
+            model.setRecipientName(message.getConversation().getStaff().getFullname());
         } else {
             model.setRecipientId(message.getConversation().getBuyer().getId());
             model.setRecipientName(message.getConversation().getBuyer().getFullname());

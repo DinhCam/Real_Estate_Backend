@@ -15,13 +15,13 @@ import java.util.List;
 @Repository
 public interface ConversationRepository extends JpaRepository<Conversation, Integer> {
 
-    Conversation getConversationByBuyerAndAndSellerAndRealEstate(User buyer, User seller, RealEstate realEstate);
+    Conversation getConversationByBuyerAndStaffAndRealEstate(User buyer, User staff, RealEstate realEstate);
 
-    @Query(value = "select distinct id from conversation where buyer_id = :recipientId or seller_id = :recipientId",
+    @Query(value = "select distinct id from conversation where buyer_id = :recipientId or staff_id = :recipientId",
             nativeQuery = true)
     List<Integer> getIdsByRecipientId(@Param(value = "recipientId") String recipientId);
 
-    @Query(value = "select c.id, c.buyer_id, c.seller_id, c.real_estate_id " +
+    @Query(value = "select c.id, c.buyer_id, c.staff_id, c.real_estate_id " +
             "from conversation c join appointment a " +
             "on c.id = a.conversation_id " +
             "and c.real_estate_id = :realEstateId " +
