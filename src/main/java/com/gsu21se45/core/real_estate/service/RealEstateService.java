@@ -16,6 +16,7 @@ import java.util.List;
 
 public interface RealEstateService {
     Page<RealEstateDto> getRealEstate(RequestPrams r);
+    Page<RealEstateDto> getRealEstateByTitleAddress(String search, Integer page, Integer size);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Integer page, Integer size);
     Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Integer page, Integer size);
     Page<GRealEstateByDataentryDto> getRealEstatesNotVerifyByDataentry(Integer page, Integer size);
@@ -55,6 +56,12 @@ public interface RealEstateService {
             OrderFilterHelper orderFilterHelperImpl = new OrderFilterHelper(r.getSort(), columnsAllow);
             Pageable pageable = PageRequest.of(r.getPage(), r.getSize(), orderFilterHelperImpl.getSort());
             return rs.getRealEstate(r, pageable);
+        }
+
+        @Override
+        public Page<RealEstateDto> getRealEstateByTitleAddress(String search, Integer page, Integer size) {
+            Pageable pageable = PageRequest.of(page,size);
+            return rs.getRealEstateByTitleAddress(search, pageable);
         }
 
         @Override

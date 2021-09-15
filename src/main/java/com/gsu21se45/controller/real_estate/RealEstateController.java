@@ -32,6 +32,13 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
+    @GetMapping(value = "/getRealEstateByTitleAddress/{search}/{page}")
+    @ApiOperation("Get all real estate search by title and address")
+    public PaginationResponse<RealEstateDto> getRealEstateByTitleAddress(@PathVariable String search, @PathVariable Integer page){
+        Page<RealEstateDto> data = rs.getRealEstateByTitleAddress(search, page, size);
+        return new PaginationResponse<>(data);
+    }
+
     @GetMapping(value = "/getRealEstateDetail/{id}")
     @ApiOperation("Get a real estate detail by id")
     public RealEstateDetailDto getRealEstateDetailById(@PathVariable Integer id){

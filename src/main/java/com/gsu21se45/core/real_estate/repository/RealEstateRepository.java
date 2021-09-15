@@ -24,6 +24,7 @@ import java.util.*;
 
 public interface RealEstateRepository {
     Page<RealEstateDto> getRealEstate(RequestPrams rq, Pageable p);
+    Page<RealEstateDto> getRealEstateByTitleAddress(String search, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstateAssignStaff(String staffId, Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesBySeller(String sellerId, String status, Pageable p);
     Page<GRealEstateByDataentryDto> getRealEstatesByDataentry(String dataentryId, String status, Pageable p);
@@ -78,6 +79,34 @@ public interface RealEstateRepository {
 //                    .setMaxResults(p.getPageSize())
                     .unwrap(NativeQuery.class)
                     .setResultTransformer(new RealEstateTransformer())
+                    .getResultList();
+//            return new PageImpl<>(rs, p, rs.size());
+
+            List<RealEstateDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
+        }
+
+        @Override
+        public Page<RealEstateDto> getRealEstateByTitleAddress(String search, Pageable p) {
+            List<RealEstateDto> rs = (List<RealEstateDto>) em
+                    .createNativeQuery(Query.getRealEstateByTitleAddress)
+                    .setParameter("search", search)
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new RealEstateSearchByTitleAddressTransformer())
                     .getResultList();
 //            return new PageImpl<>(rs, p, rs.size());
 
@@ -854,6 +883,35 @@ public interface RealEstateRepository {
                 "and ((:disId is null) or (disId = :disId))\n" +
                 "and ((:wardId is null) or (wardId = :wardId))\n" ;
 //                "order by r.view DESC";
+
+        public static String getRealEstateByTitleAddress = "select r.id as id, \n" +
+                "r.title as title, \n" +
+                "rd.description as description,\n" +
+                "r.view as view, \n" +
+                "rd.area as area,\n" +
+                "rd.price as price,\n" +
+                "rd.number_of_bedroom as numberOfBedroom,\n" +
+                "rd.number_of_bathroom as numberOfBathroom,\n" +
+                "rd.project as project,\n" +
+                "i.id as imgId,\n" +
+                "i.img_url as imageUrl,\n" +
+                "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
+                "street.name as streetName,\n" +
+                "w.id as wardId,\n" +
+                "w.name as wardName,\n" +
+                "d.id as disId,\n" +
+                "d.name as disName,\n" +
+                "concat(street.name, ' ', w.name, ' ', d.name, ' ', r.title) as search\n" +
+                "from real_estate r\n" +
+                "left join real_estate_detail rd on r.id = rd.id\n" +
+                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
+                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
+                "left join street street on sw.street_id = street.id\n" +
+                "left join ward w on sw.ward_id = w.id\n" +
+                "left join district d on w.district_id = d.id\n" +
+                "having ((:search is null) or (search like concat('%', concat(:search, '%'))))\n" +
+                "order by r.create_at DESC";
 
         public static String getRealEstateAssignStaff = "select r.id as id, \n" +
                 "r.title as title, \n" +
