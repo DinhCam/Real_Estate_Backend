@@ -42,22 +42,22 @@ public class ConversationController extends Logger {
     public @ResponseBody
     ConversationModel getAllMessageByConversation(
             @RequestParam(name = RestEntityConstant.BUYER_ID, required = true) String buyerId
-            , @RequestParam(name = RestEntityConstant.SELLER_ID, required = true) String sellerId
+            , @RequestParam(name = RestEntityConstant.STAFF_ID, required = true) String staffId
             , @RequestParam(name = RestEntityConstant.REAL_ESTATE_ID, required = true) int realEstateId) {
         LOGGER.debug("Begin inside ConversationController.getAllMessageByConversation()");
         ConversationModel model = new ConversationModel();
-        Conversation conversation = conversationService.getConversation(buyerId, sellerId, realEstateId);
+        Conversation conversation = conversationService.getConversation(buyerId, staffId, realEstateId);
         if (conversation != null) {
             List<Deal> deals = dealService.findByConversationId(conversation.getId());
             List<Appointment> appointments = appointmentService.findByConversationId(conversation.getId());
             List<Message> messages = messageService.findByConversationId(conversation.getId());
             model = conversationMapper.convertToDTO(conversation, deals, appointments, messages);
         } else {
-            conversation = conversationService.save(new Conversation(-1, new User(buyerId), new User(sellerId), new RealEstate(realEstateId)));
+            conversation = conversationService.save(new Conversation(-1, new User(buyerId), new User(staffId), new RealEstate(realEstateId)));
             model = conversationMapper.convertToDTO(conversation, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         }
-        model.getSeller().setPassword("********************");
+        model.getStaff().setPassword("********************");
         model.getBuyer().setPassword("********************");
         LOGGER.debug("End inside ConversationController.getAllMessageByConversation()");
         return model;
@@ -82,7 +82,7 @@ public class ConversationController extends Logger {
         if(conversation != null){
             model = conversationMapper.convertToDTO(conversation, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
             model.getBuyer().setPassword("*********************");
-            model.getSeller().setPassword("*********************");
+            model.getStaff().setPassword("*********************");
         }
 //        UserModel model = user != null ? ((UserModel) objectMapper.convertToDTO(user, UserModel.class)) : null;
 //        List<Appointment> appointments = appointmentService.findBySellerIdAndStatus(realEstateId, status);

@@ -17,8 +17,8 @@ public class ConversationServiceImpl implements ConversationService {
     private ConversationRepository conversationRepository;
 
     @Override
-    public Conversation getConversation(String buyerId, String sellerId, int realEstateId) {
-        return conversationRepository.getConversationByBuyerAndAndSellerAndRealEstate(new User(buyerId), new User(sellerId), new RealEstate(realEstateId));
+    public Conversation getConversation(String buyerId, String staffId, int realEstateId) {
+        return conversationRepository.getConversationByBuyerAndStaffAndRealEstate(new User(buyerId), new User(staffId), new RealEstate(realEstateId));
     }
 
     @Override

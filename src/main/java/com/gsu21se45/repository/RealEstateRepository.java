@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RealEstateRepository extends JpaRepository<RealEstate, Integer> {
 
-    @Query(value = "select r.staff_id from real_estate r join conversation c " +
+    @Query(value = "select r.seller_id from real_estate r join conversation c " +
             "on c.id = :conversationId and c.real_estate_id = r.id",
             nativeQuery = true)
-    String getStaffId(@Param(value = "conversationId") int conversationId);
+    String getSellerId(@Param(value = "conversationId") int conversationId);
 
     @Query(value = "select r.* from real_estate r join conversation c " +
             "on c.id = :conversationId and c.real_estate_id = r.id",

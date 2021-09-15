@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ConversationService {
 
-    Conversation getConversation(String buyerId, String sellerId, int realEstateId);
+    Conversation getConversation(String buyerId, String staffId, int realEstateId);
 
     Conversation save(Conversation conversation);
 

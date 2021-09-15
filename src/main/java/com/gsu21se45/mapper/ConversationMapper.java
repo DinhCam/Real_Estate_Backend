@@ -20,7 +20,7 @@ public class ConversationMapper {
         ConversationModel model = new ConversationModel();
         model.setId(conversation.getId());
         model.setBuyer((UserModel) objectMapper.convertToDTO(conversation.getBuyer(), UserModel.class));
-        model.setSeller((UserModel) objectMapper.convertToDTO(conversation.getSeller(), UserModel.class));
+        model.setStaff((UserModel) objectMapper.convertToDTO(conversation.getStaff(), UserModel.class));
         model.setRelEstateId(conversation.getRealEstate().getId());
         model.setDeals(deals != null ? objectMapper.convertToListDTO(deals, DealModel.class) : null);
         model.setAppointments(appointments != null ? objectMapper.convertToListDTO(appointments, AppointmentModel.class) : null);

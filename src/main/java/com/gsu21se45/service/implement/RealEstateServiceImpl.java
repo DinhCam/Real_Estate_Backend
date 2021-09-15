@@ -13,8 +13,8 @@ public class RealEstateServiceImpl implements RealEstateService {
     private RealEstateRepository realEstateRepository;
 
     @Override
-    public String getStaffId(int conversationId) {
-        return realEstateRepository.getStaffId(conversationId);
+    public String getSellerId(int conversationId) {
+        return realEstateRepository.getSellerId(conversationId);
     }
 
     @Override

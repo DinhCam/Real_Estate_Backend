@@ -80,8 +80,8 @@ public class AppointmentController extends Logger {
     AppointmentModel create(@RequestBody AppointmentModel model) {
         LOGGER.debug("Begin inside AppointmentController.create()");
         if (model != null) {
-            String staffId = realEstateService.getStaffId(model.getConversationId());
-            model.setStaffId(staffId);
+            String sellerId = realEstateService.getSellerId(model.getConversationId());
+            model.setSellerId(sellerId);
             Appointment appointment = (Appointment) objectMapper.convertToEntity(model, Appointment.class);
             appointment = appointmentService.save(appointment);
             model.setId(appointment.getId());

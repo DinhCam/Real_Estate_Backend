@@ -18,13 +18,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
     List<Appointment> findAppointmentsByConversation(Conversation conversation);
 
-    @Query(value = "select a.id, a.conversation_id, a.staff_id, a.schedule_date, a.create_at, a.status " +
+    @Query(value = "select a.id, a.conversation_id, a.seller_id, a.schedule_date, a.create_at, a.status " +
             "from appointment a join conversation c " +
             "on a.conversation_id = c.id " +
-            "and c.seller_id = :sellerId " +
+            "and c.staff_id = :staffId " +
             "and a.status = :status " +
             "order by schedule_date desc", nativeQuery = true)
-    List<Appointment> findBySellerIdAndStatus(@Param(value = "sellerId") String sellerId,
+    List<Appointment> findByStaffIdAndStatus(@Param(value = "staffId") String staffId,
                                               @Param(value = "status") String status);
 
     @Modifying
@@ -33,7 +33,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     void update(@Param(value = "appointmentId") String appointmentId,
                 @Param(value = "status") String status);
 
-    @Query(value = "select a.id, a.conversation_id, a.staff_id, a.schedule_date, a.create_at, a.status " +
+    @Query(value = "select a.id, a.conversation_id, a.seller_id, a.schedule_date, a.create_at, a.status " +
             "from appointment a join conversation c " +
             "on a.conversation_id = c.id " +
             "and c.buyer_id = :buyerId " +
@@ -42,7 +42,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     List<Appointment> findByBuyerIdAndStatus(@Param(value = "buyerId") String buyerId,
                                              @Param(value = "status") String status);
 
-    List<Appointment> findAppointmentsByStaffAndStatusOrderByScheduleDateDesc (User staff, String status);
+//    List<Appointment> findAppointmentsByStaffAndStatusOrderByScheduleDateDesc (User staff, String status);
+
+    List<Appointment> findAppointmentsBySellerAndStatusOrderByScheduleDateDesc (User seller, String status);
 
     Appointment findByConversationAndCreateAt(Conversation conversation, Date createAt);
 }

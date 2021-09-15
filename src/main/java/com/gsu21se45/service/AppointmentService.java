@@ -10,11 +10,11 @@ public interface AppointmentService {
 
     List<Appointment> findByConversationId(int conversationId);
 
-    List<Appointment> findBySellerIdAndStatus(String sellerId, String status);
-
     Appointment save(Appointment appointment);
 
     void update(String appointmentId, String status);
+
+    List<Appointment> findBySellerIdAndStatus(String sellerId, String status);
 
     List<Appointment> findByBuyerIdAndStatus(String buyerId, String status);
 

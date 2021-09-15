@@ -17,7 +17,7 @@ public class ConversationModel implements Serializable {
     private int id;
     private int relEstateId;
     private UserModel buyer;
-    private UserModel seller;
+    private UserModel staff;
     private List<MessageModel> messages;
     private List<DealModel> deals;
     private List<AppointmentModel> appointments;
