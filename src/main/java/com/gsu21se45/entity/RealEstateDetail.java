@@ -50,7 +50,7 @@ public class RealEstateDetail implements Serializable {
     private double area;
 
     @Column(name = "floor")
-    private int floor;
+    private String floor;
 
     @Column(name = "price")
     private double price;

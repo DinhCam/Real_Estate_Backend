@@ -1,8 +1,6 @@
 package com.gsu21se45.core.real_estate.dto;
 
-import com.gsu21se45.entity.Facility;
 import com.gsu21se45.entity.ImageResource;
-import com.gsu21se45.entity.RealEstateFacility;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +31,7 @@ public class CRealEstateDto {
     private double length;
     private double width;
     private Double area;
-    private int floor;
+    private String floor;
     private Double price;
     private String direction;
     private String balconyDirection;

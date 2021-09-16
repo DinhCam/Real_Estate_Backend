@@ -22,6 +22,10 @@ public class Facility implements Serializable {
     @JoinColumn(name = "type_id")
     private FacilityType facilityTypeId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "real_estate_detail_id")
+    private RealEstateDetail realEstateDetailId;
+
     @Column(name = "name", length = 255)
     private String facilityName;
 
@@ -33,4 +37,7 @@ public class Facility implements Serializable {
 
     @Column(name = "address", length = 255)
     private String address;
+
+    @Column(name = "distance")
+    private double distance;
 }
