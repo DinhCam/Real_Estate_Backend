@@ -15,7 +15,7 @@ public class AveragePriceModel implements Serializable {
 
     private int id;
 
-    private int streetId;
+//    private int streetId;
 
     private int wardId;
 

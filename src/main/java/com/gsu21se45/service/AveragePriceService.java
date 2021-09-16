@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AveragePriceService {
 
-    List<AveragePrice> getByStreet(int id, int month, int year, int reTypeId);
+//    List<AveragePrice> getByStreet(int id, int month, int year, int reTypeId);
 
     List<AveragePrice> getByWard(int id, int month, int year, int reTypeId);
 

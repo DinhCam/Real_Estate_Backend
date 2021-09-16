@@ -43,9 +43,10 @@ public class AveragePriceController extends Logger {
         LOGGER.debug("Begin inside AveragePriceController.get()");
         int reTypeId = realEstateTypeService.getIdByName(reType);
         List<AveragePrice> entities = null;
-        if (addressType.equalsIgnoreCase(AppConstant.STREET_TYPE)) {
-            entities = averagePriceService.getByStreet(id, month, year, reTypeId);
-        } else if (addressType.equalsIgnoreCase(AppConstant.WARD_TYPE)) {
+//        if (addressType.equalsIgnoreCase(AppConstant.STREET_TYPE)) {
+//            entities = averagePriceService.getByStreet(id, month, year, reTypeId);
+//        } else
+          if (addressType.equalsIgnoreCase(AppConstant.WARD_TYPE)) {
             entities = averagePriceService.getByWard(id, month, year, reTypeId);
         } else {
             entities = averagePriceService.getByDistrict(id, month, year, reTypeId);

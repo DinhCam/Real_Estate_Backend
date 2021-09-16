@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface AveragePriceRepository extends JpaRepository<AveragePrice, Integer> {
 
-    ArrayList<AveragePrice> findAveragePricesByStreetAndMonthLessThanEqualAndMonthGreaterThanAndYearAndTypeOrderByMonth(Street street, int endMonth, int startMonth, int year, int type);
+//    ArrayList<AveragePrice> findAveragePricesByStreetAndMonthLessThanEqualAndMonthGreaterThanAndYearAndTypeOrderByMonth(Street street, int endMonth, int startMonth, int year, int type);
 
     ArrayList<AveragePrice> findAveragePricesByDistrictAndMonthLessThanEqualAndMonthGreaterThanAndYearAndTypeOrderByMonth(District district, int endMonth, int startMonth, int year, int type);
 

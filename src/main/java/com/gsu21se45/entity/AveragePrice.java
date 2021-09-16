@@ -21,9 +21,9 @@ public class AveragePrice implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "street_id")
-    private Street street;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "street_id")
+//    private Street street;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ward_id")
