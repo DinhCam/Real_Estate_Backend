@@ -13,11 +13,11 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    User getUserByUsername(String username);
+//    User getUserByUsername(String username);
 
     User getUserById(String userId);
 
-    @Query(value = "Select u.id, u.username, u.role_id, u.password, u.avatar, u.phone, u.fullname, u.email, u.status " +
+    @Query(value = "Select u.id, u.role_id, u.password, u.avatar, u.phone, u.fullname, u.email, u.status " +
             "from user u join role r " +
             "on u.role_id = r.id and r.name != :role",
             countQuery = "select count(u.id) " +
@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             nativeQuery = true)
     Page<User> findAllExceptAdmin(@Param(value = "role") String role, Pageable pageable);
 
-    @Query(value = "Select u.id, u.username, u.role_id, u.password, u.avatar, u.phone, u.fullname, u.email, u.status " +
+    @Query(value = "Select u.id, u.role_id, u.password, u.avatar, u.phone, u.fullname, u.email, u.status " +
             "from user u join role r " +
             "on u.role_id = r.id and r.name = :role",
             countQuery = "select count(u.id) " +

@@ -22,10 +22,10 @@ public class UserServiceImpl implements UserService {
         return repository.saveAndFlush(user);
     }
 
-    @Override
-    public User getByUsername(String username) {
-        return repository.getUserByUsername(username);
-    }
+//    @Override
+//    public User getByUsername(String username) {
+//        return repository.getUserByUsername(username);
+//    }
 
     @Override
     public User getByUserId(String userId) {

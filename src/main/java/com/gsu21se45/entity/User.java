@@ -25,8 +25,8 @@ public class User implements Serializable {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @Column(name = "username", length = 255)
-    private String username;
+//    @Column(name = "username", length = 255)
+//    private String username;
 
     @Column(name = "password", length = 255)
     private String password;
