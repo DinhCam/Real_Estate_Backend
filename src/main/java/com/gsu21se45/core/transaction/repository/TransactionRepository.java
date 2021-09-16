@@ -44,8 +44,7 @@ public interface TransactionRepository {
                 transaction.setSeller(em.find(User.class, transactionDto.getSellerId()));
                 transaction.setStaff(em.find(User.class, transactionDto.getStaffId()));
                 transaction.setRealEstate(em.find(RealEstate.class, transactionDto.getRealEstateId()));
-                transaction.setDownPrice(transactionDto.getDownPrice());
-                transaction.setDeposit(transactionDto.getDeposit());
+                transaction.setDealPrice(transactionDto.getDealPrice());
                 transaction.setNote(transactionDto.getNote());
                 transaction.setCreateAt(sqlDate);
 

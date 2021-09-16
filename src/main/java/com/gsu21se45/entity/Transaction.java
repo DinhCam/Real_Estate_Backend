@@ -38,11 +38,8 @@ public class Transaction implements Serializable {
     @JoinColumn(name = "real_estate_id")
     private RealEstate realEstate;
 
-    @Column(name = "down_price")
-    private double downPrice;
-
-    @Column(name = "deposit")
-    private double deposit;
+    @Column(name = "deal_price")
+    private double dealPrice;
 
     @Column(name = "note")
     private String note;

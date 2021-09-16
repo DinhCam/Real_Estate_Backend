@@ -555,17 +555,13 @@ public interface RealEstateRepository {
 
                     for (NearBySearchDto j:response1.getResults()) {
                         Facility facility = new Facility();
-                        Integer facilityId = 0;
+
                         facility.setFacilityTypeId(em.find(FacilityType.class, i));
+                        facility.setRealEstateDetailId(em.find(RealEstateDetail.class, realEstateDetailId));
                         facility.setFacilityName(j.getName());
                         facility.setLatitude(j.getGeometry().getLocation().getLat());
                         facility.setLongitude(j.getGeometry().getLocation().getLng());
                         facility.setAddress(j.getVicinity());
-                        facilityId = (Integer) session.save(facility);
-
-                        RealEstateFacility realEstateFacility = new RealEstateFacility();
-                        realEstateFacility.setRealEstateDetail(em.find(RealEstateDetail.class, realEstateDetailId));
-                        realEstateFacility.setFacility(em.find(Facility.class, facilityId));
 
 //                      HaversineDistance
                         final int R = 6371;
@@ -581,10 +577,8 @@ public interface RealEstateRepository {
                         Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                         Double distance = R * c;
 
-                        realEstateFacility.setDistance(distance);
-
+                        facility.setDistance(distance);
                         session.save(facility);
-                        session.save(realEstateFacility);
                     }
                 }
             } catch (Exception ex){
@@ -688,17 +682,13 @@ public interface RealEstateRepository {
 
                     for (NearBySearchDto j:response1.getResults()) {
                         Facility facility = new Facility();
-                        Integer facilityId = 0;
+
+                        facility.setRealEstateDetailId(em.find(RealEstateDetail.class, updateRealEstateDto.getId()));
                         facility.setFacilityTypeId(em.find(FacilityType.class, i));
                         facility.setFacilityName(j.getName());
                         facility.setLatitude(j.getGeometry().getLocation().getLat());
                         facility.setLongitude(j.getGeometry().getLocation().getLng());
                         facility.setAddress(j.getVicinity());
-                        facilityId = (Integer) session.save(facility);
-
-                        RealEstateFacility realEstateFacility = new RealEstateFacility();
-                        realEstateFacility.setRealEstateDetail(em.find(RealEstateDetail.class, updateRealEstateDto.getId()));
-                        realEstateFacility.setFacility(em.find(Facility.class, facilityId));
 
 //                      HaversineDistance
                         final int R = 6371;
@@ -714,10 +704,8 @@ public interface RealEstateRepository {
                         Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                         Double distance = R * c;
 
-                        realEstateFacility.setDistance(distance);
-
+                        facility.setDistance(distance);
                         session.save(facility);
-                        session.save(realEstateFacility);
                     }
                 }
 
@@ -1045,11 +1033,11 @@ public interface RealEstateRepository {
                 "rt.name as typeName,\n" +
                 "r.view as view, \n" +
                 "s.id as sellerId, \n" +
-                "s.username as sellerUserName, \n" +
+                "s.phone as sellerPhone, \n" +
                 "s.fullname as sellerName, \n" +
                 "s.avatar as sellerAvatar,\n" +
                 "st.id as staffId,\n" +
-                "st.username as staffUserName,\n" +
+                "st.phone as staffPhone,\n" +
                 "st.fullname as staffName,\n" +
                 "st.avatar as staffAvatar,\n" +
                 "rd.direction as direction,\n" +
@@ -1077,7 +1065,7 @@ public interface RealEstateRepository {
                 "f.latitude as latitudeFacility,\n" +
                 "f.longitude as longitudeFacility,\n" +
                 "f.address as addressFacility,\n" +
-                "rf.distance as distance,\n" +
+                "f.distance as distance,\n" +
                 "rd.real_estate_no as realEstateNo,\n" +
                 "street.name as streetName,\n" +
                 "w.id as wardId,\n" +
@@ -1089,9 +1077,8 @@ public interface RealEstateRepository {
                 "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
-                "left join real_estate_facility rf on rd.id = rf.real_estate_detail_id\n" +
                 "left join real_estate_type rt on rt.id = rd.type_id\n" +
-                "left join facility f on rf.facility_id = f.id\n" +
+                "left join facility f on rd.id = f.real_estate_detail_id\n" +
                 "left join facility_type ft on f.type_id = ft.id\n" +
                 "left join street_ward sw on rd.street_ward_id = sw.id\n" +
                 "left join street street on sw.street_id = street.id\n" +

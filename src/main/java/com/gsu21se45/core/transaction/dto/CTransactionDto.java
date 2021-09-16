@@ -18,8 +18,7 @@ public class CTransactionDto {
     private String sellerId;
     private String staffId;
     private int realEstateId;
-    private double downPrice;
-    private double deposit;
+    private double dealPrice;
     private String note;
     private Date createAt;
     private List<ImageResource> images;

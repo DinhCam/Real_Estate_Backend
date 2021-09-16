@@ -50,8 +50,7 @@ public class TransactionByUserIdTransformer implements ResultTransformer {
         rs.setStreetName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("streetName")]));
         rs.setWardName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("wardName")]));
         rs.setDisName(TypeTransformImpl.castObjectToString(tuples[aliasList.get("disName")]));
-        rs.setDownPrice((Double) tuples[aliasList.get("downPrice")]);
-        rs.setDeposit((Double) tuples[aliasList.get("deposit")]);
+        rs.setDealPrice((Double) tuples[aliasList.get("dealPrice")]);
         rs.setNote(TypeTransformImpl.castObjectToString(tuples[aliasList.get("note")]));
         rs.setAppointmentDate((Timestamp) tuples[aliasList.get("appointmentDate")]);
         rs.setCreateAt((Timestamp) tuples[aliasList.get("createAt")]);
