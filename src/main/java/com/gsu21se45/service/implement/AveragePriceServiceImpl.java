@@ -19,22 +19,22 @@ public class AveragePriceServiceImpl implements AveragePriceService {
     @Autowired
     private AveragePriceRepository repository;
 
-    @Override
-    public List<AveragePrice> getByStreet(int id, int month, int year, int reTypeId) {
-        List<Integer> time = calculateYear(month, year);
-        List<AveragePrice> list = null;
-        Street street = new Street(id);
-        if (month < AppConstant.MONTH_OF_STATISTIC) {
-            list = repository.findAveragePricesByStreetAndMonthLessThanEqualAndMonthGreaterThanAndYearAndTypeOrderByMonth(street, 12, time.get(0), time.get(1), reTypeId);
-            List<AveragePrice> additional = repository.findAveragePricesByStreetAndMonthLessThanEqualAndMonthGreaterThanAndYearAndTypeOrderByMonth(street, month, 0, year, reTypeId);
-            for (AveragePrice averagePrice : additional) {
-                list.add(averagePrice);
-            }
-        } else {
-            list = repository.findAveragePricesByStreetAndMonthLessThanEqualAndMonthGreaterThanAndYearAndTypeOrderByMonth(street, month, time.get(0), year, reTypeId);
-        }
-        return list;
-    }
+//    @Override
+//    public List<AveragePrice> getByStreet(int id, int month, int year, int reTypeId) {
+//        List<Integer> time = calculateYear(month, year);
+//        List<AveragePrice> list = null;
+//        Street street = new Street(id);
+//        if (month < AppConstant.MONTH_OF_STATISTIC) {
+//            list = repository.findAveragePricesByStreetAndMonthLessThanEqualAndMonthGreaterThanAndYearAndTypeOrderByMonth(street, 12, time.get(0), time.get(1), reTypeId);
+//            List<AveragePrice> additional = repository.findAveragePricesByStreetAndMonthLessThanEqualAndMonthGreaterThanAndYearAndTypeOrderByMonth(street, month, 0, year, reTypeId);
+//            for (AveragePrice averagePrice : additional) {
+//                list.add(averagePrice);
+//            }
+//        } else {
+//            list = repository.findAveragePricesByStreetAndMonthLessThanEqualAndMonthGreaterThanAndYearAndTypeOrderByMonth(street, month, time.get(0), year, reTypeId);
+//        }
+//        return list;
+//    }
 
     @Override
     public List<AveragePrice> getByWard(int id, int month, int year, int reTypeId) {
