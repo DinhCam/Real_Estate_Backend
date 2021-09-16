@@ -38,6 +38,7 @@ public class GTransactionDetailDto {
     private String disName;
     private double dealPrice;
     private String note;
+    private String reason;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp appointmentDate;

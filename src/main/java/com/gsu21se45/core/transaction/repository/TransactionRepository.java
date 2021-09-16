@@ -172,8 +172,8 @@ public interface TransactionRepository {
                 "                street.name as streetName, \n" +
                 "                w.name as wardName, \n" +
                 "                d.name as disName,\n" +
-                "                tr.down_price as downPrice, \n" +
-                "                tr.deposit as deposit,\n" +
+                "                tr.deal_price as dealPrice, \n" +
+                "                tr.reason as reason, \n" +
                 "                tr.note as note, \n" +
                 "                a.create_at as appointmentDate,\n" +
                 "                i.id as imgId,\n" +
@@ -207,8 +207,8 @@ public interface TransactionRepository {
                 "                street.name as streetName, \n" +
                 "                w.name as wardName, \n" +
                 "                d.name as disName,\n" +
-                "                tr.down_price as downPrice, \n" +
-                "                tr.deposit as deposit,\n" +
+                "                tr.deal_price as dealPrice, \n" +
+                "                tr.reason as reason, \n" +
                 "                tr.note as note, \n" +
                 "                a.create_at as appointmentDate,\n" +
                 "                i.id as imgId,\n" +
@@ -242,8 +242,8 @@ public interface TransactionRepository {
                 "                street.name as streetName, \n" +
                 "                w.name as wardName, \n" +
                 "                d.name as disName,\n" +
-                "                tr.down_price as downPrice, \n" +
-                "                tr.deposit as deposit,\n" +
+                "                tr.deal_price as dealPrice, \n" +
+                "                tr.reason as reason, \n" +
                 "                tr.note as note, \n" +
                 "                a.create_at as appointmentDate,\n" +
                 "                i.id as imgId,\n" +
@@ -286,8 +286,8 @@ public interface TransactionRepository {
                 "                street.name as streetName, \n" +
                 "                w.name as wardName, \n" +
                 "                d.name as disName,\n" +
-                "                tr.down_price as downPrice, \n" +
-                "                tr.deposit as deposit,\n" +
+                "                tr.deal_price as dealPrice, \n" +
+                "                tr.reason as reason, \n" +
                 "                tr.note as note, \n" +
                 "                a.create_at as appointmentDate,\n" +
                 "                i.id as imgId,\n" +

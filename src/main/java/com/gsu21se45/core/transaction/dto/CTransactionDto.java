@@ -20,6 +20,7 @@ public class CTransactionDto {
     private int realEstateId;
     private double dealPrice;
     private String note;
+    private String reason;
     private Date createAt;
     private List<ImageResource> images;
 }
