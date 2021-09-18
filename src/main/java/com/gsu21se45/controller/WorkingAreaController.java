@@ -33,8 +33,10 @@ public class WorkingAreaController extends Logger {
     public ResponseEntity<?> process(@RequestBody List<WorkingAreaModel> models) {
         LOGGER.debug("Begin inside WorkingAreaController.process()");
         try {
+            String staffId = models.get(0).getStaffId();
             if (models != null) {
                 List<WorkingArea> entities = objectMapper.convertToListEntity(models, WorkingArea.class);
+                workingAreaService.delete(staffId);
                 workingAreaService.process(entities);
             }
         } catch (Exception ex) {
