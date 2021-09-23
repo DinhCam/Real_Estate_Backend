@@ -1069,6 +1069,10 @@ public interface RealEstateRepository {
                 "st.phone as staffPhone,\n" +
                 "st.fullname as staffName,\n" +
                 "st.avatar as staffAvatar,\n" +
+                "de.id as dataentryId,\n" +
+                "de.phone as dataentryPhone, \n" +
+                "de.fullname as dataentryName,\n" +
+                "de.avatar as dataentryAvatar,\n" +
                 "rd.direction as direction,\n" +
                 "rd.balcony_direction as balconyDirection,\n" +
                 "rd.length as length,\n" +
@@ -1106,6 +1110,7 @@ public interface RealEstateRepository {
                 "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
                 "left join user s on r.seller_id = s.id\n" +
                 "left join user st on r.staff_id = st.id\n" +
+                "left join user de on r.dataentry_id = de.id\n" +
                 "left join real_estate_type rt on rt.id = rd.type_id\n" +
                 "left join facility f on rd.id = f.real_estate_detail_id\n" +
                 "left join facility_type ft on f.type_id = ft.id\n" +
