@@ -94,6 +94,13 @@ public class RealEstateController {
         return new PaginationResponse<>(data);
     }
 
+    @GetMapping(value = "/getRealEstatesByManager/{page}")
+    @ApiOperation("Get all real estate sold")
+    public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstatesByManager(@PathVariable Integer page){
+        Page<GRealEstateBySellerOrStaffDto> data = rs.getRealEstatesByManager(page, size);
+        return new PaginationResponse<>(data);
+    }
+
     @GetMapping(value = "/getRealEstatesByStaff/{staffId}/{status}/{page}")
     @ApiOperation("Get all real estate have ? status of a staff")
     public PaginationResponse<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(@PathVariable String staffId, @PathVariable String status, @PathVariable Integer page){

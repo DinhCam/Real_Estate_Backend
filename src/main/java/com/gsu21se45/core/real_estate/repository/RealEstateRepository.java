@@ -33,6 +33,7 @@ public interface RealEstateRepository {
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesActiveBySeller(String sellerId, Pageable p);
     Page<RealEstateDto> getRealEstatesNotAssign(Pageable p);
     Page<RealEstateDto> getRealEstatesAssigned(Pageable p);
+    Page<GRealEstateBySellerOrStaffDto> getRealEstatesByManager(Pageable p);
     Page<GRealEstateBySellerOrStaffDto> getRealEstatesByStaff(String staffId, String status, Pageable p);
     RealEstateDetailDto getRealEstateDetailById(int id);
     Integer getNumberOfRealEstateByStaff(String staffId, String status);
@@ -334,6 +335,33 @@ public interface RealEstateRepository {
 //            return new PageImpl<>(rs,p,rs.size());
 
             List<RealEstateDto> content = new ArrayList<>();
+            long index = p.getOffset();
+            int s = content.size();
+            while(content.size() < p.getPageSize()){
+                if(p.getOffset() > rs.size()){
+                    break;
+                }
+                if(index >= rs.size()){
+                    break;
+                }
+                content.add(rs.get((int)index));
+                index++;
+            }
+            return new PageImpl<>(content,p,rs.size());
+        }
+
+        @Override
+        public Page<GRealEstateBySellerOrStaffDto> getRealEstatesByManager(Pageable p) {
+            List<GRealEstateBySellerOrStaffDto> rs = (List<GRealEstateBySellerOrStaffDto>) em
+                    .createNativeQuery(Query.getRealEstatesByManager)
+//                    .setFirstResult((int) p.getOffset())
+//                    .setMaxResults(p.getPageSize())
+                    .unwrap(NativeQuery.class)
+                    .setResultTransformer(new RealEstateSellerOrStaffTransformer())
+                    .getResultList();
+//            return new PageImpl<>(rs,p,rs.size());
+
+            List<GRealEstateBySellerOrStaffDto> content = new ArrayList<>();
             long index = p.getOffset();
             int s = content.size();
             while(content.size() < p.getPageSize()){
@@ -825,6 +853,7 @@ public interface RealEstateRepository {
                 "st.id as staffId, \n" +
                 "st.fullname as staffName ,\n" +
                 "st.avatar as staffAvatar, \n" +
+                "st.phone as staffPhone, \n" +
                 "rd.area as area,\n" +
                 "rd.price as price,\n" +
                 "rd.direction as direction,\n" +
@@ -1097,6 +1126,7 @@ public interface RealEstateRepository {
                 "st.id as staffId, \n" +
                 "st.fullname as staffName ,\n" +
                 "st.avatar as staffAvatar, \n" +
+                "st.phone as staffPhone, \n" +
                 "de.id as dataentryId,\n" +
                 "de.fullname as dataentryName,\n" +
                 "de.avatar as dataentryAvatar,\n" +
@@ -1138,6 +1168,7 @@ public interface RealEstateRepository {
                 "st.id as staffId, \n" +
                 "st.fullname as staffName ,\n" +
                 "st.avatar as staffAvatar, \n" +
+                "st.phone as staffPhone, \n" +
                 "de.id as dataentryId,\n" +
                 "de.fullname as dataentryName,\n" +
                 "de.avatar as dataentryAvatar,\n" +
@@ -1166,6 +1197,49 @@ public interface RealEstateRepository {
                 "left join district d on w.district_id = d.id\n" +
                 "where st.id is not null \n" +
                 "and de.id is not null \n" +
+                "and r.status != 'sold' \n" +
+                "order by r.create_at DESC";
+
+        public static String getRealEstatesByManager = "select r.id as id, \n" +
+                "r.title as title, \n" +
+                "rd.description as description,\n" +
+                "r.view as view, \n" +
+                "r.status as status,\n" +
+                "s.id as sellerId,\n" +
+                "s.fullname as sellerName,\n" +
+                "s.avatar as sellerAvatar,\n" +
+                "r.buyer_id as buyerId,\n" +
+                "b.fullname as buyerName,\n" +
+                "b.avatar as buyerAvatar,\n" +
+                "st.id as staffId,\n" +
+                "st.fullname as staffName,\n" +
+                "st.avatar as staffAvatar,\n" +
+                "rd.area as area,\n" +
+                "rd.price as price,\n" +
+                "r.reason as reason, \n" +
+                "rd.number_of_bedroom as numberOfBedroom,\n" +
+                "rd.number_of_bathroom as numberOfBathroom,\n" +
+                "rd.project as project,\n" +
+                "i.id as imgId,\n" +
+                "i.img_url as imageUrl,\n" +
+                "r.create_at as createAt,\n" +
+                "rd.real_estate_no as realEstateNo,\n" +
+                "street.name as streetName,\n" +
+                "w.name as wardName,\n" +
+                "d.name as disName\n" +
+                "from real_estate r\n" +
+                "left join conversation c on r.id = c.real_estate_id\n" +
+                "left join real_estate_detail rd on r.id = rd.id\n" +
+                "left join image_resource i on rd.id = i.real_estate_detail_id\n" +
+                "left join user b on c.buyer_id = b.id\n" +
+                "left join user s on r.seller_id = s.id\n" +
+                "left join user st on r.staff_id = st.id\n" +
+                "left join street_ward sw on rd.street_ward_id = sw.id\n" +
+                "left join street street on sw.street_id = street.id\n" +
+                "left join ward w on sw.ward_id = w.id\n" +
+                "left join district d on w.district_id = d.id\n" +
+                "where st.id is not null \n" +
+                "and r.status = 'sold' \n" +
                 "order by r.create_at DESC";
 
         public static String getRealEstatesByStaff = "select r.id as id, \n" +
