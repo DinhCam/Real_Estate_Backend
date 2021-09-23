@@ -25,6 +25,7 @@ public class RealEstateDto {
     private String staffId;
     private String staffName;
     private String staffAvatar;
+    private String staffPhone;
     private double area;
     private double price;
     private int numberOfBedroom;
