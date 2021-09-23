@@ -31,6 +31,10 @@ public class RealEstateDetailDto {
     private String staffPhone;
     private String staffName;
     private String staffAvatar;
+    private String dataentryId;
+    private String dataentryPhone;
+    private String dataentryName;
+    private String dataentryAvatar;
     private double length;
     private double width;
     private double area;
