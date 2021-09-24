@@ -30,7 +30,7 @@ public class UpdateRealEstateDto {
     private double length;
     private double width;
     private Double area;
-    private int floor;
+    private String floor;
     private Double price;
     private String direction;
     private String balconyDirection;
