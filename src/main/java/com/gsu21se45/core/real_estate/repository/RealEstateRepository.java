@@ -1477,7 +1477,7 @@ public interface RealEstateRepository {
                 "create_at = :createAt \n" +
                 "where id = :id";
 
-        public static String deleteFacility = "delete from real_estate_facility \n" +
+        public static String deleteFacility = "delete from facility \n" +
                 "where real_estate_detail_id = :realEstateDetailId";
 
         public static String deleteImage = "delete from image_resource \n" +
