@@ -6,6 +6,7 @@ from selenium import webdriver
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from db_util import get_re_type_id, get_address, insert_sample, insert_avg_street, insert_avg_ward, insert_avg_district
+from datetime import datetime
 
 
 list_samples = []
@@ -47,9 +48,17 @@ def download_source(url):
     html = ''
     try:
         driver = webdriver.Chrome('chromedriver.exe')
+        # set time out = 600 seconds 
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        print("Current Time =", current_time)
+        driver.set_page_load_timeout(600)        
         driver.get(url)
         html = driver.page_source
     except Exception as e:
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        print("After Time(timeout) =", current_time)
         print(e)
         return html
     return html
@@ -111,20 +120,22 @@ def filter_data_for_bds(type_id, soup, html, tag, attrs):
                     sub_html = download_source(sub_link)
                     sub_soup = BeautifulSoup(sub_html, 'html.parser')
                     address = ''
-                    for title in sub_soup.find_all('div', attrs='detail-2 pad-16'):
-                        for r in title.find_all('div', attrs='row-1'):
-                            if r.find('span', attrs='r1').text == 'Địa chỉ:':
-                                address = r.find('span', attrs='r2').text
+                    for title in sub_soup.find_all('div', attrs='re__border--std'):
+                        for r in title.find_all('div', attrs='re__list-standard-1line--md'):
+                            if r.find('span', attrs='title').text == 'Địa chỉ:':
+                                address = r.find('span', attrs='value').text
                                 break
                         if address != '':
                             break
                     address_plit = address.split(', ')
                     address_size = len(address_plit)
                     if address_size > 3:
-                        address = get_address([address_plit[address_size-4], address_plit[address_size-3], address_plit[address_size-2]])
+                        print(address_plit[address_size-3], "_", address_plit[address_size-2])
+                        address = get_address([address_plit[address_size-3], address_plit[address_size-2]])
+                        print(address)
                         if address != None:
                             # ward_id, district_id, price, area, post_time, type
-                            list_samples.append([address[1], address[3], new_price, area, up_date, type_id])
+                            list_samples.append([address[0], address[1], new_price, area, up_date, type_id])
         except Exception as e:
             print(e)
             continue
@@ -149,7 +160,7 @@ def filter_data_for_ct(type_id, soup, html, tag, attrs):
                 new_price = convert_price(price, type, area)
                 address_plit = address.split(', ')
                 address_size = len(address_plit)
-                print(address_plit[address_size-4], address_plit[address_size-3], address_plit[address_size-2])
+                print(address_plit[address_size-3], "_", address_plit[address_size-2])
                 if address_size > 3:
                     address = get_address([address_plit[address_size-3], address_plit[address_size-2]])
                     print(address)
@@ -168,14 +179,14 @@ def is_end_of_page(soup, tag, attrs):
 
 
 def bds_handler(uri, type_id):
-    for i in itertools.count(start=200):
+    for i in itertools.count(start=1):
         try:
             url = uri + str(i)
             html = download_source(url)
             soup = BeautifulSoup(html, 'html.parser')
             is_ended = is_end_of_page(
-                soup, tag='div', attrs={'listing-empty'})
-            # if i == 703:
+                soup, tag='div', attrs={'re__srp-empty js__srp-empty'})
+            # if i == 231:
             #     is_ended = True
             if is_ended:
                 break
@@ -185,7 +196,7 @@ def bds_handler(uri, type_id):
 
 
 def ct_handler(uri, type_id):
-    for i in itertools.count(start=255):
+    for i in itertools.count(start=1):
         try:
             url = uri + str(i)
             html = download_source(url)
@@ -193,8 +204,8 @@ def ct_handler(uri, type_id):
             is_ended = is_end_of_page(
                 soup, tag='img', attrs={'alt':'PageNotFound'})
             print(is_ended)
-            if i == 315:
-                is_ended = True
+            # if i == 315:
+            #     is_ended = True
             if is_ended:
                 break
             filter_data_for_ct(type_id, soup, html, tag='li', attrs={'class': 'AdItem_wrapperAdItem__1hEwM'})
@@ -275,14 +286,14 @@ def calculator():
 
 
 if __name__ == '__main__':
-    # bds_urls = ['https://batdongsan.com.vn/ban-nha-dat-tp-hcm/p',
-    #             'https://batdongsan.com.vn/ban-can-ho-chung-cu-tp-hcm/p']
-    ct_urls = ['https://nha.chotot.com/tp-ho-chi-minh/mua-ban-nha-dat?page=']
-                # 'https://nha.chotot.com/tp-ho-chi-minh/mua-ban-can-ho-chung-cu?page=']
-    # bds_handler(bds_urls[0], house_id[0])
-    # bds_handler(bds_urls[1], apartment_id[0])
+    bds_urls = ['https://batdongsan.com.vn/ban-nha-dat-tp-hcm/p',
+                'https://batdongsan.com.vn/ban-can-ho-chung-cu-tp-hcm/p']
+    ct_urls = ['https://nha.chotot.com/tp-ho-chi-minh/mua-ban-nha-dat?page=',
+                'https://nha.chotot.com/tp-ho-chi-minh/mua-ban-can-ho-chung-cu?page=']
+    bds_handler(bds_urls[0], house_id[0])
+    bds_handler(bds_urls[1], apartment_id[0])
     ct_handler(ct_urls[0], house_id[0])
-    # ct_handler(ct_urls[1], apartment_id[0])
+    ct_handler(ct_urls[1], apartment_id[0])
     # list_samples = [[308, 24, 12500000000.0, 200.0, datetime(2021, 6, 29, 0, 0), 2], 
     # [317, 24, 5490000000.0, 32.0, datetime(2021, 6, 29, 0, 0), 2], 
     # [317, 24, 7490000000.0, 142.0, datetime(2021, 6, 29, 0, 0), 1], 
