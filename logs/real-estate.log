@@ -1400,3 +1400,5 @@ DEBUG   2021-09-19 06:12:54,909 [http-nio-5000-exec-4] com.gsu21se45.controller.
 DEBUG   2021-09-19 06:12:55,155 [http-nio-5000-exec-4] com.gsu21se45.controller.UserController  - End inside UserController.update()
 DEBUG   2021-09-19 06:13:45,348 [http-nio-5000-exec-9] com.gsu21se45.controller.UserController  - Begin inside UserController.get()
 DEBUG   2021-09-19 06:13:45,642 [http-nio-5000-exec-9] com.gsu21se45.controller.UserController  - End inside UserController.get()
+DEBUG   2021-10-20 22:25:50,923 [http-nio-5000-exec-7] com.gsu21se45.controller.UserController  - Begin inside UserController.create()
+DEBUG   2021-10-20 22:25:51,614 [http-nio-5000-exec-7] com.gsu21se45.controller.UserController  - End inside UserController.create()
